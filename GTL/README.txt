@@ -1,0 +1,4 @@
+备注：
+发现存在遗留问题：培养仪虚拟仪器端Report电流时，有时AllDeviceForm的Messages会出现错误：集合已被修改，无法完成遍历。
+后面实现的摇床Report数据时也有类似的问题。
+推测可能是并发读写Messages的过程中会有问题，所以我更改了中控及虚拟仪器端AllDeviceForm.cs中数据履历显示的逻辑，将foreach变为for循环。整合时请注意。
