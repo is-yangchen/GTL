@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CentralControl
+namespace GTLutils
 {
     public enum DeviceStates { Running, Stop, Fault, Connected };
     public enum DeviceType { Dispen, Clone, Matrix, Liquid, Analysis, Storage, Unknown };
