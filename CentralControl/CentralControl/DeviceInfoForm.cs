@@ -55,13 +55,6 @@ namespace CentralControl
                     cForm.DeviceInfo = (CloneSelectionVirtualDevice)DeviceInfo;
                     cForm.Show();
                     break;
-                case DeviceType.Liquid:
-                    LiquidProcessForm lForm = new LiquidProcessForm();
-                    lForm.FatherForm = this;
-                    lForm.IsSocket = true;          //temp settings warning
-                    lForm.alcDevice = (LiquidProcessVirtualDevice)DeviceInfo;
-                    lForm.Show();
-                    break;
 
                 case DeviceType.Matrix:
                     MatrixSystemDeviceForm maForm = new MatrixSystemDeviceForm();
