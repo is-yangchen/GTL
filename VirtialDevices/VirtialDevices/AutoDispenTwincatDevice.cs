@@ -212,8 +212,8 @@ namespace VirtialDevices
             tiaomahao = TiaoMaHaoGenerator.generateTiaoMaHao();
             increaseFenZhuangZhuangTai();
             String msg;
-            if (subType == AutoDispenType.PeiYangMin) msg = AutoDispenDeviceMessageCreator.createMDFCodesReport(duimahao, peiyangminhao, tiaomahao);
-            else msg = AutoDispenDeviceMessageCreator.createMPFCodesReport(kongbanhao, tiaomahao);
+            if (subType == AutoDispenType.PeiYangMin) msg = AutoDispenDeviceMessageCreator.createPeiYangCodesReport(duimahao, peiyangminhao, tiaomahao);
+            else msg = AutoDispenDeviceMessageCreator.createShenKongCodesReport(kongbanhao, tiaomahao);
             return msg;
         }
 

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,7 +54,14 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            //
+            //timer1
+            //
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+
             // 
             // label1
             // 
@@ -161,6 +169,7 @@
             this.button1.TabIndex = 12;
             this.button1.Text = "发送";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.send_Click);
             // 
             // button2
             // 
@@ -170,6 +179,7 @@
             this.button2.TabIndex = 13;
             this.button2.Text = "开始";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.start_Click);
             // 
             // label8
             // 
@@ -234,11 +244,18 @@
             this.comboBox1.Items.AddRange(new object[] {
             "模块1",
             "模块2",
-            "模块3"});
+            "模块3",
+            "模块4",
+            "模块5",
+            "模块6",
+            "模块7",
+            "模块8"});
             this.comboBox1.Location = new System.Drawing.Point(142, 53);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 20);
             this.comboBox1.TabIndex = 22;
+            this.comboBox1.Text = "模块1";
+            this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_textChanged);
             // 
             // label12
             // 
@@ -332,5 +349,6 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Timer timer1;
     }
 }

@@ -11,8 +11,10 @@
     <RootNamespace>CentralControl</RootNamespace>
     <AssemblyName>CentralControl</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>发布\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -38,6 +39,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -47,9 +49,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>中控.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GTLutils">
+    <Reference Include="GTLutils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLL\GTLutils.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
@@ -66,9 +73,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TwinCAT.Ads, Version=2.0.12.0, Culture=neutral, PublicKeyToken=180016cd49e5e8c3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLL\TwinCAT.Ads.dll</HintPath>
+    <Reference Include="TwinCAT.Ads">
+      <HintPath>lib\TwinCAT.Ads.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -93,25 +99,24 @@
     <Compile Include="ControlForm.Designer.cs">
       <DependentUpon>ControlForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database.cs" />
+    <Compile Include="DataOperate.cs" />
     <Compile Include="DataQueryForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DataQueryForm.Designer.cs">
       <DependentUpon>DataQueryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DBUtil.cs" />
     <Compile Include="DeviceInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DeviceInfoForm.Designer.cs">
       <DependentUpon>DeviceInfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LiquidProcessForm.cs">
+    <Compile Include="LiquidProcessDeviceForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LiquidProcessForm.Designer.cs">
-      <DependentUpon>LiquidProcessForm.cs</DependentUpon>
+    <Compile Include="LiquidProcessDeviceForm.Designer.cs">
+      <DependentUpon>LiquidProcessDeviceForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LiquidProcessVirtualDevice.cs" />
     <Compile Include="MatrixSystemDeviceForm.cs">
@@ -170,6 +175,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">
@@ -203,6 +209,12 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="中控.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

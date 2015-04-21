@@ -11,7 +11,7 @@ namespace CentralControl
 {
     public partial class AutoDispenDeviceForm : Form
     {
-        public ControlForm FatherForm;
+        public DeviceInfoForm FatherForm;
         public bool IsSocket;
         public AutoDispenVirtualDevice DispenDevice;
         public AutoDispenTwincatDevice DispenTwincatDevice;
@@ -26,19 +26,12 @@ namespace CentralControl
 
         private void sendButton_Click(object sender, EventArgs e)
         {
-            String Num = "", Vol = "", msg = "";
+            String Num = "", Vol = "";
             Num = textBox1.Text;
             Vol = textBox2.Text;
             if (IsSocket)
             {
-                if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
-                {
-                    msg = AutoDispenDeviceMessageCreator.createMDFSetNumAndVol(Num, Vol);
-                }
-                else
-                {
-                    msg = AutoDispenDeviceMessageCreator.createMPFSetNumAndVol(Num, Vol);
-                }
+                String msg = AutoDispenDeviceMessageCreator.createSetNumAndVol(Num, Vol);
                 DispenDevice.SendMsg(msg);
             }
             else 
@@ -80,23 +73,12 @@ namespace CentralControl
             refreshTimer.Stop();
             if (IsSocket)
             {
-                if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
-                {
-                    dianJi1TextBox.Text = DispenDevice.MDF_Current1.ToString();
-                    dianJi2TextBox.Text = DispenDevice.MDF_Current2.ToString();
-                    dianJi3TextBox.Text = DispenDevice.MDF_Current3.ToString();
-                    dianJi4TextBox.Text = DispenDevice.MDF_Current4.ToString();
-                    stateComboBox.SelectedIndex = DispenDevice.MDF_RunningError;
-                }
-                else
-                {
-                    dianJi1TextBox.Text = DispenDevice.MPF_Current1.ToString();
-                    dianJi2TextBox.Text = DispenDevice.MPF_Current2.ToString();
-                    dianJi3TextBox.Text = DispenDevice.MPF_Current3.ToString();
-                    dianJi4TextBox.Text = DispenDevice.MPF_Current4.ToString();
-                    stateComboBox.SelectedIndex = DispenDevice.MPF_RunningError;
-                }
+                dianJi1TextBox.Text = DispenDevice.DianLiu1.ToString();
+                dianJi2TextBox.Text = DispenDevice.DianLiu2.ToString();
+                dianJi3TextBox.Text = DispenDevice.Dianliu3.ToString();
+                dianJi4TextBox.Text = DispenDevice.Dianliu4.ToString();
 
+                stateComboBox.SelectedIndex = DispenDevice.YunXingChuCuoBiaoZhi;
                 if (DispenDevice.NeedRefreshMessages)
                 {
                     yiJiaZhuListView.Items.Clear();
@@ -123,9 +105,9 @@ namespace CentralControl
             }
             else 
             {
-                dianJi1TextBox.Text = DispenTwincatDevice.MDF_Current1.ToString();
-                dianJi2TextBox.Text = DispenTwincatDevice.MDF_Current2.ToString();
-                dianJi3TextBox.Text = DispenTwincatDevice.MDF_Current3.ToString();
+                dianJi1TextBox.Text = DispenTwincatDevice.DianLiu1.ToString();
+                dianJi2TextBox.Text = DispenTwincatDevice.DianLiu2.ToString();
+                dianJi3TextBox.Text = DispenTwincatDevice.Dianliu3.ToString();
                 stateComboBox.SelectedIndex = DispenTwincatDevice.YunXingChuCuoBiaoZhi;
                 if (DispenTwincatDevice.NeedRefreshMessages)
                 {
@@ -158,35 +140,10 @@ namespace CentralControl
         {
             if (IsSocket)
             {
-                if (DispenDevice.IsVirt)
-                {
-                    isVirtualCheckBox.Checked = true;
-                }
-                deviceNameLabel.Text = DispenDevice.Name;
-                deviceIPTextBox.Text = DispenDevice.IP;
-                localIPTextBox.Text = DispenDevice.ControlIP;
-                deviceNameTextBox.Text = DispenDevice.Name;
-                identifyIDTextBox.Text = DispenDevice.IdentifyID;
-                codeTextBox.Text = DispenDevice.Code;
-                serialIDTextBox.Text = DispenDevice.SerialID;
-
-                if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
-                {
-                    dianJi1TextBox.Text = DispenDevice.MDF_Current1.ToString();
-                    dianJi2TextBox.Text = DispenDevice.MDF_Current2.ToString();
-                    dianJi3TextBox.Text = DispenDevice.MDF_Current3.ToString();
-                    dianJi4TextBox.Text = DispenDevice.MDF_Current4.ToString();
-                    stateComboBox.SelectedIndex = DispenDevice.MDF_RunningError;
-                }
-                else
-                {
-                    dianJi1TextBox.Text = DispenDevice.MPF_Current1.ToString();
-                    dianJi2TextBox.Text = DispenDevice.MPF_Current2.ToString();
-                    dianJi3TextBox.Text = DispenDevice.MPF_Current3.ToString();
-                    dianJi4TextBox.Text = DispenDevice.MPF_Current4.ToString();
-                    stateComboBox.SelectedIndex = DispenDevice.MPF_RunningError;
-                }
-                
+                dianJi1TextBox.Text = DispenDevice.DianLiu1.ToString();
+                dianJi2TextBox.Text = DispenDevice.DianLiu2.ToString();
+                dianJi3TextBox.Text = DispenDevice.Dianliu3.ToString();
+                stateComboBox.SelectedIndex = DispenDevice.YunXingChuCuoBiaoZhi;
                 foreach (FenZhuangXinXi xinXi in DispenDevice.getFenZhuangMessages())
                 {
                     if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
@@ -209,9 +166,9 @@ namespace CentralControl
             }
             else 
             {
-                dianJi1TextBox.Text = DispenTwincatDevice.MDF_Current1.ToString();
-                dianJi2TextBox.Text = DispenTwincatDevice.MDF_Current2.ToString();
-                dianJi3TextBox.Text = DispenTwincatDevice.MDF_Current3.ToString();
+                dianJi1TextBox.Text = DispenTwincatDevice.DianLiu1.ToString();
+                dianJi2TextBox.Text = DispenTwincatDevice.DianLiu2.ToString();
+                dianJi3TextBox.Text = DispenTwincatDevice.Dianliu3.ToString();
                 stateComboBox.SelectedIndex = DispenTwincatDevice.YunXingChuCuoBiaoZhi;
                 foreach (FenZhuangXinXi xinXi in DispenTwincatDevice.getFenZhuangMessages())
                 {
@@ -303,11 +260,6 @@ namespace CentralControl
             }
             loadInfo();
             refreshTimer.Start();
-        }
-
-        private void basicPanel_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

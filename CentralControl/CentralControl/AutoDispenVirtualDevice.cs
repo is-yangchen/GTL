@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GTLutils;
 
 namespace CentralControl
 {
@@ -16,21 +17,12 @@ namespace CentralControl
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.CMD), creator.getDataBytes());
         }
 
-        public static String createMDFSetNumAndVol(String Num, String Vol) 
+        public static String createSetNumAndVol(String Num, String Vol) 
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("SetType", "MDF_NumAndVol");
-            creator.addKeyPair("MDF_NumsperStack", Num);
-            creator.addKeyPair("MDF_VolsperDish", Vol);
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.SET), creator.getDataBytes());
-        }
-
-        public static String createMPFSetNumAndVol(String Num, String Vol)
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("SetType", "MPF_NumAndVol");
-            creator.addKeyPair("MPF_PlateNum", Num);
-            creator.addKeyPair("MPF_Volsperwell", Vol);
+            creator.addKeyPair("SetType", "NumAndVol");
+            creator.addKeyPair("Num", Num);
+            creator.addKeyPair("Vol", Vol);
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.SET), creator.getDataBytes());
         }
 
@@ -40,6 +32,41 @@ namespace CentralControl
             creator.addKeyPair("Result", "OK");
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.RESPONSE), creator.getDataBytes());
         }
+
+        public static String createPeiYangCodesReport(String DuiMaHao, String PeiYangMinHao, String TiaoMaHao)
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            creator.addKeyPair("ReportType", "PeiYangCode");
+            creator.addKeyPair("DuiMaHao", DuiMaHao);
+            creator.addKeyPair("PeiYangMinHao", PeiYangMinHao);
+            creator.addKeyPair("TiaoMaHao", TiaoMaHao);
+            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
+        }
+
+        public static String createShenKongCodesReport(String KongBanHao, String TiaoMaHao)
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            creator.addKeyPair("ReportType", "ShenKongCode");
+            creator.addKeyPair("KongBanHao", KongBanHao);
+            creator.addKeyPair("TiaoMaHao", TiaoMaHao);
+            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
+
+        }
+
+
+        public static String createCurrencyReport(String[] currency)
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            creator.addKeyPair("ReportType", "Currency");
+            String[] s = { "Currency1", "Currency2", "Currency3"};
+            for (int i = 0; i < s.Length; i++)
+            {
+                creator.addKeyPair(s[i], currency[i]);
+            }
+            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
+
+        }
+
     }
 
     public class FenZhuangXinXi
@@ -74,36 +101,17 @@ namespace CentralControl
             }
         }
 
-        /// <summary>
-        /// MDF parameters
-        /// </summary>
-        private int MDF_NumsperStack;
-        public int getNum() { return this.MDF_NumsperStack; }
-        private double MDF_VolsperDish;
-        public double getVol() { return this.MDF_VolsperDish; }
-        public int MDF_RunningError;
-        public double MDF_Current1;
-        public double MDF_Current2;
-        public double MDF_Current3;
-        public double MDF_Current4;
-        public string MDF_Cmd;
+        private int Num;
+        public int getNum() { return this.Num; }
+        private double Vol;
+        public double getVol() { return this.Vol; }
 
-        /// <summary>
-        /// MPF parameters
-        /// </summary>
-        public int MPF_PlateNum;
-        public double MPF_Volsperwell;
-        public int MPF_CurSamTime;
-        public string MPF_Cmd;
-        public int MPF_RunningError;
-        public double MPF_Current1;
-        public double MPF_Current2;
-        public double MPF_Current3;
-        public double MPF_Current4;
+        public int YunXingChuCuoBiaoZhi;
+        public double DianLiu1;
+        public double DianLiu2;
+        public double Dianliu3;
+        public int Dianliu4;
 
-        /// <summary>
-        /// Others
-        /// </summary>
         private List<FenZhuangXinXi> FenZhuangMessages = new List<FenZhuangXinXi>();
 
         private bool needRefreshMessages = false;
@@ -143,32 +151,20 @@ namespace CentralControl
         private void decodeReportMessage(ModbusMessage msg)//解码报告消息
         {
             String reportType = (String)msg.Data["ReportType"];
-            if ("MDF_Current".Equals(reportType)) 
+            if ("Currency".Equals(reportType)) 
             {
-
-                MDF_Current1 = double.Parse((String)msg.Data["MDF_Current1"]);
-                MDF_Current2 = double.Parse((String)msg.Data["MDF_Current2"]);
-                MDF_Current3 = double.Parse((String)msg.Data["MDF_Current3"]);
-                MPF_Current4 = double.Parse((String)msg.Data["MDF_Current4"]);
+                
+                DianLiu1 = double.Parse((String)msg.Data["Currency1"]);
+                DianLiu2 = double.Parse((String)msg.Data["Currency2"]);
+                Dianliu3 = double.Parse((String)msg.Data["Currency3"]);
                 //插入数据库
                 Database mydb = new Database();
-                mydb.insertop((int)MDF_Current1, (int)MDF_Current2, (int)MDF_Current3, (int)MDF_Current4, "", 1, 1);
+                mydb.insertop((int)DianLiu1, (int)DianLiu2, (int)Dianliu3, 0, "", 1, 1);
             }
-            if ("MPF_Current".Equals(reportType))
+            if ("ShenKongBan".Equals(reportType))
             {
-
-                MPF_Current1 = double.Parse((String)msg.Data["MPF_Current1"]);
-                MPF_Current2 = double.Parse((String)msg.Data["MPF_Current2"]);
-                MPF_Current3 = double.Parse((String)msg.Data["MPF_Current3"]);
-                MPF_Current4 = double.Parse((String)msg.Data["MPF_Current4"]);
-                //插入数据库
-                Database mydb = new Database();
-                mydb.insertmb((int)MPF_Current1, (int)MPF_Current2, (int)MPF_Current3, (int)MPF_Current4, "", 1, 1);
-            }
-            if ("MPF".Equals(reportType))
-            {
-                String KongBanHao = (String)msg.Data["MPF_Whichplate"];
-                String TiaoMaHao = (String)msg.Data["MPF_BarCode"];
+                String KongBanHao = (String)msg.Data["KongBanHao"];
+                String TiaoMaHao = (String)msg.Data["TiaoMaHao"];
                 FenZhuangXinXi xinXi = new FenZhuangXinXi();
                 xinXi.DuiMaHao = KongBanHao;
                 xinXi.TiaoMaHao = TiaoMaHao;
@@ -182,13 +178,13 @@ namespace CentralControl
                 }
 
                 Database mydb = new Database();
-                mydb.insertmb((int)MPF_Current1, (int)MPF_Current2, (int)MPF_Current3, (int)MPF_Current4, TiaoMaHao, 1, 1);
+                mydb.insertmb((int)DianLiu1, (int)DianLiu2, (int)Dianliu3, 0, TiaoMaHao, 1, 1);
             }
-            if ("MDF".Equals(reportType)) 
+            if ("PeiYangMin".Equals(reportType)) 
             {
-                String DuiMaHao = (String)msg.Data["MDF_WhichStack"];
-                String PeiYangMinHao = (String)msg.Data["MDF_WhichDish"];
-                String TiaoMaHao = (String)msg.Data["MDF_BarCode"];
+                String DuiMaHao = (String)msg.Data["DuiMaHao"];
+                String PeiYangMinHao = (String)msg.Data["PeiYangMinHao"];
+                String TiaoMaHao = (String)msg.Data["TiaoMaHao"];
                 FenZhuangXinXi xinXi = new FenZhuangXinXi();
                 xinXi.DuiMaHao = DuiMaHao;
                 xinXi.PeiYangMinHao = PeiYangMinHao;
@@ -203,7 +199,7 @@ namespace CentralControl
                 }
 
                 Database mydb = new Database();
-                mydb.insertop((int)MDF_Current1, (int)MDF_Current2, (int)MDF_Current3, (int)MDF_Current4, TiaoMaHao, 1, 1);
+                mydb.insertop((int)DianLiu1, (int)DianLiu2, (int)Dianliu3, 0, TiaoMaHao, 1, 1);
             }
         }
 

@@ -124,6 +124,12 @@
     <Compile Include="MatrixSystemDeviceForm.Designer.cs">
       <DependentUpon>MatrixSystemDeviceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MicroReactorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MicroReactorForm.Designer.cs">
+      <DependentUpon>MicroReactorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MicroStorageDevice.cs" />
     <Compile Include="ModbusMessageHelper.cs" />
     <Compile Include="MultiTunnelDevice.cs" />
