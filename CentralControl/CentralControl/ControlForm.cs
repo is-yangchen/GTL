@@ -11,6 +11,7 @@ using System.Net;
 using System.Threading;
 //TwinCAT.ads用于基于TwinCAT的通信
 //using TwinCAT.Ads;
+using GTLutils;
 
 namespace CentralControl
 {
