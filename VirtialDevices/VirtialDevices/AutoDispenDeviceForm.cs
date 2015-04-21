@@ -74,12 +74,26 @@ namespace VirtialDevices
         {
             if (IsSocket)
             {
-                DispenDevice.YunXingChuCuoBiaoZhi = stateComboBox.SelectedIndex;
-                DispenDevice.DianLiu1 = double.Parse(currency1TextBox.Text);
-                DispenDevice.DianLiu2 = double.Parse(currency2TextBox.Text);
-                DispenDevice.Dianliu3 = double.Parse(currency3TextBox.Text);
-                DispenDevice.FenZhuangShiJian = int.Parse(dispenTimeTextBox.Text);
-                DispenDevice.CaiYangShiJian = int.Parse(sampleTimeTextBox.Text);
+                if (DispenDevice.SubType == AutoDispenDevice.AutoDispenType.PeiYangMin)
+                {
+                    DispenDevice.MDF_RunningError = stateComboBox.SelectedIndex;
+                    DispenDevice.MDF_Current1 = double.Parse(currency1TextBox.Text);
+                    DispenDevice.MDF_Current2 = double.Parse(currency2TextBox.Text);
+                    DispenDevice.MDF_Current3 = double.Parse(currency3TextBox.Text);
+                    DispenDevice.MDF_Current4 = double.Parse(currency3TextBox.Text);
+                    DispenDevice.FenZhuangShiJian = int.Parse(dispenTimeTextBox.Text);
+                    DispenDevice.MDF_CurSamTime = int.Parse(sampleTimeTextBox.Text);
+                }
+                else
+                {
+                    DispenDevice.MPF_RunningError = stateComboBox.SelectedIndex;
+                    DispenDevice.MPF_Current1 = double.Parse(currency1TextBox.Text);
+                    DispenDevice.MPF_Current2 = double.Parse(currency2TextBox.Text);
+                    DispenDevice.MPF_Current3 = double.Parse(currency3TextBox.Text);
+                    DispenDevice.MPF_Current4 = double.Parse(currency3TextBox.Text);
+                    DispenDevice.FenZhuangShiJian = int.Parse(dispenTimeTextBox.Text);
+                    DispenDevice.MPF_CurSamTime = int.Parse(sampleTimeTextBox.Text);
+                }
                 DispenDevice.startTimers();
             }
             else 
@@ -98,9 +112,18 @@ namespace VirtialDevices
         {
             if (IsSocket) 
             {
-                totalNumberTextBox.Text = DispenDevice.getNum().ToString();
-                capTextBox.Text = DispenDevice.getVol().ToString();
-                leftNumberTextBox.Text = DispenDevice.getLeft().ToString();
+                if (DispenDevice.SubType == AutoDispenDevice.AutoDispenType.PeiYangMin)
+                {
+                    totalNumberTextBox.Text = DispenDevice.MDF_NumsperStack.ToString();
+                    capTextBox.Text = DispenDevice.MDF_VolsperDish.ToString();
+                    leftNumberTextBox.Text = DispenDevice.getLeft().ToString();
+                }
+                else
+                {
+                    totalNumberTextBox.Text = DispenDevice.MPF_PlateNum.ToString();
+                    capTextBox.Text = DispenDevice.MPF_Volsperwell.ToString();
+                    leftNumberTextBox.Text = DispenDevice.getLeft().ToString();
+                }
             }
             else
             {

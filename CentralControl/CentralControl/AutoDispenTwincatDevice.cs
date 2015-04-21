@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwinCAT.Ads;
-using GTLutils;
 
 namespace CentralControl
 {
@@ -32,9 +31,9 @@ namespace CentralControl
         public double getVol() { return this.Vol; }
 
         public int YunXingChuCuoBiaoZhi;
-        public double DianLiu1;
-        public double DianLiu2;
-        public double Dianliu3;
+        public double MDF_Current1;
+        public double MDF_Current2;
+        public double MDF_Current3;
 
         private List<FenZhuangXinXi> FenZhuangMessages = new List<FenZhuangXinXi>();
 
@@ -134,9 +133,9 @@ namespace CentralControl
             String reportType = (String)msg.Data["ReportType"];
             if ("Currency".Equals(reportType))
             {
-                DianLiu1 = double.Parse((String)msg.Data["Currency1"]);
-                DianLiu2 = double.Parse((String)msg.Data["Currency2"]);
-                Dianliu3 = double.Parse((String)msg.Data["Currency3"]);
+                MDF_Current1 = double.Parse((String)msg.Data["Currency1"]);
+                MDF_Current2 = double.Parse((String)msg.Data["Currency2"]);
+                MDF_Current3 = double.Parse((String)msg.Data["Currency3"]);
             }
             if ("ShenKongBan".Equals(reportType))
             {
@@ -227,15 +226,15 @@ namespace CentralControl
             }
             if (s.Equals("MAIN.MDF_Motor_1_cur")) 
             {
-                DianLiu1 = (float)adsClient.ReadAny(handle,nameDict[s]);
+                MDF_Current1 = (float)adsClient.ReadAny(handle,nameDict[s]);
             }
             if (s.Equals("MAIN.MDF_Motor_2_cur")) 
             {
-                DianLiu2 = (float)adsClient.ReadAny(handle, nameDict[s]); 
+                MDF_Current2 = (float)adsClient.ReadAny(handle, nameDict[s]); 
             }
             if (s.Equals("MAIN.MDF_Motor_3_cur"))
             {
-                Dianliu3 = (float)adsClient.ReadAny(handle, nameDict[s]); 
+                MDF_Current3 = (float)adsClient.ReadAny(handle, nameDict[s]); 
             }
             if (s.Equals("MAIN.MDF_Motor_4_cur"))
             {

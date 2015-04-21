@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using GTLutils;
 
 namespace CentralControl
 {
@@ -42,19 +41,6 @@ namespace CentralControl
         {
             switch (DeviceInfo.CurrentDeviceType) 
             {
-                case DeviceType.Dispen:
-                    AutoDispenDeviceForm form = new AutoDispenDeviceForm();
-                    form.FatherForm = this;
-                    form.IsSocket = true;
-                    if (DeviceInfo is AutoDispenVirtualDevice)
-                        form.DispenDevice = (AutoDispenVirtualDevice)DeviceInfo;
-                    else
-                    {
-                        form.DispenTwincatDevice = (AutoDispenTwincatDevice)DeviceInfo;
-                        form.IsSocket = false;
-                    }
-                    form.Show();
-                    break;
                 case DeviceType.Analysis:
                     MultiTunnelDeviceForm mForm = new MultiTunnelDeviceForm();
                     mForm.FatherForm = this;
@@ -82,14 +68,6 @@ namespace CentralControl
                     maForm.IsSocket = true;
                     maForm.DeviceInfo = (MatrixSystemVirtualDevice)DeviceInfo;
                     maForm.Show();
-                    break;
-
-                case DeviceType.Storage:
-                    MicroReactorForm sForm = new MicroReactorForm();
-                    sForm.FatherForm = this;
-                    sForm.IsSocket = true;
-                    sForm.mrDevice = (MicroStorageVirtualDevice)DeviceInfo;
-                    sForm.Show();
                     break;
 
                 default:
