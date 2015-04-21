@@ -6,7 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
 
-namespace GTLutils
+namespace CentralControl
 {
     public class DBUtil
     {

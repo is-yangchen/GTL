@@ -23,35 +23,48 @@ namespace VirtialDevices
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.RESPONSE),creator.getDataBytes());
         }
 
-        public static String createPeiYangCodesReport(String DuiMaHao, String PeiYangMinHao, String TiaoMaHao) 
+        public static String createMDFCodesReport(String WhichStack, String WhichDish, String BarCode) 
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("ReportType","PeiYangMin");
-            creator.addKeyPair("DuiMaHao",DuiMaHao);
-            creator.addKeyPair("PeiYangMinHao", PeiYangMinHao);
-            creator.addKeyPair("TiaoMaHao", TiaoMaHao);
+            creator.addKeyPair("ReportType","MDF");
+            creator.addKeyPair("MDF_WhichStack", WhichStack);
+            creator.addKeyPair("MDF_WhichDish", WhichDish);
+            creator.addKeyPair("MDF_BarCode", BarCode);
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT),creator.getDataBytes());
         }
 
-        public static String createShenKongCodesReport(String KongBanHao, String TiaoMaHao) 
+        public static String createMPFCodesReport(String Whichplate, String BarCode) 
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("ReportType", "ShenKongBan");
-            creator.addKeyPair("KongBanHao", KongBanHao);
-            creator.addKeyPair("TiaoMaHao", TiaoMaHao);
+            creator.addKeyPair("ReportType", "MPF");
+            creator.addKeyPair("MPF_Whichplate", Whichplate);
+            creator.addKeyPair("MPF_BarCode", BarCode);
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
 
         }
 
 
-        public static String createCurrencyReport(String[] currency)   
+        public static String createMDFCurrencyReport(String[] currency)   
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("ReportType", "Currency");
-            String[] s = { "Currency1","Currency2","Currency3"};
+            creator.addKeyPair("ReportType", "MDF_Current");
+            String[] s = { "MDF_Current1", "MDF_Current2", "MDF_Current3", "MDF_Current4" };
             for (int i = 0; i < s.Length; i++) 
             {
                 creator.addKeyPair(s[i],currency[i]);
+            }
+            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
+
+        }
+
+        public static String createMPFCurrencyReport(String[] currency)
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            creator.addKeyPair("ReportType", "MPF_Current");
+            String[] s = { "MPF_Current1", "MPF_Current2", "MPF_Current3", "MPF_Current4" };
+            for (int i = 0; i < s.Length; i++)
+            {
+                creator.addKeyPair(s[i], currency[i]);
             }
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
 
@@ -78,25 +91,41 @@ namespace VirtialDevices
             }
         }
 
-        private int Num;
-        public int getNum() { return this.Num; }
-        private double Vol;
-        public double getVol() { return this.Vol; }
-
-        public int YunXingChuCuoBiaoZhi;
+        /// <summary>
+        /// MDF parameters
+        /// </summary>
+        public int MDF_NumsperStack;
+        public double MDF_VolsperDish;
+        public int MDF_RunningError;
         public int FenZhuangShiJian;
-        public int CaiYangShiJian;
-        public double DianLiu1;
-        public double DianLiu2;
-        public double Dianliu3;
+        public int MDF_CurSamTime;
+        public string MDF_Cmd;
+        public double MDF_Current1;
+        public double MDF_Current2;
+        public double MDF_Current3;
+        public double MDF_Current4;
+        private int MDF_WhichStack = 1;
+        private int MDF_WhichDish = 1;
+        public string MDF_BarCode;
+        /// <summary>
+        /// MPF parameters
+        /// </summary>
+        public int MPF_PlateNum;
+        public double MPF_Volsperwell;
+        public int MPF_CurSamTime;
+        public string MPF_Cmd;
+        private int MPF_Whichplate = 1;
+        public int MPF_RunningError;
+        public double MPF_Current1;
+        public double MPF_Current2;
+        public double MPF_Current3;
+        public double MPF_Current4;
+        public string MPF_BarCode;
+
 
         private System.Timers.Timer caiYangTimer = null;
         private System.Timers.Timer fenZhuangTimer = null;
 
-
-        private int DuiMaHao = 1;
-        private int PeiYangMinHao = 1;
-        private int KongBanHao = 1;
         private object KeyObject = new object();
 
         public int getLeft() 
@@ -105,11 +134,11 @@ namespace VirtialDevices
             {
                 if (SubType == AutoDispenType.PeiYangMin)
                 {
-                    return (Num - DuiMaHao) * 36 + 36 - PeiYangMinHao;
+                    return (MDF_NumsperStack - MDF_WhichStack) * 36 + 36 - MDF_WhichDish;
                 }
                 else
                 {
-                    return 97 - KongBanHao;
+                    return 97 - MPF_Whichplate;
                 }
             }
         }
@@ -118,9 +147,9 @@ namespace VirtialDevices
         {
             lock (KeyObject) 
             {
-                DuiMaHao = 1;
-                PeiYangMinHao = 1;
-                KongBanHao = 1;
+                MDF_WhichStack = 1;
+                MDF_WhichDish = 1;
+                MPF_Whichplate = 1;
             }
         }
 
@@ -130,24 +159,24 @@ namespace VirtialDevices
             {
                 if (SubType == AutoDispenType.PeiYangMin)
                 {
-                    PeiYangMinHao++;
-                    if (PeiYangMinHao > 36) 
+                    MDF_WhichDish++;
+                    if (MDF_WhichDish > 36) 
                     {
-                        DuiMaHao++;
-                        PeiYangMinHao = 1;
+                        MDF_WhichStack++;
+                        MDF_WhichDish = 1;
                     }
-                    if (DuiMaHao > Num) 
+                    if (MDF_WhichStack > MDF_NumsperStack) 
                     {
-                        DuiMaHao = 1;
+                        MDF_WhichStack = 1;
                         fenZhuangTimer.Stop();
                     }
                 }
                 else
                 {
-                    KongBanHao++;
-                    if (KongBanHao > 96) 
+                    MPF_Whichplate++;
+                    if (MPF_Whichplate > 96) 
                     {
-                        KongBanHao = 1;
+                        MPF_Whichplate = 1;
                         fenZhuangTimer.Stop();
                     }
                 }
@@ -165,19 +194,28 @@ namespace VirtialDevices
             {
                 if (SubType == AutoDispenType.PeiYangMin)
                 {
-                    peiyangminhao = PeiYangMinHao.ToString();
-                    duimahao = DuiMaHao.ToString();
+                    peiyangminhao = MDF_WhichDish.ToString();
+                    duimahao = MDF_WhichStack.ToString();
                 }
                 else
                 {
-                    kongbanhao = KongBanHao.ToString();
+                    kongbanhao = MPF_Whichplate.ToString();
                 }
             }
             tiaomahao = TiaoMaHaoGenerator.generateTiaoMaHao();
             increaseFenZhuangZhuangTai();
             String msg;
-            if (subType == AutoDispenType.PeiYangMin) msg = AutoDispenDeviceMessageCreator.createPeiYangCodesReport(duimahao, peiyangminhao, tiaomahao);
-            else msg = AutoDispenDeviceMessageCreator.createShenKongCodesReport(kongbanhao, tiaomahao);
+            if (subType == AutoDispenType.PeiYangMin)
+            {
+                MDF_BarCode = tiaomahao;
+                msg = AutoDispenDeviceMessageCreator.createMDFCodesReport(duimahao, peiyangminhao, tiaomahao);
+            }
+            else
+            {
+                MPF_BarCode = tiaomahao;
+                msg = AutoDispenDeviceMessageCreator.createMPFCodesReport(kongbanhao, tiaomahao);
+            }
+
             return msg;
         }
 
@@ -190,9 +228,18 @@ namespace VirtialDevices
 
         private void caiYangTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            String[] currencies = new String[] { DianLiu1.ToString(),DianLiu2.ToString(),Dianliu3.ToString()};
-            String msg = AutoDispenDeviceMessageCreator.createCurrencyReport(currencies);
-            SendMsg(msg);
+            if (subType == AutoDispenType.PeiYangMin)
+            {
+                String[] currencies = new String[] { MDF_Current1.ToString(), MDF_Current2.ToString(), MDF_Current3.ToString(), MDF_Current4.ToString() };
+                String msg = AutoDispenDeviceMessageCreator.createMDFCurrencyReport(currencies);
+                SendMsg(msg);
+            }
+            else
+            {
+                String[] currencies = new String[] { MPF_Current1.ToString(), MPF_Current2.ToString(), MPF_Current3.ToString(), MPF_Current4.ToString() };
+                String msg = AutoDispenDeviceMessageCreator.createMPFCurrencyReport(currencies);
+                SendMsg(msg);
+            }
         }
         public void startTimers() 
         {
@@ -204,7 +251,16 @@ namespace VirtialDevices
             fenZhuangTimer.Elapsed += new System.Timers.ElapsedEventHandler(fenZhuangTimer_Elapsed);
 
             caiYangTimer = new System.Timers.Timer();
-            caiYangTimer.Interval = CaiYangShiJian * 1000;
+
+            if (subType == AutoDispenType.PeiYangMin)
+            {
+                caiYangTimer.Interval = MDF_CurSamTime * 1000;
+            }
+            else
+            {
+                caiYangTimer.Interval = MPF_CurSamTime * 1000;
+            }
+
             caiYangTimer.Elapsed += new System.Timers.ElapsedEventHandler(caiYangTimer_Elapsed);
             caiYangTimer.Start();
         }
@@ -218,9 +274,9 @@ namespace VirtialDevices
             }
             if ("Reset".Equals(cmd)) 
             {
-                KongBanHao = 1;
-                PeiYangMinHao = 1;
-                DuiMaHao = 1;
+                MPF_Whichplate = 1;
+                MDF_WhichDish = 1;
+                MDF_WhichStack = 1;
             }
             if ("Stop".Equals(cmd))
             {
@@ -237,10 +293,15 @@ namespace VirtialDevices
         private void decodeSetMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
-            if ("NumAndVol".Equals(setType)) 
+            if ("MDF_NumAndVol".Equals(setType)) 
             {
-                this.Num = Int32.Parse((String)msg.Data["Num"]);
-                this.Vol = double.Parse((String)msg.Data["Vol"]);
+                this.MDF_NumsperStack = Int32.Parse((String)msg.Data["MDF_NumsperStack"]);
+                this.MDF_VolsperDish = double.Parse((String)msg.Data["MDF_VolsperDish"]);
+            }
+            if ("MPF_NumAndVol".Equals(setType))
+            {
+                this.MPF_PlateNum = Int32.Parse((String)msg.Data["MPF_PlateNum"]);
+                this.MPF_Volsperwell = double.Parse((String)msg.Data["MPF_Volsperwell"]);
             }
         }
 

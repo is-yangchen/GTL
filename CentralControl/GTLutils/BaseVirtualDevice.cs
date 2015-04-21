@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 using System.Net;
-using System.Threading;
+using System.Threading;  
 
-namespace GTLutils
+namespace CentralControl
 {
     public class BaseVirtualDevice : BaseDevice
     {

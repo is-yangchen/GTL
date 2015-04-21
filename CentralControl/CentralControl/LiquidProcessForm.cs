@@ -12,10 +12,10 @@ namespace CentralControl
     public partial class LiquidProcessForm : Form
     {
 
-        public LiquidProcessVirtualDevice alcDevice;
+       public  LiquidProcessVirtualDevice alcDevice;
         int curSelectIndex;
         private String initStatus = "00000000000000000000";
-        // String initStatus = "54263414263512363251";
+       // String initStatus = "54263414263512363251";
         public String curStatus;
         public String tempStatus;
         private int size;
@@ -26,12 +26,12 @@ namespace CentralControl
         public LiquidProcessForm()
         {
             alcDevice = new LiquidProcessVirtualDevice();
-            curSelectIndex = 0;
-            tempStatus = initStatus;
-            curStatus = tempStatus;
-            size = 20;
-            InitializeComponent();
-
+                curSelectIndex = 0;
+                tempStatus = initStatus;
+                curStatus = tempStatus;
+                size = 20;
+                InitializeComponent();
+            
         }
         private String getPlate(char c)
         {

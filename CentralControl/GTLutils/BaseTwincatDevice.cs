@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using TwinCAT.Ads;
 
-namespace GTLutils
+namespace CentralControl
 {
     public class ConstSettings 
     {
