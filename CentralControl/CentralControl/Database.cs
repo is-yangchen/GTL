@@ -7,10 +7,10 @@ using System.Data.SqlClient;
 using System.ComponentModel;
 using System.Configuration;
 
-namespace GTLutils
+namespace CentralControl
 {
 
-    public class Database
+    class Database
     {
         protected static SqlDataReader sdr;
         SqlConnection conn;
@@ -151,14 +151,13 @@ namespace GTLutils
 
         public int insertmmrinfo(int device_id, int module, int temp, int ph, int od)
         {
-            return insert("insert into MMR_INFO values('" + DateTime.Now.ToString() + "'," + device_id.ToString() + "," + module.ToString() + ","  + temp.ToString() + "," + ph.ToString() + "," + od.ToString() + ")");
+            return insert("insert into MMR_INFO values('" + DateTime.Now.ToString() + "'," + device_id.ToString() + "," + module.ToString() + "," + temp.ToString() + "," + ph.ToString() + "," + od.ToString() + ")");
         }
 
-        public int insertlpsplace(int device_id, string source, string  target, int quantity, int inspeed, int exspeed, int include, int exclude)
+        public int insertlpsplace(int device_id, string source, string target, int quantity, int inspeed, int exspeed, int include, int exclude)
         {
-            string query = "insert into LPS_LIQUID values('" + DateTime.Now.ToString() + "'," + device_id.ToString() + ",'" + source + "','"
-                + target + "'," + quantity.ToString() + "," + inspeed.ToString() + "," + exspeed.ToString() + "," + include.ToString() + "," + exclude.ToString() + ")";
-            return insert(query);
+            return insert("insert into LPS_LIQUID values('" + DateTime.Now.ToString() + "'," + device_id.ToString() + ",'" + source + "','"
+                + target + "'," + quantity.ToString() + "," + inspeed.ToString() + "," + exspeed.ToString() + "," + include.ToString() + "," + exclude.ToString() + ")");
         }
 
         public int insertlpssetting(int device_id, string setting)
@@ -166,6 +165,8 @@ namespace GTLutils
             return insert("insert into LPS_SETTING values('" + DateTime.Now.ToString() + "'," + device_id.ToString() + "," + setting + ")");
         }
 
+        
+        
         public string showerror()
         {
             return error;
@@ -178,4 +179,3 @@ namespace GTLutils
 
     }
 }
-

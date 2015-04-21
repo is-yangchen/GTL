@@ -211,13 +211,7 @@ namespace VirtialDevices
                     maForm.DeviceInfo = (MatrixSystemDevice)DeviceInfo;
                     maForm.Show();
                     break;
-
-                case DeviceType.Storage:
-                    MicroReactorForm sForm = new MicroReactorForm();
-                    sForm.FatherForm = this;
-                    sForm.mrDevice = (MicroStorageDevice)DeviceInfo;
-                    sForm.Show();
-                    break;
+                   
                 default:
                     break;
             }

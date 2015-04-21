@@ -9,9 +9,9 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
-using GTLutils;
 //TwinCAT.ads用于基于TwinCAT的通信
 //using TwinCAT.Ads;
+using GTLutils;
 
 namespace CentralControl
 {
@@ -383,12 +383,39 @@ namespace CentralControl
             {
                 int index = info.Item.Index;
                 BaseDevice device = deviceManager.getDevice(index);
-                DeviceInfoForm form = new DeviceInfoForm();
-                form.FatherForm = this;
-                form.DeviceInfo = device;
-                //string tmp = (string)DataOperate.ReadAny("Name", "999");
-                int tmp = (int)DataOperate.ReadAny("SampleTime", "999");
-                form.Show();
+              
+                switch (device.CurrentDeviceType)
+                {
+                    case DeviceType.Dispen:
+                        AutoDispenDeviceForm form = new AutoDispenDeviceForm();
+                        form.FatherForm = this;
+                        form.IsSocket = true;
+                        if (device is AutoDispenVirtualDevice)
+                            form.DispenDevice = (AutoDispenVirtualDevice)device;
+                        else
+                        {
+                            form.DispenTwincatDevice = (AutoDispenTwincatDevice)device;
+                            form.IsSocket = false;
+                        }
+                        form.Show();
+                        break;
+
+
+                    case DeviceType.Liquid:
+                        LiquidProcessForm forml = new LiquidProcessForm();
+                        forml.FatherForm = this;
+                        forml.DeviceInfo = device;
+                        forml.Show();
+                        break;
+                    
+                    default:
+                        DeviceInfoForm form2 = new DeviceInfoForm();
+                        form2.FatherForm = this;
+                        form2.DeviceInfo = device;
+                        form2.Show();
+                        break;
+
+                }
             }
         }
     }

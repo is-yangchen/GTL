@@ -11,10 +11,8 @@
     <RootNamespace>CentralControl</RootNamespace>
     <AssemblyName>CentralControl</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>发布\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,6 +25,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -39,7 +38,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -49,14 +47,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>中控.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GTLutils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="GTLutils">
       <HintPath>..\DLL\GTLutils.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
@@ -99,6 +95,7 @@
     <Compile Include="ControlForm.Designer.cs">
       <DependentUpon>ControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Database.cs" />
     <Compile Include="DataOperate.cs" />
     <Compile Include="DataQueryForm.cs">
       <SubType>Form</SubType>
@@ -106,17 +103,18 @@
     <Compile Include="DataQueryForm.Designer.cs">
       <DependentUpon>DataQueryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DBUtil.cs" />
     <Compile Include="DeviceInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DeviceInfoForm.Designer.cs">
       <DependentUpon>DeviceInfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LiquidProcessDeviceForm.cs">
+    <Compile Include="LiquidProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LiquidProcessDeviceForm.Designer.cs">
-      <DependentUpon>LiquidProcessDeviceForm.cs</DependentUpon>
+    <Compile Include="LiquidProcessForm.Designer.cs">
+      <DependentUpon>LiquidProcessForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LiquidProcessVirtualDevice.cs" />
     <Compile Include="MatrixSystemDeviceForm.cs">
@@ -129,7 +127,7 @@
     <Compile Include="MicroReactorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MicroReactorForm.Designer.cs">
+    <Compile Include="MicroReactorForm.designer.cs">
       <DependentUpon>MicroReactorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MicroStorageVirtualDevice.cs" />
@@ -158,6 +156,9 @@
     <EmbeddedResource Include="DeviceInfoForm.resx">
       <DependentUpon>DeviceInfoForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LiquidProcessForm.resx">
+      <DependentUpon>LiquidProcessForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MatrixSystemDeviceForm.resx">
       <DependentUpon>MatrixSystemDeviceForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -175,7 +176,6 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">
@@ -211,10 +211,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="中控.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
