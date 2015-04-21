@@ -55,4 +55,5 @@ namespace CentralControl
         public int xiYeWeiZhi = 0;
         public int paiYeWeiZhi = 0;
     }
+
 }
