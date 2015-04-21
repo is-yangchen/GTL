@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GTLutils
+namespace CentralControl
 {
     public class DeviceManager
     {
@@ -14,7 +14,6 @@ namespace GTLutils
             return deviceManager;
         }
 
-        //*
          private List<DeviceMessage> allMessages;
         public List<DeviceMessage> getAllMessages() 
         {
@@ -33,7 +32,7 @@ namespace GTLutils
             }
             return result;
         }
-        //
+
         public void receiveMsg(BaseDevice device, String s) 
         {
             DeviceMessage msg = new DeviceMessage();
@@ -59,7 +58,7 @@ namespace GTLutils
                 allMessages.Add(msg);
             }
         }
-        //*/
+
 
         private List<BaseDevice> deviceList;
         private DeviceManager()

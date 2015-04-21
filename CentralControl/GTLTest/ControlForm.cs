@@ -14,122 +14,122 @@ using System.Threading;
 
 namespace CentralControl
 {
+    public class TmpSocketReceiver
+    {
+        private Socket mySocket;
+        private DeviceManager deviceManager;
+        private ControlForm FatherForm;
+        public Socket MySocket
+        {
+            get
+            {
+                return this.mySocket;
+            }
+            set
+            {
+                this.mySocket = value;
+            }
+        }
+        private Thread myThread;
+        public TmpSocketReceiver(Socket socket, DeviceManager dm, ControlForm form)
+        {
+            mySocket = socket;
+            deviceManager = dm;
+            FatherForm = form;
+        }
+
+        public void init()
+        {
+            if (mySocket != null)
+            {
+                try
+                {
+                    myThread = new Thread(SocketReceiveMsg);
+                    myThread.IsBackground = true;
+                    myThread.Start();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
+
+        private void SocketReceiveMsg()
+        {
+            byte[] buffer = new byte[1024 * 1024];
+            int n;
+            String s;
+            while (true)
+            {
+                if (mySocket == null) break;
+                try
+                {
+                    n = mySocket.Receive(buffer);
+                    s = StringByteHelper.BytesToString(buffer, 0, n);
+                    if (ReceiveBasicMsg(s))
+                    {
+                        decodeBasicMsg(s);
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            FatherForm.removeTmpList(this);
+        }
+
+        private void decodeBasicMsg(String s)
+        {
+            ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
+            DeviceType type = EnumHelper.deviceStringToDeviceType((String)message.Data["DeviceType"]);
+            BaseVirtualDevice device = (BaseVirtualDevice)VirtualDeviceFactory.createVirtualDevice(type, true);
+            device.IsVirt = true;
+            device.CurrentDeviceType = type;
+            if (type == DeviceType.Dispen)
+            {
+                String subType = (String)message.Data["SubType"];
+                if ("PeiYangMin".Equals(subType))
+                {
+                    ((AutoDispenVirtualDevice)device).SubType = AutoDispenVirtualDevice.AutoDispenType.PeiYangMin;
+                }
+                else
+                {
+                    ((AutoDispenVirtualDevice)device).SubType = AutoDispenVirtualDevice.AutoDispenType.ShenKongBan;
+                }
+            }
+            device.IdentifyID = (String)message.Data["IdentifyID"];
+            device.Code = (String)message.Data["Code"];
+            device.IP = (String)message.Data["IP"];
+            device.Name = (String)message.Data["Name"];
+            device.SerialID = (String)message.Data["SerialID"];
+            device.MySocket = mySocket;
+            device.DeviceManager = deviceManager;
+            device.init();
+            deviceManager.addDevice(device);
+            
+        }
+
+        private bool ReceiveBasicMsg(String s)
+        {
+            ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
+            if (message.MsgType == ModbusMessage.MessageType.SET)
+            {
+                String setType = (String)message.Data["SetType"];
+                if ("BasicInfo".Equals(setType)) return true;
+            }
+            return false;
+        }
+    }
+
     public partial class ControlForm : Form
     {
         private Socket mySocket;
         private Thread myThread;
         private DeviceManager deviceManager;
-
-        public class TmpSocketReceiver
-        {
-            private Socket mySocket;
-            private DeviceManager deviceManager;
-            private ControlForm FatherForm;
-            public Socket MySocket
-            {
-                get 
-                {
-                    return this.mySocket;
-                }
-                set 
-                {
-                    this.mySocket = value;
-                }
-            }
-            private Thread myThread;
-            public TmpSocketReceiver(Socket socket, DeviceManager dm,ControlForm form) 
-            {
-                mySocket = socket;
-                deviceManager = dm;
-                FatherForm = form;
-            }
-
-            public void init() 
-            {
-                if (mySocket != null)
-                {
-                    try
-                    {
-                        myThread = new Thread(SocketReceiveMsg);
-                        myThread.IsBackground = true;
-                        myThread.Start();
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                }
-            }
-
-            private void SocketReceiveMsg()
-            {
-                byte[] buffer = new byte[1024 * 1024];
-                int n;
-                String s;
-                while (true)
-                {
-                    if (mySocket == null) break;
-                    try
-                    {
-                        n = mySocket.Receive(buffer);
-                        s = StringByteHelper.BytesToString(buffer, 0, n);
-                        if (ReceiveBasicMsg(s)) 
-                        {
-                            decodeBasicMsg(s);
-                            break;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                }
-                FatherForm.removeTmpList(this);
-            }
-
-            private void decodeBasicMsg(String s) 
-            {
-                ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
-                DeviceType type = EnumHelper.deviceStringToDeviceType((String)message.Data["DeviceType"]);
-                BaseVirtualDevice device = (BaseVirtualDevice)VirtualDeviceFactory.createVirtualDevice(type,true);
-                device.IsVirt = true;
-                device.CurrentDeviceType = type;
-                if (type == DeviceType.Dispen)
-                {
-                    String subType = (String)message.Data["SubType"];
-                    if ("PeiYangMin".Equals(subType))
-                    {
-                        ((AutoDispenVirtualDevice)device).SubType = AutoDispenVirtualDevice.AutoDispenType.PeiYangMin;
-                    }
-                    else 
-                    {
-                        ((AutoDispenVirtualDevice)device).SubType = AutoDispenVirtualDevice.AutoDispenType.ShenKongBan;
-                    }
-                }
-                device.IdentifyID = (String)message.Data["IdentifyID"];
-                device.Code = (String)message.Data["Code"];
-                device.IP = (String)message.Data["IP"];
-                device.Name = (String)message.Data["Name"];
-                device.SerialID = (String)message.Data["SerialID"];
-                device.MySocket = mySocket;
-                device.DeviceManager = deviceManager;
-                device.init();
-                deviceManager.addDevice(device);
-
-            }
-
-            private bool ReceiveBasicMsg(String s)
-            {
-                ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
-                if (message.MsgType == ModbusMessage.MessageType.SET) 
-                {
-                    String setType = (String)message.Data["SetType"];
-                    if ("BasicInfo".Equals(setType)) return true;
-                }
-                return false;
-            }
-        }
-
+     
         private List<TmpSocketReceiver> tmpList;
         //add 20150209
         private object KeyObject = new object();
@@ -161,9 +161,7 @@ namespace CentralControl
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            DataQueryForm form = new DataQueryForm();
-            form.FatherForm = this;
-            form.Show();
+
         }
         
         /*
@@ -259,6 +257,54 @@ namespace CentralControl
             //adsClient.Dispose();
         }
 
+        public void freshdevicelist()
+        {
+            List<BaseDevice> devices = deviceManager.getAllDevices();
+            ListViewItem item = null;
+            ListViewItem.ListViewSubItem subItem = null;
+            onlineAllListView.BeginUpdate();
+            onlineAllListView.Items.Clear();
+            foreach (BaseDevice device in devices)
+            {
+                item = new ListViewItem();
+                String deviceType = EnumHelper.getDeviceTypeString(device.CurrentDeviceType);
+                item.Text = deviceType;
+
+                subItem = new ListViewItem.ListViewSubItem();
+                subItem.Text = device.Name;
+                item.SubItems.Add(subItem);
+
+                subItem = new ListViewItem.ListViewSubItem();
+                subItem.Text = device.Code;
+                item.SubItems.Add(subItem);
+
+                subItem = new ListViewItem.ListViewSubItem();
+                String isVirt = "否";
+                if (device.IsVirt) isVirt = "是";
+                subItem.Text = isVirt;
+                item.SubItems.Add(subItem);
+
+                onlineAllListView.Items.Add(item);
+            }
+
+
+            if (devices.Count > 0)
+            {
+                foreach (ColumnHeader header in onlineAllListView.Columns)
+                {
+                    header.Width = -1;
+                }
+            }
+            else
+            {
+                foreach (ColumnHeader header in onlineAllListView.Columns)
+                {
+                    header.Width = -2;
+                }
+            }
+            onlineAllListView.EndUpdate();
+        }
+
         private void deviceTimer_Tick(object sender, EventArgs e)
         {
             deviceTimer.Stop();
@@ -332,7 +378,7 @@ namespace CentralControl
             //}
 
             //Database insert
-            Database mydb = new Database();
+            //Database mydb = new Database();
 
             for (int i = 0; i < messages.Count; i++ )
             {
@@ -347,7 +393,7 @@ namespace CentralControl
                 logAllListView.Items.Add(item);
 
                 //Database insert
-                mydb.insertlog(message.Msg, 1, type);
+                //mydb.insertlog(message.Msg, 1, type);
             }
 
             if (messages.Count > 0)
@@ -385,6 +431,7 @@ namespace CentralControl
               
                 switch (device.CurrentDeviceType)
                 {
+                    /*
                     case DeviceType.Dispen:
                         AutoDispenDeviceForm form = new AutoDispenDeviceForm();
                         form.FatherForm = this;
@@ -398,7 +445,7 @@ namespace CentralControl
                         }
                         form.Show();
                         break;
-                    
+                    */
                     default:
                         DeviceInfoForm form2 = new DeviceInfoForm();
                         form2.FatherForm = this;

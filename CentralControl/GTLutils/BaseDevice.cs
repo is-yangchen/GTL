@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace GTLutils
+namespace CentralControl
 {
     public enum DeviceStates { Running, Stop, Fault, Connected };
     public enum DeviceType { Dispen, Clone, Matrix, Liquid, Analysis, Storage, Unknown };
@@ -13,7 +12,7 @@ namespace GTLutils
     {
         public static DeviceType[] TypeEnums = { DeviceType.Dispen, DeviceType.Clone, DeviceType.Matrix, DeviceType.Liquid, DeviceType.Analysis, DeviceType.Storage };
 
-        public static DeviceType deviceStringToDeviceType(String s)
+        public static DeviceType deviceStringToDeviceType(String s) 
         {
             if ("多通道高速代谢性能分析仪".Equals(s)) return DeviceType.Analysis;
             if ("单克隆挑选仪".Equals(s)) return DeviceType.Clone;
@@ -198,13 +197,13 @@ namespace GTLutils
 
 
         private bool isVirt;
-        public bool IsVirt
+        public bool IsVirt 
         {
-            get
+            get 
             {
                 return this.isVirt;
             }
-            set
+            set 
             {
                 this.isVirt = value;
             }

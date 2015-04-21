@@ -150,9 +150,6 @@ namespace CentralControl
                 MDF_Current2 = double.Parse((String)msg.Data["MDF_Current2"]);
                 MDF_Current3 = double.Parse((String)msg.Data["MDF_Current3"]);
                 MPF_Current4 = double.Parse((String)msg.Data["MDF_Current4"]);
-                //插入数据库
-                Database mydb = new Database();
-                mydb.insertop((int)MDF_Current1, (int)MDF_Current2, (int)MDF_Current3, (int)MDF_Current4, "", 1, 1);
             }
             if ("MPF_Current".Equals(reportType))
             {
@@ -161,9 +158,6 @@ namespace CentralControl
                 MPF_Current2 = double.Parse((String)msg.Data["MPF_Current2"]);
                 MPF_Current3 = double.Parse((String)msg.Data["MPF_Current3"]);
                 MPF_Current4 = double.Parse((String)msg.Data["MPF_Current4"]);
-                //插入数据库
-                Database mydb = new Database();
-                mydb.insertmb((int)MPF_Current1, (int)MPF_Current2, (int)MPF_Current3, (int)MPF_Current4, "", 1, 1);
             }
             if ("MPF".Equals(reportType))
             {
@@ -180,9 +174,6 @@ namespace CentralControl
                 {
                     needRefreshMessages = true;
                 }
-
-                Database mydb = new Database();
-                mydb.insertmb((int)MPF_Current1, (int)MPF_Current2, (int)MPF_Current3, (int)MPF_Current4, TiaoMaHao, 1, 1);
             }
             if ("MDF".Equals(reportType)) 
             {
@@ -201,9 +192,6 @@ namespace CentralControl
                 {
                     needRefreshMessages = true;
                 }
-
-                Database mydb = new Database();
-                mydb.insertop((int)MDF_Current1, (int)MDF_Current2, (int)MDF_Current3, (int)MDF_Current4, TiaoMaHao, 1, 1);
             }
         }
 
