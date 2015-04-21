@@ -123,7 +123,7 @@
     <Compile Include="MicroReactorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MicroReactorForm.Designer.cs">
+    <Compile Include="MicroReactorForm.designer.cs">
       <DependentUpon>MicroReactorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MicroStorageVirtualDevice.cs" />
@@ -151,6 +151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DeviceInfoForm.resx">
       <DependentUpon>DeviceInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LiquidProcessForm.resx">
+      <DependentUpon>LiquidProcessForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MatrixSystemDeviceForm.resx">
       <DependentUpon>MatrixSystemDeviceForm.cs</DependentUpon>

@@ -398,6 +398,14 @@ namespace CentralControl
                         }
                         form.Show();
                         break;
+
+
+                    case DeviceType.Liquid:
+                        LiquidProcessForm forml = new LiquidProcessForm();
+                        forml.FatherForm = this;
+                        forml.DeviceInfo = device;
+                        forml.Show();
+                        break;
                     
                     default:
                         DeviceInfoForm form2 = new DeviceInfoForm();
