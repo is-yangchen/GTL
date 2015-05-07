@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GTLutils;
 
 namespace CentralControl
 {
@@ -55,4 +56,5 @@ namespace CentralControl
         public int xiYeWeiZhi = 0;
         public int paiYeWeiZhi = 0;
     }
+
 }
