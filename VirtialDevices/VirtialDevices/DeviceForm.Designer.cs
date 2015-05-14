@@ -260,9 +260,9 @@
             // 
             this.deviceCodeTextBox.Location = new System.Drawing.Point(129, 142);
             this.deviceCodeTextBox.Name = "deviceCodeTextBox";
+            this.deviceCodeTextBox.ReadOnly = true;
             this.deviceCodeTextBox.Size = new System.Drawing.Size(172, 21);
             this.deviceCodeTextBox.TabIndex = 18;
-            this.deviceCodeTextBox.Text = "a";
             // 
             // deviceNameTextBox
             // 
