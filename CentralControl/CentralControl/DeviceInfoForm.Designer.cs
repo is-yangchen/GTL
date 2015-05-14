@@ -215,6 +215,7 @@
             // 
             this.codeTextBox.Location = new System.Drawing.Point(151, 129);
             this.codeTextBox.Name = "codeTextBox";
+            this.codeTextBox.ReadOnly = true;
             this.codeTextBox.Size = new System.Drawing.Size(162, 20);
             this.codeTextBox.TabIndex = 19;
             // 
