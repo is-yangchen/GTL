@@ -140,7 +140,7 @@ namespace VirtialDevices
 
 
             result = VirtualDeviceFactory.createVirtualDevice(Type,IsSocket);
-            result.Code = deviceCode;
+            //result.Code = deviceCode;
             result.ControlIP = controlIP;
             result.CurrentDeviceType = Type;
             result.CurrentState = DeviceStates.Created;

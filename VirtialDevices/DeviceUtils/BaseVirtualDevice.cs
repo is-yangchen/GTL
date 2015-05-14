@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;  
 using System.Net;  
-using System.Threading;  
+using System.Threading;
 
-namespace VirtialDevices
+namespace DeviceUtils
 {
     public class BaseVirtualDevice : BaseDevice
     {
@@ -64,13 +64,13 @@ namespace VirtialDevices
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("SetType", "BasicInfo");
             creator.addKeyPair("DeviceType", EnumHelper.getDeviceTypeString(this.CurrentDeviceType));
-            if (this.CurrentDeviceType == DeviceType.Dispen) 
-            {
-                if (((AutoDispenDevice)this).SubType == AutoDispenDevice.AutoDispenType.PeiYangMin)
-                    creator.addKeyPair("SubType", "PeiYangMin");
-                else 
-                    creator.addKeyPair("SubType", "ShenKongBan");
-            }
+            //if (this.CurrentDeviceType == DeviceType.Dispen) 
+            //{
+            //    if (((AutoDispenDevice)this).SubType == AutoDispenDevice.AutoDispenType.PeiYangMin)
+            //        creator.addKeyPair("SubType", "PeiYangMin");
+            //    else 
+            //        creator.addKeyPair("SubType", "ShenKongBan");
+            //}
             creator.addKeyPair("IP", this.IP);
             creator.addKeyPair("Name", this.Name);
             creator.addKeyPair("IdentifyID", this.IdentifyID);
