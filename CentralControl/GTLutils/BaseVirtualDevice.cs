@@ -39,7 +39,7 @@ namespace GTLutils
         }
 
         private bool isTerminating;
-        public void init()
+        public override void init()
         {
             if (mySocket != null)
             {
@@ -52,12 +52,12 @@ namespace GTLutils
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine("{0} Exception caught.", ex);
                 }
             }
         }
 
-        public void deinit() 
+        public override void deinit() 
         {
             isTerminating = true;
         }
@@ -73,32 +73,32 @@ namespace GTLutils
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine("{0} Exception caught.", ex);
                 }
             }
         }
-        public override void decodeResponseMessage(ModbusMessage s) 
+        public virtual void decodeResponseMessage(ModbusMessage s) 
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("Result", "OK");
             string msg = ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.RESPONSE), creator.getDataBytes());
             this.SendMsg(msg);
         }
-        public override void decodeReportMessage(ModbusMessage s) 
+        public virtual void decodeReportMessage(ModbusMessage s) 
         {
             foreach (DictionaryEntry de in s.Data)
             {  
                 DataOperate.WriteAny((String)de.Key,code,de.Value);
             }
         }
-        public override void decodeSetMessage(ModbusMessage s) 
+        public virtual void decodeSetMessage(ModbusMessage s) 
         {
             foreach (DictionaryEntry de in s.Data)
             {
                 DataOperate.WriteAny((String)de.Key, code, de.Value);
             } 
         }
-        public override void decodeCmdMessage(ModbusMessage s) { }
+        public virtual void decodeCmdMessage(ModbusMessage s) { }
         public override void ReceiveMsg(String s) 
         {
             ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
@@ -139,7 +139,7 @@ namespace GTLutils
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine("{0} Exception caught.", ex);
                 }
             }
         }
