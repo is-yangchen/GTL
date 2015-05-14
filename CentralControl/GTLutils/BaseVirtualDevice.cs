@@ -77,6 +77,26 @@ namespace GTLutils
                 }
             }
         }
+
+        public void SendModBusMsg(ModbusMessage.MessageType type, String key, Object value)
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            creator.addKeyPair(key, (String)value);
+            string msg = ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(type), creator.getDataBytes());
+            this.SendMsg(msg);
+        }
+
+        public void SendModBusMsg(ModbusMessage.MessageType type, Hashtable htable)
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            foreach (DictionaryEntry de in htable)
+            {
+                creator.addKeyPair((string)de.Key, (string)de.Value);
+            }
+            string msg = ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(type), creator.getDataBytes());
+            this.SendMsg(msg);
+        }
+
         public virtual void decodeResponseMessage(ModbusMessage s) 
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
@@ -88,14 +108,14 @@ namespace GTLutils
         {
             foreach (DictionaryEntry de in s.Data)
             {  
-                DataOperate.WriteAny((String)de.Key,code,de.Value);
+                DataOperate.WriteAny((String)de.Key, Code ,de.Value);
             }
         }
         public virtual void decodeSetMessage(ModbusMessage s) 
         {
             foreach (DictionaryEntry de in s.Data)
             {
-                DataOperate.WriteAny((String)de.Key, code, de.Value);
+                DataOperate.WriteAny((String)de.Key, Code, de.Value);
             } 
         }
         public virtual void decodeCmdMessage(ModbusMessage s) { }

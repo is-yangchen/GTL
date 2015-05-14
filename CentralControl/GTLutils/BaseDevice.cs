@@ -130,7 +130,7 @@ namespace GTLutils
             }
         }
 
-        public String code;//MAC生成的机器码
+        private String code;//MAC生成的机器码
         public String Code
         {
             get
