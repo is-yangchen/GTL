@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Net.Sockets;
@@ -77,8 +77,49 @@ namespace GTLutils
                 }
             }
         }
-
-        public override void ReceiveMsg(String s) { }
+        public override void decodeResponseMessage(ModbusMessage s) 
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            creator.addKeyPair("Result", "OK");
+            string msg = ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.RESPONSE), creator.getDataBytes());
+            this.SendMsg(msg);
+        }
+        public override void decodeReportMessage(ModbusMessage s) 
+        {
+            foreach (DictionaryEntry de in s.Data)
+            {  
+                DataOperate.WriteAny((String)de.Key,code,de.Value);
+            }
+        }
+        public override void decodeSetMessage(ModbusMessage s) 
+        {
+            foreach (DictionaryEntry de in s.Data)
+            {
+                DataOperate.WriteAny((String)de.Key, code, de.Value);
+            } 
+        }
+        public override void decodeCmdMessage(ModbusMessage s) { }
+        public override void ReceiveMsg(String s) 
+        {
+            ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
+            switch (message.MsgType)
+            {
+                case ModbusMessage.MessageType.RESPONSE:
+                    decodeResponseMessage(message);
+                    break;
+                case ModbusMessage.MessageType.CMD:
+                    decodeCmdMessage(message);
+                    break;
+                case ModbusMessage.MessageType.REPORT:
+                    decodeReportMessage(message);
+                    break;
+                case ModbusMessage.MessageType.SET:
+                    decodeSetMessage(message);
+                    break;
+                case ModbusMessage.MessageType.GET:
+                    break;
+            }
+        }
 
         private void SocketReceiveMsg()//接收socket消息
         {

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
-using System.Windows.Forms;
-using GTLutils;
 
-namespace CentralControl
+namespace GTLutils
 {
-    public class DataOperate
+    class DataOperate
     {
         public static object ReadAny(string VariableName, string code)
         {
@@ -29,7 +27,7 @@ namespace CentralControl
             Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
             if (pi != null)
-                return (String) pi.GetValue(device, null);
+                return (String)pi.GetValue(device, null);
             else
                 throw new Exception("找不到变量：" + VariableName);
         }
@@ -56,8 +54,8 @@ namespace CentralControl
             BaseDevice device = devicemanager.getDevice(code);
             Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
-            if(pi!=null)
-                pi.SetValue(device ,value, null);
+            if (pi != null)
+                pi.SetValue(device, value, null);
             else
                 throw new Exception("找不到变量：" + VariableName);
         }
@@ -68,7 +66,7 @@ namespace CentralControl
             BaseDevice device = devicemanager.getDevice(code);
             Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
-            if (pi!=null)
+            if (pi != null)
                 pi.SetValue(device, value, null);
             else
                 throw new Exception("找不到变量：" + VariableName);
@@ -85,6 +83,11 @@ namespace CentralControl
             {
                 fi.SetValue(device, value);
             }
+        }
+
+        internal static void WriteAny(object p1, string p2, object p3)
+        {
+            throw new NotImplementedException();
         }
     }
 }

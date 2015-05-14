@@ -130,7 +130,7 @@ namespace GTLutils
             }
         }
 
-        private String code;
+        public String code;//MAC生成的机器码
         public String Code
         {
             get
@@ -143,7 +143,7 @@ namespace GTLutils
             }
         }
 
-        private String identifyID;
+        private String identifyID;//识别码
         public String IdentifyID
         {
             get
@@ -156,7 +156,7 @@ namespace GTLutils
             }
         }
 
-        private String serialID;
+        private String serialID;//序列号
         public String SerialID
         {
             get
