@@ -46,6 +46,7 @@
     <Compile Include="BaseDevice.cs" />
     <Compile Include="BaseTwincatDevice.cs" />
     <Compile Include="BaseVirtualDevice.cs" />
+    <Compile Include="DataOperate.cs" />
     <Compile Include="DeviceManager.cs" />
     <Compile Include="DeviceMessage.cs" />
     <Compile Include="ModbusMessageHelper.cs" />

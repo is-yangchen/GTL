@@ -52,9 +52,6 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GTLutils">
-      <HintPath>..\DLL\GTLutils.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -212,6 +209,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GTLutils\GTLutils.csproj">
+      <Project>{41b3c4f8-528f-4ff7-a604-5594d3865358}</Project>
+      <Name>GTLutils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
