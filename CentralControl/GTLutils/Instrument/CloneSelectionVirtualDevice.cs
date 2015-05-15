@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GTLutils;
 
-namespace CentralControl
+namespace GTLutils
 {
     public class CloneSelectionDeviceMessageCreator
     {

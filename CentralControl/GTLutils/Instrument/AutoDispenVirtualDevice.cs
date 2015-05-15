@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using GTLutils;
 
-namespace CentralControl
+namespace GTLutils
 {
     public class AutoDispenDeviceMessageCreator
     {

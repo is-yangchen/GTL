@@ -71,8 +71,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoDispenTwincatDevice.cs" />
-    <Compile Include="AutoDispenVirtualDevice.cs" />
     <Compile Include="AutoDispenDeviceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,14 +83,12 @@
     <Compile Include="CloneSelectionDeviceForm.Designer.cs">
       <DependentUpon>CloneSelectionDeviceForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CloneSelectionVirtualDevice.cs" />
     <Compile Include="ControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ControlForm.Designer.cs">
       <DependentUpon>ControlForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database.cs" />
     <Compile Include="DataOperate.cs" />
     <Compile Include="DataQueryForm.cs">
       <SubType>Form</SubType>
@@ -113,31 +109,26 @@
     <Compile Include="LiquidProcessForm.Designer.cs">
       <DependentUpon>LiquidProcessForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LiquidProcessVirtualDevice.cs" />
     <Compile Include="MatrixSystemDeviceForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MatrixSystemDeviceForm.Designer.cs">
       <DependentUpon>MatrixSystemDeviceForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MatrixSystemVirtualDevice.cs" />
     <Compile Include="MicroReactorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MicroReactorForm.designer.cs">
       <DependentUpon>MicroReactorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MicroStorageVirtualDevice.cs" />
     <Compile Include="MultiTunnelDeviceForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MultiTunnelDeviceForm.Designer.cs">
       <DependentUpon>MultiTunnelDeviceForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MultiTunnelVirtualDevice.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VirtualDeviceFactory.cs" />
     <EmbeddedResource Include="AutoDispenDeviceForm.resx">
       <DependentUpon>AutoDispenDeviceForm.cs</DependentUpon>
     </EmbeddedResource>

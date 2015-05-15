@@ -7,10 +7,10 @@ using System.Data.SqlClient;
 using System.ComponentModel;
 using System.Configuration;
 
-namespace CentralControl
+namespace GTLutils
 {
 
-    class Database
+    public class Database
     {
         protected static SqlDataReader sdr;
         SqlConnection conn;
