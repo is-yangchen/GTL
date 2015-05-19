@@ -1,10 +1,11 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TwinCAT.Ads;
+using GTLutils;
 
-namespace GTLutils
+namespace Instrument
 {
     public class AutoDispenTwincatDevice : BaseTwincatDevice
     {
@@ -25,9 +26,9 @@ namespace GTLutils
             }
         }
 
-        private int Num;
+        private int Num = 0;
         public int getNum() { return this.Num; }
-        private double Vol;
+        private double Vol = 0;
         public double getVol() { return this.Vol; }
 
         public int YunXingChuCuoBiaoZhi;
@@ -93,7 +94,7 @@ namespace GTLutils
                     handleMap[s].GetType();
                     if (nameDict[s] == typeof(string))
                     {
-                        adsClient.AddDeviceNotificationEx(s, AdsTransMode.OnChange, 100, 0, s, handleMap[s].GetType(),new int[]{ConstSettings.StringLength});
+                        adsClient.AddDeviceNotificationEx(s, AdsTransMode.OnChange, 100, 0, s, handleMap[s].GetType(), new int[] { ConstSettings.StringLength });
                     }
                     else
                     {
@@ -101,9 +102,9 @@ namespace GTLutils
                     }
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-            
+
             }
         }
 
@@ -112,7 +113,7 @@ namespace GTLutils
             adsClient.WriteAny(handleMap["MAIN.CCS_to_MDF_command_listen"], msg, new int[] { ConstSettings.StringLength });
         }
 
-        public void SendNumAndVol(int Num, float Vol) 
+        public void SendNumAndVol(int Num, float Vol)
         {
             adsClient.WriteAny(handleMap["MAIN.CCS_to_MDF_NumsperStack_listen"], Num);
             adsClient.WriteAny(handleMap["MAIN.CCS_to_MDF_VolsperDish_listen"], Vol);
@@ -195,19 +196,19 @@ namespace GTLutils
             Name = (String)message.Data["Name"];
             SerialID = (String)message.Data["SerialID"];
         }
-        private void handleNotification(object sender, AdsNotificationExEventArgs e) 
-        { 
+        private void handleNotification(object sender, AdsNotificationExEventArgs e)
+        {
             String s = (String)e.UserData;
             int handle = handleMap[s];
-            if (s.Equals("MAIN.MDF_RunningError")) 
+            if (s.Equals("MAIN.MDF_RunningError"))
             {
-                YunXingChuCuoBiaoZhi = (int)adsClient.ReadAny(handle,nameDict[s]);
+                YunXingChuCuoBiaoZhi = (int)adsClient.ReadAny(handle, nameDict[s]);
             }
-            if (s.Equals("MAIN.MDF_online_state")) 
+            if (s.Equals("MAIN.MDF_online_state"))
             {
-            
+
             }
-            if (s.Equals("MAIN.MDF_Command_response")) 
+            if (s.Equals("MAIN.MDF_Command_response"))
             {
                 String msg = (String)adsClient.ReadAny(handle, nameDict[s], new int[] { ConstSettings.StringLength });
                 ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(msg);
@@ -224,17 +225,17 @@ namespace GTLutils
                         break;
                 }
             }
-            if (s.Equals("MAIN.MDF_Motor_1_cur")) 
+            if (s.Equals("MAIN.MDF_Motor_1_cur"))
             {
-                MDF_Current1 = (float)adsClient.ReadAny(handle,nameDict[s]);
+                MDF_Current1 = (float)adsClient.ReadAny(handle, nameDict[s]);
             }
-            if (s.Equals("MAIN.MDF_Motor_2_cur")) 
+            if (s.Equals("MAIN.MDF_Motor_2_cur"))
             {
-                MDF_Current2 = (float)adsClient.ReadAny(handle, nameDict[s]); 
+                MDF_Current2 = (float)adsClient.ReadAny(handle, nameDict[s]);
             }
             if (s.Equals("MAIN.MDF_Motor_3_cur"))
             {
-                MDF_Current3 = (float)adsClient.ReadAny(handle, nameDict[s]); 
+                MDF_Current3 = (float)adsClient.ReadAny(handle, nameDict[s]);
             }
             if (s.Equals("MAIN.MDF_Motor_4_cur"))
             {
