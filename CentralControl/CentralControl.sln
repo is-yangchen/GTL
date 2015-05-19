@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralControl", "CentralCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTLutils", "GTLutils\GTLutils.csproj", "{41B3C4F8-528F-4FF7-A604-5594D3865358}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Instrument", "Instrument\Instrument.csproj", "{186788B0-17C2-4EE9-873B-BF27734F9938}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{41B3C4F8-528F-4FF7-A604-5594D3865358}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{41B3C4F8-528F-4FF7-A604-5594D3865358}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{41B3C4F8-528F-4FF7-A604-5594D3865358}.Release|x86.ActiveCfg = Release|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{186788B0-17C2-4EE9-873B-BF27734F9938}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

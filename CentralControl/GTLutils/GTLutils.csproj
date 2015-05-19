@@ -38,7 +38,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TwinCAT.Ads">
+    <Reference Include="TwinCAT.Ads, Version=2.0.12.0, Culture=neutral, PublicKeyToken=180016cd49e5e8c3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLL\TwinCAT.Ads.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -50,14 +51,6 @@
     <Compile Include="DataOperate.cs" />
     <Compile Include="DeviceManager.cs" />
     <Compile Include="DeviceMessage.cs" />
-    <Compile Include="Instrument\AutoDispenTwincatDevice.cs" />
-    <Compile Include="Instrument\AutoDispenVirtualDevice.cs" />
-    <Compile Include="Instrument\CloneSelectionVirtualDevice.cs" />
-    <Compile Include="Instrument\LiquidProcessVirtualDevice.cs" />
-    <Compile Include="Instrument\MatrixSystemVirtualDevice.cs" />
-    <Compile Include="Instrument\MicroStorageVirtualDevice.cs" />
-    <Compile Include="Instrument\MultiTunnelVirtualDevice.cs" />
-    <Compile Include="Instrument\VirtualDeviceFactory.cs" />
     <Compile Include="ModbusMessageHelper.cs" />
     <Compile Include="OperationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
