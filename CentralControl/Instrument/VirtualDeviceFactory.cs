@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GTLutils;
 
-namespace GTLutils
+namespace Instrument
 {
     public class VirtualDeviceFactory
     {
@@ -37,7 +38,7 @@ namespace GTLutils
                     case DeviceType.Clone:
                         return new CloneSelectionVirtualDevice();
                     case DeviceType.Dispen:
-                        return new AutoDispenTwincatDevice();
+                        return new AutoDispenVirtualDevice();
                     case DeviceType.Liquid:
                         return new LiquidProcessVirtualDevice();
                     case DeviceType.Matrix:

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GTLutils;
 
-namespace GTLutils
+namespace Instrument
 {
     public class ALCDeviceMessageCreator
     {

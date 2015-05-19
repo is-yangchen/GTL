@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GTLutils;
 
-namespace GTLutils
+namespace Instrument
 {
     public class AutoDispenDeviceMessageCreator
     {
@@ -76,9 +77,9 @@ namespace GTLutils
         /// <summary>
         /// MDF parameters
         /// </summary>
-        private int MDF_NumsperStack;
+        private int MDF_NumsperStack = 0;
         public int getNum() { return this.MDF_NumsperStack; }
-        private double MDF_VolsperDish;
+        private double MDF_VolsperDish = 0;
         public double getVol() { return this.MDF_VolsperDish; }
         public int MDF_RunningError;
         public double MDF_Current1;
@@ -133,13 +134,13 @@ namespace GTLutils
             return res;
         }
 
-        private void decodeResponseMessage(ModbusMessage msg)
+        public override void decodeResponseMessage(ModbusMessage msg)
         {
             String s = AutoDispenDeviceMessageCreator.createOKResponse();
             this.SendMsg(s);
         }
 
-        private void decodeReportMessage(ModbusMessage msg)//解码报告消息
+        public override void decodeReportMessage(ModbusMessage msg)//解码报告消息
         {
             String reportType = (String)msg.Data["ReportType"];
             if ("MDF_Current".Equals(reportType)) 
@@ -206,7 +207,7 @@ namespace GTLutils
             }
         }
 
-        private void decodeSetMessage(ModbusMessage msg)
+        public override void decodeSetMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
             if ("BasicInfo".Equals(setType))

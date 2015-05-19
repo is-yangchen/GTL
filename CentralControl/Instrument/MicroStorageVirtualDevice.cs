@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GTLutils;
 
-namespace GTLutils
+namespace Instrument
 {
     public class MRDeviceMessageCreator
     {
@@ -40,7 +41,7 @@ namespace GTLutils
     public class MicroStorageVirtualDevice : BaseVirtualDevice
     {
 
-        private void decodeResponseMessage(ModbusMessage msg)
+        public override void decodeResponseMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
             if ("Response".Equals(setType))

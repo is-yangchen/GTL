@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GTLutils;
 
-namespace GTLutils
+namespace Instrument
 {
     public class MatrixSystemVirtualDeviceMessageCreator
     {
@@ -156,9 +157,9 @@ namespace GTLutils
         public int[][] OD_rowl = null;
 
         //Lock
-        private object KeyObject = new object(); 
+        private object KeyObject = new object();
 
-        private void decodeReportMessage(ModbusMessage msg)//解码报告消息
+        public override void decodeReportMessage(ModbusMessage msg)//解码报告消息
         {
             String reportType = (String)msg.Data["ReportType"];
             if ("OD".Equals(reportType))

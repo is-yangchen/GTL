@@ -13,31 +13,32 @@ namespace GTLutils
             DeviceManager devicemanager = DeviceManager.getInstance();
             BaseDevice device = devicemanager.getDevice(code);
             DeviceType devicetype = device.CurrentDeviceType;
-            Type type;
+
             switch (devicetype)
             {
                 case DeviceType.Analysis:
-                    type = ((MultiTunnelVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
                     break;
                 case DeviceType.Clone:
-                    type = ((CloneSelectionVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
                     break;
                 case DeviceType.Dispen:
-                    type = ((AutoDispenVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
                     break;
                 case DeviceType.Liquid:
-                    type = ((LiquidProcessVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
                     break;
                 case DeviceType.Matrix:
-                    type = ((MatrixSystemVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
                     break;
                 case DeviceType.Storage:
-                    type = ((MicroStorageVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
                     break;
-                default:
-                    type = device.GetType();
+                default:    
                     break;
             }
+
+            Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
             FieldInfo fi = type.GetField(VariableName);
             if (pi != null)
@@ -54,31 +55,31 @@ namespace GTLutils
             DeviceManager devicemanager = DeviceManager.getInstance();
             BaseDevice device = devicemanager.getDevice(code);
             DeviceType devicetype = device.CurrentDeviceType;
-            Type type;
             switch (devicetype)
             {
                 case DeviceType.Analysis:
-                    type = ((MultiTunnelVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
                     break;
                 case DeviceType.Clone:
-                    type = ((CloneSelectionVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
                     break;
                 case DeviceType.Dispen:
-                    type = ((AutoDispenVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
                     break;
                 case DeviceType.Liquid:
-                    type = ((LiquidProcessVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
                     break;
                 case DeviceType.Matrix:
-                    type = ((MatrixSystemVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
                     break;
                 case DeviceType.Storage:
-                    type = ((MicroStorageVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
                     break;
                 default:
-                    type = device.GetType();
                     break;
             }
+
+            Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
             FieldInfo fi = type.GetField(VariableName);
             if (pi != null)
@@ -111,31 +112,31 @@ namespace GTLutils
             DeviceManager devicemanager = DeviceManager.getInstance();
             BaseDevice device = devicemanager.getDevice(code);
             DeviceType devicetype = device.CurrentDeviceType;
-            Type type;
             switch (devicetype)
             {
                 case DeviceType.Analysis:
-                    type = ((MultiTunnelVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
                     break;
                 case DeviceType.Clone:
-                    type = ((CloneSelectionVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
                     break;
                 case DeviceType.Dispen:
-                    type = ((AutoDispenVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
                     break;
                 case DeviceType.Liquid:
-                    type = ((LiquidProcessVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
                     break;
                 case DeviceType.Matrix:
-                    type = ((MatrixSystemVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
                     break;
                 case DeviceType.Storage:
-                    type = ((MicroStorageVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
                     break;
                 default:
-                    type = device.GetType();
                     break;
             }
+
+            Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
             FieldInfo fi = type.GetField(VariableName);
             if (fi != null)
@@ -154,31 +155,31 @@ namespace GTLutils
             DeviceManager devicemanager = DeviceManager.getInstance();
             BaseDevice device = devicemanager.getDevice(code);
             DeviceType devicetype = device.CurrentDeviceType;
-            Type type;
             switch (devicetype)
             {
                 case DeviceType.Analysis:
-                    type = ((MultiTunnelVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
                     break;
                 case DeviceType.Clone:
-                    type = ((CloneSelectionVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
                     break;
                 case DeviceType.Dispen:
-                    type = ((AutoDispenVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
                     break;
                 case DeviceType.Liquid:
-                    type = ((LiquidProcessVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
                     break;
                 case DeviceType.Matrix:
-                    type = ((MatrixSystemVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
                     break;
                 case DeviceType.Storage:
-                    type = ((MicroStorageVirtualDevice)device).GetType();
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
                     break;
                 default:
-                    type = device.GetType();
                     break;
             }
+
+            Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
             FieldInfo fi = type.GetField(VariableName);
             if (fi != null)

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GTLutils;
 
-namespace GTLutils
+namespace Instrument
 {
     public class MultiTunnelDeviceMessageCreator
     {
@@ -213,13 +214,13 @@ namespace GTLutils
             }
         }
 
-        private void decodeCmdMessage(ModbusMessage msg)
+        public override void decodeCmdMessage(ModbusMessage msg)
         {
             String cmd = (String)msg.Data["Cmd"];
 
         }
 
-        private void decodeSetMessage(ModbusMessage msg)
+        public override void decodeSetMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
             
@@ -231,7 +232,7 @@ namespace GTLutils
             SendMsg(msg);
         }
 
-        private void decodeReportMessage(ModbusMessage msg)
+        public override void decodeReportMessage(ModbusMessage msg)
         {
             String reportType = (String)msg.Data["ReportType"];
             if ("YouKongBan".Equals(reportType)) 
