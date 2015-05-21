@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VirtialDevices
+namespace DeviceUtils
 {
-    public class VirtualDeviceManager
+    public class DeviceManager
     {
-        private static VirtualDeviceManager virtualDeviceManager = new VirtualDeviceManager();
+        private static DeviceManager deviceManager = new DeviceManager();
 
-        public static VirtualDeviceManager getInstance()
+        public static DeviceManager getInstance()
         {
-            return virtualDeviceManager;
+            return deviceManager;
         }
 
-        private List<DeviceMessage> allMessages;
+         private List<DeviceMessage> allMessages;
         public List<DeviceMessage> getAllMessages() 
         {
             return allMessages;
@@ -61,18 +61,18 @@ namespace VirtialDevices
 
 
         private List<BaseDevice> deviceList;
-        private VirtualDeviceManager()
+        private DeviceManager()
         {
             deviceList = new List<BaseDevice>();
             allMessages = new List<DeviceMessage>();
         }
 
-        public List<BaseDevice> getAllDevices() 
+        public List<BaseDevice> getAllDevices()
         {
             List<BaseDevice> res = new List<BaseDevice>();
             lock (deviceList)
             {
-                for (int i = 0; i < deviceList.Count; i++)
+                for (int i = 0; i < deviceList.Count; i++) 
                 {
                     res.Add(deviceList[i]);
                 }
@@ -97,7 +97,7 @@ namespace VirtialDevices
                 {
                     if (device.Code == code) return device;
                 }
-            }
+            }       
             return null;
         }
 
@@ -124,6 +124,5 @@ namespace VirtialDevices
             }
             return false;
         }
-
     }
 }

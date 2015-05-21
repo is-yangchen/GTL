@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Timers;
+using DeviceUtils;
 
-namespace VirtialDevices
+namespace Instrument
 {
     public class AutoDispenDeviceMessageInterpreter 
     {

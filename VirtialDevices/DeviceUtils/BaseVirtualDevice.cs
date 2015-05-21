@@ -65,13 +65,14 @@ namespace DeviceUtils
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("SetType", "BasicInfo");
             creator.addKeyPair("DeviceType", EnumHelper.getDeviceTypeString(this.CurrentDeviceType));
-            //if (this.CurrentDeviceType == DeviceType.Dispen) 
-            //{
-            //    if (((AutoDispenDevice)this).SubType == AutoDispenDevice.AutoDispenType.PeiYangMin)
-            //        creator.addKeyPair("SubType", "PeiYangMin");
-            //    else 
-            //        creator.addKeyPair("SubType", "ShenKongBan");
-            //}
+            /*
+            if (this.CurrentDeviceType == DeviceType.Dispen)
+            {
+                if (((autodispendevice)this).subtype == autodispendevice.autodispentype.peiyangmin)
+                    creator.addkeypair("subtype", "peiyangmin");
+                else
+                    creator.addkeypair("subtype", "shenkongban");
+            }*/
             creator.addKeyPair("IP", this.IP);
             creator.addKeyPair("Name", this.Name);
             creator.addKeyPair("IdentifyID", this.IdentifyID);
@@ -114,14 +115,14 @@ namespace DeviceUtils
         {
             foreach (DictionaryEntry de in s.Data)
             {
-                DataOperate.WriteAny((String)de.Key, this, de.Value);
+                DataOperate.WriteAny((String)de.Key, Code, de.Value);
             }
         }
         public virtual void decodeSetMessage(ModbusMessage s)
         {
             foreach (DictionaryEntry de in s.Data)
             {
-                DataOperate.WriteAny((String)de.Key, this, de.Value);
+                DataOperate.WriteAny((String)de.Key, Code, de.Value);
             }
         }
 

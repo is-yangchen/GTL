@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Timers;
+using DeviceUtils;
+using Instrument;
 
 namespace VirtialDevices
 {

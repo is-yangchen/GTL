@@ -6,32 +6,95 @@ using System.Reflection;
 
 namespace DeviceUtils
 {
-    public class DataOperate
+    class DataOperate
     {
-        public static object ReadAny(string VariableName, BaseDevice device)
+        public static object ReadAny(string VariableName, string code)
         {
-            Type type = device.GetType();
-            PropertyInfo pi = type.GetProperty(VariableName);//   .GetField(VariableName);
-            if (pi != null)
-                return pi.GetValue(device, null);
-            else
-                throw new Exception("找不到变量：" + VariableName);
-        }
+            DeviceManager devicemanager = DeviceManager.getInstance();
+            BaseDevice device = devicemanager.getDevice(code);
+            DeviceType devicetype = device.CurrentDeviceType;
 
-        public static String ReadString(string VariableName, BaseDevice device)
-        {
+            switch (devicetype)
+            {
+                case DeviceType.Analysis:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
+                    break;
+                case DeviceType.Clone:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
+                    break;
+                case DeviceType.Dispen:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
+                    break;
+                case DeviceType.Liquid:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
+                    break;
+                case DeviceType.Matrix:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
+                    break;
+                case DeviceType.Storage:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
+                    break;
+                default:    
+                    break;
+            }
+
             Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
+            FieldInfo fi = type.GetField(VariableName);
             if (pi != null)
-                return (String) pi.GetValue(device, null);
-            else
-                throw new Exception("找不到变量：" + VariableName);
+                return pi.GetValue(device, null);
+            if (fi != null)
+                return fi.GetValue(device);
+            if (pi == null && fi == null)
+                Console.WriteLine("找不到变量：" + VariableName);
+            return null;
         }
 
-        public static object[] ReadArray(string VariableName, BaseDevice device)
+        public static String ReadString(string VariableName, string code)
         {
-            //DeviceManager devicemanager = DeviceManager.getInstance();
-            //BaseDevice device = devicemanager.getDevice(code);
+            DeviceManager devicemanager = DeviceManager.getInstance();
+            BaseDevice device = devicemanager.getDevice(code);
+            DeviceType devicetype = device.CurrentDeviceType;
+            switch (devicetype)
+            {
+                case DeviceType.Analysis:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
+                    break;
+                case DeviceType.Clone:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
+                    break;
+                case DeviceType.Dispen:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
+                    break;
+                case DeviceType.Liquid:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
+                    break;
+                case DeviceType.Matrix:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
+                    break;
+                case DeviceType.Storage:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
+                    break;
+                default:
+                    break;
+            }
+
+            Type type = device.GetType();
+            PropertyInfo pi = type.GetProperty(VariableName);
+            FieldInfo fi = type.GetField(VariableName);
+            if (pi != null)
+                return (String)pi.GetValue(device, null);
+            if (fi != null)
+                return (String)fi.GetValue(device);
+            if (pi == null && fi == null)
+                Console.WriteLine("找不到变量：" + VariableName);
+            return null;
+        }
+
+        public static object[] ReadArray(string VariableName, string code)
+        {
+            DeviceManager devicemanager = DeviceManager.getInstance();
+            BaseDevice device = devicemanager.getDevice(code);
             Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
             FieldInfo fi = type.GetField(VariableName);
@@ -44,34 +107,93 @@ namespace DeviceUtils
                 throw new Exception("找不到变量或变量类型不对：" + VariableName);
         }
 
-        public static void WriteAny(string VariableName, BaseDevice device, object value)
+        public static void WriteAny(string VariableName, string code, object value)
         {
-            //DeviceManager devicemanager = DeviceManager.getInstance();
-            //BaseDevice device = devicemanager.getDevice(code);
+            DeviceManager devicemanager = DeviceManager.getInstance();
+            BaseDevice device = devicemanager.getDevice(code);
+            DeviceType devicetype = device.CurrentDeviceType;
+            switch (devicetype)
+            {
+                case DeviceType.Analysis:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
+                    break;
+                case DeviceType.Clone:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
+                    break;
+                case DeviceType.Dispen:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
+                    break;
+                case DeviceType.Liquid:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
+                    break;
+                case DeviceType.Matrix:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
+                    break;
+                case DeviceType.Storage:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
+                    break;
+                default:
+                    break;
+            }
+
             Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
-            if(pi!=null)
-                pi.SetValue(device ,value, null);
-            else
-                throw new Exception("找不到变量：" + VariableName);
+            FieldInfo fi = type.GetField(VariableName);
+            if (fi != null)
+            {
+                fi.SetValue(device, Convert.ChangeType((string)value, fi.FieldType));
+            }
+
+            if (pi != null)
+                pi.SetValue(device, Convert.ChangeType((string)value, pi.PropertyType), null);
+            if (fi == null && pi == null)
+                Console.WriteLine("找不到变量：" + VariableName);
         }
 
-        public static void WriteString(string VariableName, BaseDevice device, String value)
+        public static void WriteString(string VariableName, string code, String value)
         {
-            //DeviceManager devicemanager = DeviceManager.getInstance();
-            //BaseDevice device = devicemanager.getDevice(code);
+            DeviceManager devicemanager = DeviceManager.getInstance();
+            BaseDevice device = devicemanager.getDevice(code);
+            DeviceType devicetype = device.CurrentDeviceType;
+            switch (devicetype)
+            {
+                case DeviceType.Analysis:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
+                    break;
+                case DeviceType.Clone:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
+                    break;
+                case DeviceType.Dispen:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
+                    break;
+                case DeviceType.Liquid:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
+                    break;
+                case DeviceType.Matrix:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
+                    break;
+                case DeviceType.Storage:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
+                    break;
+                default:
+                    break;
+            }
+
             Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
-            if (pi!=null)
-                pi.SetValue(device, value, null);
-            else
-                throw new Exception("找不到变量：" + VariableName);
+            FieldInfo fi = type.GetField(VariableName);
+            if (fi != null)
+                fi.SetValue(device, Double.Parse((string)value));
+            if (pi != null)
+                pi.SetValue(device, (string)value, null);
+            if (fi == null && pi == null)
+                Console.WriteLine("找不到变量：" + VariableName);
         }
 
-        public static void WriteArray(string VariableName, BaseDevice device, object[] value)
+        public static void WriteArray(string VariableName, string code, object[] value)
         {
-            //DeviceManager devicemanager = DeviceManager.getInstance();
-            //BaseDevice device = devicemanager.getDevice(code);
+            DeviceManager devicemanager = DeviceManager.getInstance();
+            BaseDevice device = devicemanager.getDevice(code);
             Type type = device.GetType();
             PropertyInfo pi = type.GetProperty(VariableName);
             FieldInfo fi = type.GetField(VariableName);
@@ -79,6 +201,11 @@ namespace DeviceUtils
             {
                 fi.SetValue(device, value);
             }
+        }
+
+        internal static void WriteAny(object p1, string p2, object p3)
+        {
+            throw new NotImplementedException();
         }
     }
 }

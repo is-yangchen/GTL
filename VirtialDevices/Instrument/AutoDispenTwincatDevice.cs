@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using TwinCAT.Ads;
 using System.Timers;
+using DeviceUtils;
 
-namespace VirtialDevices
+namespace Instrument
 {
     public class AutoDispenTwincatDevice : BaseTwincatDevice
     {
