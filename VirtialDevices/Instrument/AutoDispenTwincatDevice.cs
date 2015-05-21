@@ -213,8 +213,8 @@ namespace Instrument
             tiaomahao = TiaoMaHaoGenerator.generateTiaoMaHao();
             increaseFenZhuangZhuangTai();
             String msg;
-            if (subType == AutoDispenType.PeiYangMin) msg = AutoDispenDeviceMessageCreator.createMDFCodesReport(duimahao, peiyangminhao, tiaomahao);
-            else msg = AutoDispenDeviceMessageCreator.createMPFCodesReport(kongbanhao, tiaomahao);
+            if (true) msg = AutoDispenDeviceMessageCreator.createMDFCodesReport(duimahao, peiyangminhao, tiaomahao);
+            //else msg = AutoDispenDeviceMessageCreator.createMPFCodesReport(kongbanhao, tiaomahao);
             return msg;
         }
 

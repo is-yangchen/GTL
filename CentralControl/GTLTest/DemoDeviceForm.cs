@@ -15,7 +15,7 @@ namespace CentralControl
     {
         public ControlForm FatherForm;
         public bool IsSocket;
-        public DemoVirtualDevice DispenDevice;
+        public DemoVirtualDevice DemoDevice;
 
         public DemoDeviceForm()
         {
@@ -27,58 +27,58 @@ namespace CentralControl
 
         private void sendButton_Click(object sender, EventArgs e)
         {
-            String Num = "", Vol = "", msg = "";
+            String Num = "", Vol = "";
             Num = textBox1.Text;
             Vol = textBox2.Text;
-            
+            DemoDevice.SendMPFSetNumAndVol(Num, Vol);
         }
 
         private void resetButton_Click(object sender, EventArgs e)
         {
-            DispenDevice.SendCmd("Reset");
+            DemoDevice.SendCmd("Reset");
         }
 
         private void startButton_Click(object sender, EventArgs e)
         {
-            DispenDevice.SendCmd("Start");
+            DemoDevice.SendCmd("Start");
         }
 
         private void stopButton_Click(object sender, EventArgs e)
         {
-            DispenDevice.SendCmd("Stop");
+            DemoDevice.SendCmd("Stop");
         }
 
         private void autoButton_Click(object sender, EventArgs e)
         {
-            DispenDevice.SendCmd("Auto");
+            DemoDevice.SendCmd("Auto");
         }
 
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
             refreshTimer.Stop();
-            dianJi1TextBox.Text = DispenDevice.MPF_Current1.ToString();
-            dianJi2TextBox.Text = DispenDevice.MPF_Current2.ToString();
-            dianJi3TextBox.Text = DispenDevice.MPF_Current3.ToString();
-            dianJi4TextBox.Text = DispenDevice.MPF_Current4.ToString();
-            stateComboBox.SelectedIndex = DispenDevice.MPF_RunningError;
+            dianJi1TextBox.Text = DemoDevice.MPF_Current1.ToString();
+            dianJi2TextBox.Text = DemoDevice.MPF_Current2.ToString();
+            dianJi3TextBox.Text = DemoDevice.MPF_Current3.ToString();
+            dianJi4TextBox.Text = DemoDevice.MPF_Current4.ToString();
+            stateComboBox.SelectedIndex = DemoDevice.MPF_RunningError;
             refreshTimer.Start();
         }
 
         private void loadInfo()
         {
-                deviceNameLabel.Text = DispenDevice.Name;
-                deviceIPTextBox.Text = DispenDevice.IP;
-                localIPTextBox.Text = DispenDevice.ControlIP;
-                deviceNameTextBox.Text = DispenDevice.Name;
-                identifyIDTextBox.Text = DispenDevice.IdentifyID;
-                codeTextBox.Text = DispenDevice.Code;
-                serialIDTextBox.Text = DispenDevice.SerialID;
+            deviceNameLabel.Text = DemoDevice.Name;
+            deviceIPTextBox.Text = DemoDevice.IP;
+            localIPTextBox.Text = DemoDevice.ControlIP;
+            deviceNameTextBox.Text = DemoDevice.Name;
+            identifyIDTextBox.Text = DemoDevice.IdentifyID;
+            codeTextBox.Text = DemoDevice.Code;
+            serialIDTextBox.Text = DemoDevice.SerialID;
 
-                dianJi1TextBox.Text = DispenDevice.MPF_Current1.ToString();
-                dianJi2TextBox.Text = DispenDevice.MPF_Current2.ToString();
-                dianJi3TextBox.Text = DispenDevice.MPF_Current3.ToString();
-                dianJi4TextBox.Text = DispenDevice.MPF_Current4.ToString();
-                stateComboBox.SelectedIndex = DispenDevice.MPF_RunningError;
+            dianJi1TextBox.Text = DemoDevice.MPF_Current1.ToString();
+            dianJi2TextBox.Text = DemoDevice.MPF_Current2.ToString();
+            dianJi3TextBox.Text = DemoDevice.MPF_Current3.ToString();
+            dianJi4TextBox.Text = DemoDevice.MPF_Current4.ToString();
+            stateComboBox.SelectedIndex = DemoDevice.MPF_RunningError;
                
         }
 

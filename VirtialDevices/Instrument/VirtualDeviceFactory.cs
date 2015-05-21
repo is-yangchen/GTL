@@ -20,13 +20,16 @@ namespace Instrument
                         return new CloneSelectionDevice();
                     case DeviceType.Dispen:
                         return new AutoDispenDevice();
+                    case DeviceType.Plate:
+                        return new AutoPlateDevice();
                     case DeviceType.Liquid:
                         return new LiquidProcessDevice();
                     case DeviceType.Matrix:
                         return new MatrixSystemDevice();
                     case DeviceType.Storage:
                         return new MicroStorageDevice();
-
+                    case DeviceType.Unknown:
+                        return new DemoVirtualDevice();
                 }
             }
             else 
@@ -39,13 +42,16 @@ namespace Instrument
                         return new CloneSelectionDevice();
                     case DeviceType.Dispen:
                         return new AutoDispenTwincatDevice();
+                    case DeviceType.Plate:
+                        return new AutoPlateDevice();
                     case DeviceType.Liquid:
                         return new LiquidProcessDevice();
                     case DeviceType.Matrix:
                         return new MatrixSystemDevice();
                     case DeviceType.Storage:
                         return new MicroStorageDevice();
-
+                    case DeviceType.Unknown:
+                        return new DemoVirtualDevice();
                 }
             }
             return null;

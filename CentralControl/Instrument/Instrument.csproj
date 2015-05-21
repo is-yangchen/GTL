@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AutoDispenTwincatDevice.cs" />
     <Compile Include="AutoDispenVirtualDevice.cs" />
+    <Compile Include="AutoPlateVirtualDevice.cs" />
     <Compile Include="CloneSelectionVirtualDevice.cs" />
     <Compile Include="DemoVirtualDevice.cs" />
     <Compile Include="LiquidProcessVirtualDevice.cs" />

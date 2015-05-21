@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 using System.Text;
-using GTLutils;
+using DeviceUtils;
 
 namespace Instrument
 {
@@ -28,8 +28,8 @@ namespace Instrument
 
         public void SendMPFSetNumAndVol(String Num, String Vol)
         {
-            this.SendModBusMsg(ModbusMessage.MessageType.SET, "MPF_PlateNum", Num);
-            this.SendModBusMsg(ModbusMessage.MessageType.SET, "MPF_Volsperwell", Vol);
+            this.SendModBusMsg(ModbusMessage.MessageType.SET, "MPF_NumsperStack", Num);
+            this.SendModBusMsg(ModbusMessage.MessageType.SET, "MPF_VolsperDish", Vol);
         }
 
         public void SendMPFCurrentReport()

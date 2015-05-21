@@ -96,6 +96,7 @@ namespace CentralControl
                 BaseVirtualDevice device = (BaseVirtualDevice)VirtualDeviceFactory.createVirtualDevice(type,true);
                 device.IsVirt = true;
                 device.CurrentDeviceType = type;
+                /*
                 if (type == DeviceType.Dispen)
                 {
                     String subType = (String)message.Data["SubType"];
@@ -107,7 +108,7 @@ namespace CentralControl
                     {
                         ((AutoDispenVirtualDevice)device).SubType = AutoDispenVirtualDevice.AutoDispenType.ShenKongBan;
                     }
-                }
+                }*/
                 device.IdentifyID = (String)message.Data["IdentifyID"];
                 device.Code = (String)message.Data["Code"];
                 device.IP = (String)message.Data["IP"];

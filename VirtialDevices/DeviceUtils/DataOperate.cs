@@ -34,7 +34,8 @@ namespace DeviceUtils
                 case DeviceType.Storage:
                     Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
                     break;
-                default:    
+                default:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("DemoVirtualDevice"));
                     break;
             }
 
@@ -76,6 +77,7 @@ namespace DeviceUtils
                     Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
                     break;
                 default:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("DemoVirtualDevice"));
                     break;
             }
 
@@ -133,6 +135,7 @@ namespace DeviceUtils
                     Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
                     break;
                 default:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("DemoVirtualDevice"));
                     break;
             }
 
@@ -176,6 +179,7 @@ namespace DeviceUtils
                     Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
                     break;
                 default:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("DemoVirtualDevice"));
                     break;
             }
 

@@ -17,24 +17,25 @@ namespace GTLutils
             switch (devicetype)
             {
                 case DeviceType.Analysis:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MultiTunnelVirtualDevice"));
                     break;
                 case DeviceType.Clone:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.CloneSelectionVirtualDevice"));
                     break;
                 case DeviceType.Dispen:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.AutoDispenVirtualDevice"));
                     break;
                 case DeviceType.Liquid:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.LiquidProcessVirtualDevice"));
                     break;
                 case DeviceType.Matrix:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MatrixSystemVirtualDevice"));
                     break;
                 case DeviceType.Storage:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MicroStorageVirtualDevice"));
                     break;
-                default:    
+                default:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.DemoVirtualDevice"));
                     break;
             }
 
@@ -58,24 +59,25 @@ namespace GTLutils
             switch (devicetype)
             {
                 case DeviceType.Analysis:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MultiTunnelVirtualDevice"));
                     break;
                 case DeviceType.Clone:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.CloneSelectionVirtualDevice"));
                     break;
                 case DeviceType.Dispen:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.AutoDispenVirtualDevice"));
                     break;
                 case DeviceType.Liquid:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.LiquidProcessVirtualDevice"));
                     break;
                 case DeviceType.Matrix:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MatrixSystemVirtualDevice"));
                     break;
                 case DeviceType.Storage:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MicroStorageVirtualDevice"));
                     break;
                 default:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.DemoVirtualDevice"));
                     break;
             }
 
@@ -115,24 +117,25 @@ namespace GTLutils
             switch (devicetype)
             {
                 case DeviceType.Analysis:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MultiTunnelVirtualDevice"));
                     break;
                 case DeviceType.Clone:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.CloneSelectionVirtualDevice"));
                     break;
                 case DeviceType.Dispen:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.AutoDispenVirtualDevice"));
                     break;
                 case DeviceType.Liquid:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.LiquidProcessVirtualDevice"));
                     break;
                 case DeviceType.Matrix:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MatrixSystemVirtualDevice"));
                     break;
                 case DeviceType.Storage:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MicroStorageVirtualDevice"));
                     break;
                 default:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.DemoVirtualDevice"));
                     break;
             }
 
@@ -158,24 +161,25 @@ namespace GTLutils
             switch (devicetype)
             {
                 case DeviceType.Analysis:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MultiTunnelVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MultiTunnelVirtualDevice"));
                     break;
                 case DeviceType.Clone:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("CloneSelectionVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.CloneSelectionVirtualDevice"));
                     break;
                 case DeviceType.Dispen:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("AutoDispenVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.AutoDispenVirtualDevice"));
                     break;
                 case DeviceType.Liquid:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("LiquidProcessVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.LiquidProcessVirtualDevice"));
                     break;
                 case DeviceType.Matrix:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MatrixSystemVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MatrixSystemVirtualDevice"));
                     break;
                 case DeviceType.Storage:
-                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("MicroStorageVirtualDevice"));
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.MicroStorageVirtualDevice"));
                     break;
                 default:
+                    Convert.ChangeType(device, Assembly.Load("Instrument").GetType("Instrument.DemoVirtualDevice"));
                     break;
             }
 

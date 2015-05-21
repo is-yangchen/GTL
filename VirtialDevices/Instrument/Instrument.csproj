@@ -46,7 +46,9 @@
   <ItemGroup>
     <Compile Include="AutoDispenDevice.cs" />
     <Compile Include="AutoDispenTwincatDevice.cs" />
+    <Compile Include="AutoPlateDevice.cs" />
     <Compile Include="CloneSelectionDevice.cs" />
+    <Compile Include="DemoVirtualDevice.cs" />
     <Compile Include="LiquidProcessDevice.cs" />
     <Compile Include="MatrixSystemDevice.cs" />
     <Compile Include="MicroStorageDevice.cs" />

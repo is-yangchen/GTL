@@ -96,6 +96,7 @@ namespace CentralControl
                 BaseVirtualDevice device = (BaseVirtualDevice)VirtualDeviceFactory.createVirtualDevice(type, true);
                 device.IsVirt = true;
                 device.CurrentDeviceType = type;
+                /*
                 if (type == DeviceType.Dispen)
                 {
                     String subType = (String)message.Data["SubType"];
@@ -107,7 +108,7 @@ namespace CentralControl
                     {
                         ((AutoDispenVirtualDevice)device).SubType = AutoDispenVirtualDevice.AutoDispenType.ShenKongBan;
                     }
-                }
+                }*/
                 device.IdentifyID = (String)message.Data["IdentifyID"];
                 device.Code = (String)message.Data["Code"];
                 device.IP = (String)message.Data["IP"];
@@ -340,12 +341,16 @@ namespace CentralControl
             {
                 int index = info.Item.Index;
                 BaseDevice device = deviceManager.getDevice(index);
-                DemoDeviceForm form = new DemoDeviceForm();
-                form.FatherForm = this;
-                form.IsSocket = true;
-                //if (device is DemoVirtualDevice)
-                form.DispenDevice = (DemoVirtualDevice)device;
-                form.Show();
+
+                switch (device.CurrentDeviceType)
+                {
+                    default:
+                        DemoDeviceForm form2 = new DemoDeviceForm();
+                        form2.FatherForm = this;
+                        form2.DemoDevice = (DemoVirtualDevice)device;
+                        form2.Show();
+                        break;
+                }
 
             }
         }
