@@ -89,14 +89,12 @@
     <Compile Include="ControlForm.Designer.cs">
       <DependentUpon>ControlForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataOperate.cs" />
     <Compile Include="DataQueryForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DataQueryForm.Designer.cs">
       <DependentUpon>DataQueryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DBUtil.cs" />
     <Compile Include="DeviceInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
