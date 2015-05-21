@@ -6,33 +6,68 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GTLutils;
+using Instrument;
 
 namespace CentralControl
 {
     public partial class LiquidProcessForm : Form
     {
-
-       public  LiquidProcessVirtualDevice alcDevice;
+        public LiquidProcessVirtualDevice alcDevice;
         int curSelectIndex;
         private String initStatus = "00000000000000000000";
-       // String initStatus = "54263414263512363251";
+        // String initStatus = "54263414263512363251";
         public String curStatus;
         public String tempStatus;
         private int size;
 
-        public DeviceInfoForm FatherForm;
+        public ControlForm FatherForm;
+        public BaseDevice DeviceInfo;
+
         public bool IsSocket;
 
         public LiquidProcessForm()
         {
             alcDevice = new LiquidProcessVirtualDevice();
-                curSelectIndex = 0;
-                tempStatus = initStatus;
-                curStatus = tempStatus;
-                size = 20;
-                InitializeComponent();
-            
+            curSelectIndex = 0;
+            tempStatus = initStatus;
+            curStatus = tempStatus;
+            size = 20;
+            InitializeComponent();
         }
+
+        private void LiquidProcessForm_new_Load(object sender, EventArgs e)
+        {
+            Control.CheckForIllegalCrossThreadCalls = false;
+            FatherForm.Enabled = false;
+            if(DeviceInfo.IsVirt)
+            {
+                isVirtualCheckBox.Checked = true;
+            }
+            deviceNameLabel.Text = DeviceInfo.Name;
+            deviceIPTextBox.Text = DeviceInfo.IP;
+            localIPTextBox.Text = DeviceInfo.ControlIP;
+            deviceNameTextBox.Text = DeviceInfo.Name;
+            identifyIDTextBox.Text = DeviceInfo.IdentifyID;
+            codeTextBox.Text = DeviceInfo.Code;
+            serialIDTextBox.Text = DeviceInfo.SerialID;
+
+            setPaltesByMsgAll(initStatus);
+            refreshQuYePan();
+            refreshMuBiaoPan();
+
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void DeviceInfoForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            FatherForm.Enabled = true;
+        }
+
         private String getPlate(char c)
         {
             int tmp = (int)c;
@@ -49,6 +84,7 @@ namespace CentralControl
             }
 
         }
+
         private void setPaltesByMsgAll(String msg)
         {
             try
@@ -303,15 +339,6 @@ namespace CentralControl
             showPlateInfo(curSelectIndex);
         }
 
-        private void ALCDeviceForm_Load(object sender, EventArgs e)
-        {
-
-            setPaltesByMsgAll(initStatus);
-            refreshQuYePan();
-            refreshMuBiaoPan();
-
-        }
-
         private void deployConfirm_click(object sender, EventArgs e)
         {
             curStatus = tempStatus;
@@ -323,6 +350,8 @@ namespace CentralControl
             {
                 String msg = ALCDeviceMessageCreator.createDeployStatus(alcDevice.msgStatus);
                 alcDevice.SendMsg(msg);
+                Database mydb = new Database();
+                mydb.insertlpssetting(1, alcDevice.msgStatus);
             }
         }
 
@@ -443,7 +472,11 @@ namespace CentralControl
                 alcDevice.SendMsg(msg2);
                 String msg3 = ALCDeviceMessageCreator.createWeiZhiConfirmMsg(alcDevice.xiYeWeiZhi.ToString(), alcDevice.paiYeWeiZhi.ToString());
                 alcDevice.SendMsg(msg3);
+                Database mydb = new Database();
+                mydb.insertlpsplace(1, alcDevice.quYePan, alcDevice.muBiaoPan, alcDevice.xiYeLiang, alcDevice.xiYeSuDu, alcDevice.paiYeSuDu, alcDevice.xiYeWeiZhi, alcDevice.paiYeWeiZhi);
             }
         }
+
+
     }
 }

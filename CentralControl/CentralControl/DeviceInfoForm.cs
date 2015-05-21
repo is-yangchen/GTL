@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GTLutils;
+using Instrument;
 
 namespace CentralControl
 {
@@ -53,13 +55,6 @@ namespace CentralControl
                     cForm.IsSocket = true;
                     cForm.DeviceInfo = (CloneSelectionVirtualDevice)DeviceInfo;
                     cForm.Show();
-                    break;
-                case DeviceType.Liquid:
-                    LiquidProcessForm lForm = new LiquidProcessForm();
-                    lForm.FatherForm = this;
-                    lForm.IsSocket = true;          //temp settings warning
-                    lForm.alcDevice = (LiquidProcessVirtualDevice)DeviceInfo;
-                    lForm.Show();
                     break;
 
                 case DeviceType.Matrix:

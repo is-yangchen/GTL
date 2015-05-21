@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using DeviceUtils;
+using Instrument;
 
 namespace VirtialDevices
 {
@@ -140,7 +142,7 @@ namespace VirtialDevices
 
 
             result = VirtualDeviceFactory.createVirtualDevice(Type,IsSocket);
-            result.Code = deviceCode;
+            //result.Code = deviceCode;
             result.ControlIP = controlIP;
             result.CurrentDeviceType = Type;
             result.CurrentState = DeviceStates.Created;

@@ -48,24 +48,18 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="TwinCAT.Ads">
-      <HintPath>..\..\..\TwinCAT.Ads.dll</HintPath>
+      <HintPath>..\DLL\TwinCAT.Ads.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoDispenDevice.cs" />
     <Compile Include="AutoDispenDeviceForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AutoDispenDeviceForm.Designer.cs">
       <DependentUpon>AutoDispenDeviceForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutoDispenTwincatDevice.cs" />
-    <Compile Include="BaseDevice.cs" />
-    <Compile Include="BaseTwincatDevice.cs" />
-    <Compile Include="BaseVirtualDevice.cs" />
     <Compile Include="CheckUtil.cs" />
     <Compile Include="CloneSelectFileHelper.cs" />
-    <Compile Include="CloneSelectionDevice.cs" />
     <Compile Include="CloneSelectionDeviceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,7 +90,6 @@
     <Compile Include="AllDevicesForm.Designer.cs">
       <DependentUpon>AllDevicesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DeviceMessage.cs" />
     <Compile Include="DuoTongDaoFileHelper.cs" />
     <Compile Include="DuoTongDaoShuJuShengChengForm.cs">
       <SubType>Form</SubType>
@@ -110,23 +103,18 @@
     <Compile Include="ErrorMessageForm.Designer.cs">
       <DependentUpon>ErrorMessageForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LiquidProcessDevice.cs" />
     <Compile Include="LiquidProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LiquidProcessForm.Designer.cs">
       <DependentUpon>LiquidProcessForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MatrixSystemDevice.cs" />
     <Compile Include="MatrixSystemDeviceForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MatrixSystemDeviceForm.Designer.cs">
       <DependentUpon>MatrixSystemDeviceForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MicroStorageDevice.cs" />
-    <Compile Include="ModbusMessageHelper.cs" />
-    <Compile Include="MultiTunnelDevice.cs" />
     <Compile Include="MultiTunnelDeviceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,10 +123,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringByteHelper.cs" />
-    <Compile Include="TiaoMaHaoGenerator.cs" />
-    <Compile Include="VirtualDeviceFactory.cs" />
-    <Compile Include="VirtualDeviceManager.cs" />
     <Compile Include="XmlFileHelper.cs" />
     <EmbeddedResource Include="AllDevicesForm.resx">
       <DependentUpon>AllDevicesForm.cs</DependentUpon>
@@ -191,6 +175,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeviceUtils\DeviceUtils.csproj">
+      <Project>{82fcda48-42e8-441c-91f3-432b8b0f98ad}</Project>
+      <Name>DeviceUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Instrument\Instrument.csproj">
+      <Project>{186788b0-17c2-4ee9-873b-bf27734f9938}</Project>
+      <Name>Instrument</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

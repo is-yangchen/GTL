@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CentralControl
+namespace GTLutils
 {
     public enum DeviceStates { Running, Stop, Fault, Connected };
     public enum DeviceType { Dispen, Clone, Matrix, Liquid, Analysis, Storage, Unknown };
@@ -130,7 +130,7 @@ namespace CentralControl
             }
         }
 
-        private String code;
+        private String code;//MAC生成的机器码
         public String Code
         {
             get
@@ -143,7 +143,7 @@ namespace CentralControl
             }
         }
 
-        private String identifyID;
+        private String identifyID;//识别码
         public String IdentifyID
         {
             get
@@ -156,7 +156,7 @@ namespace CentralControl
             }
         }
 
-        private String serialID;
+        private String serialID;//序列号
         public String SerialID
         {
             get

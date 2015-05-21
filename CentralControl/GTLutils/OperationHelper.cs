@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CentralControl
+namespace GTLutils
 {
     public enum Logics { AND, OR};
     public enum Operations { BIG, BIGEQ, EQ, LES, LESEQ, NEQ};
