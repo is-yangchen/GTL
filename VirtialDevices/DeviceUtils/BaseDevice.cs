@@ -13,6 +13,17 @@ namespace DeviceUtils
     {
         public static DeviceType[] TypeEnums = { DeviceType.Dispen, DeviceType.Clone, DeviceType.Matrix, DeviceType.Liquid, DeviceType.Analysis, DeviceType.Storage };
 
+        public static DeviceType deviceStringToDeviceType(String s)
+        {
+            if ("多通道高速代谢性能分析仪".Equals(s)) return DeviceType.Analysis;
+            if ("单克隆挑选仪".Equals(s)) return DeviceType.Clone;
+            if ("全自动培养基分装仪".Equals(s)) return DeviceType.Dispen;
+            if ("全自动液体处理工作站".Equals(s)) return DeviceType.Liquid;
+            if ("阵列式高通量培养仪".Equals(s)) return DeviceType.Matrix;
+            if ("微孔板储存器".Equals(s)) return DeviceType.Storage;
+            return DeviceType.Dispen;
+        }
+
         public static String getDeviceTypeString(DeviceType type) 
         {
             switch (type) 

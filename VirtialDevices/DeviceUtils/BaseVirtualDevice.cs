@@ -5,6 +5,7 @@ using System.Text;
 using System.Net.Sockets;  
 using System.Net;  
 using System.Threading;
+using System.Collections;
 
 namespace DeviceUtils
 {
@@ -64,13 +65,14 @@ namespace DeviceUtils
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("SetType", "BasicInfo");
             creator.addKeyPair("DeviceType", EnumHelper.getDeviceTypeString(this.CurrentDeviceType));
-            //if (this.CurrentDeviceType == DeviceType.Dispen) 
-            //{
-            //    if (((AutoDispenDevice)this).SubType == AutoDispenDevice.AutoDispenType.PeiYangMin)
-            //        creator.addKeyPair("SubType", "PeiYangMin");
-            //    else 
-            //        creator.addKeyPair("SubType", "ShenKongBan");
-            //}
+            /*
+            if (this.CurrentDeviceType == DeviceType.Dispen)
+            {
+                if (((autodispendevice)this).subtype == autodispendevice.autodispentype.peiyangmin)
+                    creator.addkeypair("subtype", "peiyangmin");
+                else
+                    creator.addkeypair("subtype", "shenkongban");
+            }*/
             creator.addKeyPair("IP", this.IP);
             creator.addKeyPair("Name", this.Name);
             creator.addKeyPair("IdentifyID", this.IdentifyID);
@@ -81,7 +83,71 @@ namespace DeviceUtils
             this.SendMsg(msg);
         }
 
-        public override void ReceiveMsg(String s) { }
+
+        /*加入新的数据接口函数*/
+        public void SendModBusMsg(ModbusMessage.MessageType type, String key, Object value)
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            creator.addKeyPair(key, (String)value);
+            string msg = ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(type), creator.getDataBytes());
+            this.SendMsg(msg);
+        }
+
+        public void SendModBusMsg(ModbusMessage.MessageType type, Hashtable htable)
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            foreach (DictionaryEntry de in htable)
+            {
+                creator.addKeyPair((string)de.Key, (string)de.Value);
+            }
+            string msg = ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(type), creator.getDataBytes());
+            this.SendMsg(msg);
+        }
+
+        public virtual void decodeResponseMessage(ModbusMessage s)
+        {
+            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
+            creator.addKeyPair("Result", "OK");
+            string msg = ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.RESPONSE), creator.getDataBytes());
+            this.SendMsg(msg);
+        }
+        public virtual void decodeReportMessage(ModbusMessage s)
+        {
+            foreach (DictionaryEntry de in s.Data)
+            {
+                DataOperate.WriteAny((String)de.Key, Code, de.Value);
+            }
+        }
+        public virtual void decodeSetMessage(ModbusMessage s)
+        {
+            foreach (DictionaryEntry de in s.Data)
+            {
+                DataOperate.WriteAny((String)de.Key, Code, de.Value);
+            }
+        }
+
+        public virtual void decodeCmdMessage(ModbusMessage s) { }
+        public override void ReceiveMsg(String s)
+        {
+            ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
+            switch (message.MsgType)
+            {
+                case ModbusMessage.MessageType.RESPONSE:
+                    decodeResponseMessage(message);
+                    break;
+                case ModbusMessage.MessageType.CMD:
+                    decodeCmdMessage(message);
+                    break;
+                case ModbusMessage.MessageType.REPORT:
+                    decodeReportMessage(message);
+                    break;
+                case ModbusMessage.MessageType.SET:
+                    decodeSetMessage(message);
+                    break;
+                case ModbusMessage.MessageType.GET:
+                    break;
+            }
+        }
 
         private void SocketReceiveMsg() 
         {
