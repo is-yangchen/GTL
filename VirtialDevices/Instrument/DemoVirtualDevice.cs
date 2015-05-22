@@ -41,5 +41,48 @@ namespace Instrument
             htable.Add("MPF_Current4", MPF_Current4.ToString());
             this.SendModBusMsg(ModbusMessage.MessageType.REPORT, htable);
         }
+
+        public override void decodeCmdMessage(ModbusMessage msg)
+        {
+            String cmd = (String)msg.Data["Cmd"];
+            if ("Start".Equals(cmd))
+            {
+                this.MPF_Cmd = "Start";
+            }
+            if ("Reset".Equals(cmd))
+            {
+                this.MPF_Cmd = "Reset";
+            }
+            if ("Stop".Equals(cmd))
+            {
+                this.MPF_Cmd = "Stop";
+            }
+            if ("Auto".Equals(cmd))
+            {
+                this.MPF_Cmd = "Auto";
+            }
+        }
+
+        public override void ReceiveMsg(String s)
+        {
+            ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
+            switch (message.MsgType)
+            {
+                case ModbusMessage.MessageType.RESPONSE:
+                    decodeResponseMessage(message);
+                    break;
+                case ModbusMessage.MessageType.CMD:
+                    decodeCmdMessage(message);
+                    break;
+                case ModbusMessage.MessageType.REPORT:
+                    decodeReportMessage(message);
+                    break;
+                case ModbusMessage.MessageType.SET:
+                    decodeSetMessage(message);
+                    break;
+                case ModbusMessage.MessageType.GET:
+                    break;
+            }
+        }
     }
 }
