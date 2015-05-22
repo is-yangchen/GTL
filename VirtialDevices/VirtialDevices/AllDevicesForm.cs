@@ -16,11 +16,11 @@ namespace VirtialDevices
         public VirtualDevicesForm()
         {
             InitializeComponent();
-            virtualDeviceManager = VirtualDeviceManager.getInstance();
+            virtualDeviceManager = DeviceManager.getInstance();
             logTimer.Start();
         }
 
-        private VirtualDeviceManager virtualDeviceManager;
+        private DeviceManager virtualDeviceManager;
 
         private object KeyObject = new object();
 

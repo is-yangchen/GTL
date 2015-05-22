@@ -70,9 +70,9 @@ namespace DeviceUtils
     public class BaseDevice
     {
 
-        protected VirtualDeviceManager virtualDeviceManager;
+        protected DeviceManager virtualDeviceManager;
 
-        public VirtualDeviceManager VirtualDeviceManager
+        public DeviceManager VirtualDeviceManager
         {
             get
             {

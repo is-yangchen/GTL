@@ -21,13 +21,13 @@ namespace VirtialDevices
         public DeviceType Type;
         public BaseDevice DeviceInfo;
         public List<DeviceMessage> DeviceMessages;
-        private VirtualDeviceManager virtualDeviceManager;
+        private DeviceManager virtualDeviceManager;
 
 
         public DeviceForm()
         {
             InitializeComponent();
-            virtualDeviceManager = VirtualDeviceManager.getInstance();
+            virtualDeviceManager = DeviceManager.getInstance();
         }
 
         private void DeviceForm_Load(object sender, EventArgs e)
