@@ -1,6 +1,6 @@
 ﻿namespace CentralControl
 {
-    partial class AutoDispenDeviceForm
+    partial class AutoPlateDeviceForm
     {
         /// <summary>
         /// Required designer variable.
@@ -501,14 +501,14 @@
             this.refreshTimer.Interval = 1000;
             this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
             // 
-            // AutoDispenDeviceForm
+            // AutoPlateDeviceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(626, 556);
             this.Controls.Add(this.panel1);
-            this.Name = "AutoDispenDeviceForm";
-            this.Text = "全自动培养皿分装仪";
+            this.Name = "AutoPlateDeviceForm";
+            this.Text = "全自动深孔板分装仪";
             this.Load += new System.EventHandler(this.AutoDispenDeviceForm_Load);
             this.panel1.ResumeLayout(false);
             this.basicPanel.ResumeLayout(false);

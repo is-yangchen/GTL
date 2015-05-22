@@ -33,7 +33,8 @@ namespace VirtialDevices
             DeviceType selectType = EnumHelper.TypeEnums[typeComboBox.SelectedIndex];
             bool isSocket = true;
             if (communicateComboBox.SelectedIndex == 1) isSocket = false;
-            if (selectType == DeviceType.Dispen)
+            //if (selectType == DeviceType.Dispen)
+            if (false)
             {
                 CreateDispenForm form = new CreateDispenForm();
                 form.FatherForm = FatherForm;

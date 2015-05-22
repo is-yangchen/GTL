@@ -1,6 +1,6 @@
 ﻿namespace CentralControl
 {
-    partial class AutoDispenDeviceForm
+    partial class DemoDeviceForm
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.basicPanel = new System.Windows.Forms.Panel();
-            this.isVirtualCheckBox = new System.Windows.Forms.CheckBox();
             this.serialIDTextBox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.codeTextBox = new System.Windows.Forms.TextBox();
@@ -49,8 +48,6 @@
             this.label18 = new System.Windows.Forms.Label();
             this.s = new System.Windows.Forms.Panel();
             this.stateComboBox = new System.Windows.Forms.ComboBox();
-            this.yiJiaZhuListView = new System.Windows.Forms.ListView();
-            this.yiJiaZhuLabel = new System.Windows.Forms.Label();
             this.dianJi4TextBox = new System.Windows.Forms.TextBox();
             this.dianJi3TextBox = new System.Windows.Forms.TextBox();
             this.dianJi2TextBox = new System.Windows.Forms.TextBox();
@@ -92,7 +89,6 @@
             // 
             // basicPanel
             // 
-            this.basicPanel.Controls.Add(this.isVirtualCheckBox);
             this.basicPanel.Controls.Add(this.serialIDTextBox);
             this.basicPanel.Controls.Add(this.label11);
             this.basicPanel.Controls.Add(this.codeTextBox);
@@ -114,20 +110,11 @@
             this.basicPanel.TabIndex = 1;
             this.basicPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.basicPanel_Paint);
             // 
-            // isVirtualCheckBox
-            // 
-            this.isVirtualCheckBox.AutoSize = true;
-            this.isVirtualCheckBox.Location = new System.Drawing.Point(152, 18);
-            this.isVirtualCheckBox.Name = "isVirtualCheckBox";
-            this.isVirtualCheckBox.Size = new System.Drawing.Size(72, 16);
-            this.isVirtualCheckBox.TabIndex = 22;
-            this.isVirtualCheckBox.Text = "虚拟仪器";
-            this.isVirtualCheckBox.UseVisualStyleBackColor = true;
-            // 
             // serialIDTextBox
             // 
             this.serialIDTextBox.Location = new System.Drawing.Point(402, 102);
             this.serialIDTextBox.Name = "serialIDTextBox";
+            this.serialIDTextBox.ReadOnly = true;
             this.serialIDTextBox.Size = new System.Drawing.Size(167, 21);
             this.serialIDTextBox.TabIndex = 21;
             // 
@@ -144,6 +131,7 @@
             // 
             this.codeTextBox.Location = new System.Drawing.Point(152, 102);
             this.codeTextBox.Name = "codeTextBox";
+            this.codeTextBox.ReadOnly = true;
             this.codeTextBox.Size = new System.Drawing.Size(162, 21);
             this.codeTextBox.TabIndex = 19;
             // 
@@ -160,6 +148,7 @@
             // 
             this.identifyIDTextBox.Location = new System.Drawing.Point(402, 75);
             this.identifyIDTextBox.Name = "identifyIDTextBox";
+            this.identifyIDTextBox.ReadOnly = true;
             this.identifyIDTextBox.Size = new System.Drawing.Size(167, 21);
             this.identifyIDTextBox.TabIndex = 17;
             // 
@@ -176,6 +165,7 @@
             // 
             this.deviceIPTextBox.Location = new System.Drawing.Point(152, 43);
             this.deviceIPTextBox.Name = "deviceIPTextBox";
+            this.deviceIPTextBox.ReadOnly = true;
             this.deviceIPTextBox.Size = new System.Drawing.Size(162, 21);
             this.deviceIPTextBox.TabIndex = 15;
             // 
@@ -192,6 +182,7 @@
             // 
             this.deviceNameTextBox.Location = new System.Drawing.Point(152, 75);
             this.deviceNameTextBox.Name = "deviceNameTextBox";
+            this.deviceNameTextBox.ReadOnly = true;
             this.deviceNameTextBox.Size = new System.Drawing.Size(162, 21);
             this.deviceNameTextBox.TabIndex = 13;
             // 
@@ -208,6 +199,7 @@
             // 
             this.localIPTextBox.Location = new System.Drawing.Point(402, 44);
             this.localIPTextBox.Name = "localIPTextBox";
+            this.localIPTextBox.ReadOnly = true;
             this.localIPTextBox.Size = new System.Drawing.Size(167, 21);
             this.localIPTextBox.TabIndex = 11;
             // 
@@ -251,8 +243,6 @@
             // 
             this.s.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.s.Controls.Add(this.stateComboBox);
-            this.s.Controls.Add(this.yiJiaZhuListView);
-            this.s.Controls.Add(this.yiJiaZhuLabel);
             this.s.Controls.Add(this.dianJi4TextBox);
             this.s.Controls.Add(this.dianJi3TextBox);
             this.s.Controls.Add(this.dianJi2TextBox);
@@ -276,29 +266,11 @@
             this.stateComboBox.Size = new System.Drawing.Size(100, 20);
             this.stateComboBox.TabIndex = 13;
             // 
-            // yiJiaZhuListView
-            // 
-            this.yiJiaZhuListView.GridLines = true;
-            this.yiJiaZhuListView.Location = new System.Drawing.Point(348, 43);
-            this.yiJiaZhuListView.Name = "yiJiaZhuListView";
-            this.yiJiaZhuListView.Size = new System.Drawing.Size(223, 151);
-            this.yiJiaZhuListView.TabIndex = 12;
-            this.yiJiaZhuListView.UseCompatibleStateImageBehavior = false;
-            this.yiJiaZhuListView.View = System.Windows.Forms.View.Details;
-            // 
-            // yiJiaZhuLabel
-            // 
-            this.yiJiaZhuLabel.AutoSize = true;
-            this.yiJiaZhuLabel.Location = new System.Drawing.Point(348, 16);
-            this.yiJiaZhuLabel.Name = "yiJiaZhuLabel";
-            this.yiJiaZhuLabel.Size = new System.Drawing.Size(41, 12);
-            this.yiJiaZhuLabel.TabIndex = 11;
-            this.yiJiaZhuLabel.Text = "label9";
-            // 
             // dianJi4TextBox
             // 
             this.dianJi4TextBox.Location = new System.Drawing.Point(174, 151);
             this.dianJi4TextBox.Name = "dianJi4TextBox";
+            this.dianJi4TextBox.ReadOnly = true;
             this.dianJi4TextBox.Size = new System.Drawing.Size(100, 21);
             this.dianJi4TextBox.TabIndex = 10;
             // 
@@ -306,6 +278,7 @@
             // 
             this.dianJi3TextBox.Location = new System.Drawing.Point(174, 124);
             this.dianJi3TextBox.Name = "dianJi3TextBox";
+            this.dianJi3TextBox.ReadOnly = true;
             this.dianJi3TextBox.Size = new System.Drawing.Size(100, 21);
             this.dianJi3TextBox.TabIndex = 9;
             // 
@@ -313,6 +286,7 @@
             // 
             this.dianJi2TextBox.Location = new System.Drawing.Point(174, 97);
             this.dianJi2TextBox.Name = "dianJi2TextBox";
+            this.dianJi2TextBox.ReadOnly = true;
             this.dianJi2TextBox.Size = new System.Drawing.Size(100, 21);
             this.dianJi2TextBox.TabIndex = 8;
             // 
@@ -320,6 +294,7 @@
             // 
             this.dianJi1TextBox.Location = new System.Drawing.Point(174, 70);
             this.dianJi1TextBox.Name = "dianJi1TextBox";
+            this.dianJi1TextBox.ReadOnly = true;
             this.dianJi1TextBox.Size = new System.Drawing.Size(100, 21);
             this.dianJi1TextBox.TabIndex = 7;
             // 
@@ -508,7 +483,7 @@
             this.ClientSize = new System.Drawing.Size(626, 556);
             this.Controls.Add(this.panel1);
             this.Name = "AutoDispenDeviceForm";
-            this.Text = "全自动培养皿分装仪";
+            this.Text = "仪器监测信息";
             this.Load += new System.EventHandler(this.AutoDispenDeviceForm_Load);
             this.panel1.ResumeLayout(false);
             this.basicPanel.ResumeLayout(false);
@@ -547,12 +522,9 @@
         private System.Windows.Forms.TextBox dianJi3TextBox;
         private System.Windows.Forms.TextBox dianJi2TextBox;
         private System.Windows.Forms.TextBox dianJi1TextBox;
-        private System.Windows.Forms.Label yiJiaZhuLabel;
-        private System.Windows.Forms.ListView yiJiaZhuListView;
         private System.Windows.Forms.Timer refreshTimer;
         private System.Windows.Forms.ComboBox stateComboBox;
         private System.Windows.Forms.Panel basicPanel;
-        private System.Windows.Forms.CheckBox isVirtualCheckBox;
         private System.Windows.Forms.TextBox serialIDTextBox;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox codeTextBox;

@@ -11,14 +11,14 @@ using Instrument;
 
 namespace CentralControl
 {
-    public partial class AutoDispenDeviceForm : Form
+    public partial class AutoPlateDeviceForm : Form
     {
         public ControlForm FatherForm;
         public bool IsSocket;
-        public AutoDispenVirtualDevice DispenDevice;
-        public AutoDispenTwincatDevice DispenTwincatDevice;
+        public AutoPlateVirtualDevice PlateDevice;
+        public AutoDispenTwincatDevice PlateTwincatDevice;
 
-        public AutoDispenDeviceForm()
+        public AutoPlateDeviceForm()
         {
             InitializeComponent();
             stateComboBox.Items.Add("正常");
@@ -35,30 +35,27 @@ namespace CentralControl
             {
                 //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
                 /*
-                if (true)
+                if (false)
                 {
                     msg = AutoDispenDeviceMessageCreator.createMDFSetNumAndVol(Num, Vol);
                 }
                 else
                 {
-                    //msg = AutoDispenDeviceMessageCreator.createMPFSetNumAndVol(Num, Vol);
+                    msg = AutoPlateDeviceMessageCreator.createMPFSetNumAndVol(Num, Vol);
                 }
-                DispenDevice.SendMsg(msg);
+                PlateDevice.SendMsg(msg);
                  * */
-                DispenDevice.sendMDFSetNumAndVol(Num,Vol);
+                PlateDevice.sendMPFSetNumAndVol(Num, Vol);
             }
             else 
             {
-                DispenTwincatDevice.SendNumAndVol(int.Parse(Num),float.Parse(Vol));
+                PlateTwincatDevice.SendNumAndVol(int.Parse(Num), float.Parse(Vol));
             }
         }
 
         private void send_cmd(String cmd) 
         {
-            if (IsSocket)
-                DispenDevice.SendModBusMsg(ModbusMessage.MessageType.CMD, "Cmd", cmd);
-            else 
-                DispenTwincatDevice.SendMsg(cmd);
+            PlateDevice.SendModBusMsg(ModbusMessage.MessageType.CMD, "Cmd", cmd);
         }
 
         private void resetButton_Click(object sender, EventArgs e)
@@ -86,79 +83,43 @@ namespace CentralControl
             refreshTimer.Stop();
             if (IsSocket)
             {
-                //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
-                if (true)
-                {
-                    dianJi1TextBox.Text = DispenDevice.MDF_Current1.ToString();
-                    dianJi2TextBox.Text = DispenDevice.MDF_Current2.ToString();
-                    dianJi3TextBox.Text = DispenDevice.MDF_Current3.ToString();
-                    dianJi4TextBox.Text = DispenDevice.MDF_Current4.ToString();
-                    stateComboBox.SelectedIndex = DispenDevice.MDF_RunningError;
-                }
-                else
-                {
-                    /*
-                    dianJi1TextBox.Text = DispenDevice.MPF_Current1.ToString();
-                    dianJi2TextBox.Text = DispenDevice.MPF_Current2.ToString();
-                    dianJi3TextBox.Text = DispenDevice.MPF_Current3.ToString();
-                    dianJi4TextBox.Text = DispenDevice.MPF_Current4.ToString();
-                    stateComboBox.SelectedIndex = DispenDevice.MPF_RunningError;
-                     * */
-                }
-
-                if (DispenDevice.NeedRefreshMessages)
+                dianJi1TextBox.Text = PlateDevice.MPF_Current1.ToString();
+                dianJi2TextBox.Text = PlateDevice.MPF_Current2.ToString();
+                dianJi3TextBox.Text = PlateDevice.MPF_Current3.ToString();
+                dianJi4TextBox.Text = PlateDevice.MPF_Current4.ToString();
+                stateComboBox.SelectedIndex = PlateDevice.MPF_RunningError;
+                
+                if (PlateDevice.NeedRefreshMessages)
                 {
                     yiJiaZhuListView.Items.Clear();
-                    foreach (MDFDispenMessage xinXi in DispenDevice.getDispenMessages())
+                    foreach (MPFDispenMessage xinXi in PlateDevice.getDispenMessages())
                     {
                         //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
                         if (true)
                         {
                             ListViewItem item = new ListViewItem();
-                            item.Text = xinXi.Stackcode;
-                            item.SubItems.Add(xinXi.Petricode);
-                            item.SubItems.Add(xinXi.Barcode);
+                            item.Text = xinXi.Barcode;
+                            item.SubItems.Add(xinXi.PlateNum);
                             yiJiaZhuListView.Items.Add(item);
                         }
-                        else
-                        {
-                            /*
-                            ListViewItem item = new ListViewItem();
-                            item.Text = xinXi.DuiMaHao;
-                            item.SubItems.Add(xinXi.TiaoMaHao);
-                            yiJiaZhuListView.Items.Add(item);
-                             */ 
-                        }
-
                     }
                 }
             }
             else 
             {
-                dianJi1TextBox.Text = DispenTwincatDevice.MDF_Current1.ToString();
-                dianJi2TextBox.Text = DispenTwincatDevice.MDF_Current2.ToString();
-                dianJi3TextBox.Text = DispenTwincatDevice.MDF_Current3.ToString();
-                stateComboBox.SelectedIndex = DispenTwincatDevice.YunXingChuCuoBiaoZhi;
-                if (DispenTwincatDevice.NeedRefreshMessages)
+                dianJi1TextBox.Text = PlateTwincatDevice.MDF_Current1.ToString();
+                dianJi2TextBox.Text = PlateTwincatDevice.MDF_Current2.ToString();
+                dianJi3TextBox.Text = PlateTwincatDevice.MDF_Current3.ToString();
+                stateComboBox.SelectedIndex = PlateTwincatDevice.YunXingChuCuoBiaoZhi;
+                if (PlateTwincatDevice.NeedRefreshMessages)
                 {
                     yiJiaZhuListView.Items.Clear();
-                    foreach (FenZhuangXinXi xinXi in DispenTwincatDevice.getFenZhuangMessages())
+                    foreach (FenZhuangXinXi msg in PlateTwincatDevice.getFenZhuangMessages())
                     {
-                        if (DispenTwincatDevice.SubType == AutoDispenTwincatDevice.AutoDispenType.PeiYangMin)
-                        {
                             ListViewItem item = new ListViewItem();
-                            item.Text = xinXi.DuiMaHao;
-                            item.SubItems.Add(xinXi.PeiYangMinHao);
-                            item.SubItems.Add(xinXi.TiaoMaHao);
+                            item.Text = msg.DuiMaHao;
+                            item.SubItems.Add(msg.TiaoMaHao);
                             yiJiaZhuListView.Items.Add(item);
-                        }
-                        else
-                        {
-                            ListViewItem item = new ListViewItem();
-                            item.Text = xinXi.DuiMaHao;
-                            item.SubItems.Add(xinXi.TiaoMaHao);
-                            yiJiaZhuListView.Items.Add(item);
-                        }
 
                     }
                 }
@@ -170,76 +131,58 @@ namespace CentralControl
         {
             if (IsSocket)
             {
-                if (DispenDevice.IsVirt)
+                if (PlateDevice.IsVirt)
                 {
                     isVirtualCheckBox.Checked = true;
                 }
-                deviceNameLabel.Text = DispenDevice.Name;
-                deviceIPTextBox.Text = DispenDevice.IP;
-                localIPTextBox.Text = DispenDevice.ControlIP;
-                deviceNameTextBox.Text = DispenDevice.Name;
-                identifyIDTextBox.Text = DispenDevice.IdentifyID;
-                codeTextBox.Text = DispenDevice.Code;
-                serialIDTextBox.Text = DispenDevice.SerialID;
+                deviceNameLabel.Text = PlateDevice.Name;
+                deviceIPTextBox.Text = PlateDevice.IP;
+                localIPTextBox.Text = PlateDevice.ControlIP;
+                deviceNameTextBox.Text = PlateDevice.Name;
+                identifyIDTextBox.Text = PlateDevice.IdentifyID;
+                codeTextBox.Text = PlateDevice.Code;
+                serialIDTextBox.Text = PlateDevice.SerialID;
 
                 //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
                 if (true)
                 {
-                    dianJi1TextBox.Text = DispenDevice.MDF_Current1.ToString();
-                    dianJi2TextBox.Text = DispenDevice.MDF_Current2.ToString();
-                    dianJi3TextBox.Text = DispenDevice.MDF_Current3.ToString();
-                    dianJi4TextBox.Text = DispenDevice.MDF_Current4.ToString();
-                    stateComboBox.SelectedIndex = DispenDevice.MDF_RunningError;
-                }
-                else
-                {
-                    /*
-                    dianJi1TextBox.Text = DispenDevice.MPF_Current1.ToString();
-                    dianJi2TextBox.Text = DispenDevice.MPF_Current2.ToString();
-                    dianJi3TextBox.Text = DispenDevice.MPF_Current3.ToString();
-                    dianJi4TextBox.Text = DispenDevice.MPF_Current4.ToString();
-                    stateComboBox.SelectedIndex = DispenDevice.MPF_RunningError;
-                     * */
+                    dianJi1TextBox.Text = PlateDevice.MPF_Current1.ToString();
+                    dianJi2TextBox.Text = PlateDevice.MPF_Current2.ToString();
+                    dianJi3TextBox.Text = PlateDevice.MPF_Current3.ToString();
+                    dianJi4TextBox.Text = PlateDevice.MPF_Current4.ToString();
+                    stateComboBox.SelectedIndex = PlateDevice.MPF_RunningError;
                 }
 
-                foreach (MDFDispenMessage xinXi in DispenDevice.getDispenMessages())
+                foreach (MPFDispenMessage msg in PlateDevice.getDispenMessages())
                 {
                     //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
                     if (true)
                     {
                         ListViewItem item = new ListViewItem();
-                        item.Text = xinXi.Stackcode;
-                        item.SubItems.Add(xinXi.Petricode);
-                        item.SubItems.Add(xinXi.Barcode);
+                        item.Text = msg.Barcode;
+                        item.SubItems.Add(msg.PlateNum);
                         yiJiaZhuListView.Items.Add(item);
                     }
-                    else
-                    {
-                        /*
-                        ListViewItem item = new ListViewItem();
-                        item.Text = xinXi.DuiMaHao;
-                        item.SubItems.Add(xinXi.TiaoMaHao);
-                        yiJiaZhuListView.Items.Add(item);
-                         */ 
-                    }
-
                 }
             }
             else 
             {
-                dianJi1TextBox.Text = DispenTwincatDevice.MDF_Current1.ToString();
-                dianJi2TextBox.Text = DispenTwincatDevice.MDF_Current2.ToString();
-                dianJi3TextBox.Text = DispenTwincatDevice.MDF_Current3.ToString();
-                stateComboBox.SelectedIndex = DispenTwincatDevice.YunXingChuCuoBiaoZhi;
-                foreach (FenZhuangXinXi xinXi in DispenTwincatDevice.getFenZhuangMessages())
+                dianJi1TextBox.Text = PlateTwincatDevice.MDF_Current1.ToString();
+                dianJi2TextBox.Text = PlateTwincatDevice.MDF_Current2.ToString();
+                dianJi3TextBox.Text = PlateTwincatDevice.MDF_Current3.ToString();
+                stateComboBox.SelectedIndex = PlateTwincatDevice.YunXingChuCuoBiaoZhi;
+                foreach (FenZhuangXinXi xinXi in PlateTwincatDevice.getFenZhuangMessages())
                 {
-                    if (DispenTwincatDevice.SubType == AutoDispenTwincatDevice.AutoDispenType.PeiYangMin)
+                    //if (PlateTwincatDevice.SubType == AutoDispenTwincatDevice.AutoDispenType.PeiYangMin)
+                    if (false)
                     {
+                        /*
                         ListViewItem item = new ListViewItem();
                         item.Text = xinXi.DuiMaHao;
                         item.SubItems.Add(xinXi.PeiYangMinHao);
                         item.SubItems.Add(xinXi.TiaoMaHao);
                         yiJiaZhuListView.Items.Add(item);
+                         * */
                     }
                     else
                     {
@@ -258,7 +201,7 @@ namespace CentralControl
             if (IsSocket)
             {
                 //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
-                if (true)
+                if (false)
                 {
                     yiJiaZhuLabel.Text = "已加注培养皿";
                     ColumnHeader header1 = new ColumnHeader();
@@ -290,7 +233,7 @@ namespace CentralControl
             }
             else 
             {
-                if (DispenTwincatDevice.SubType == AutoDispenTwincatDevice.AutoDispenType.PeiYangMin)
+                if (PlateTwincatDevice.SubType == AutoDispenTwincatDevice.AutoDispenType.PeiYangMin)
                 {
                     yiJiaZhuLabel.Text = "已加注培养皿";
                     ColumnHeader header1 = new ColumnHeader();

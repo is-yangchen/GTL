@@ -12,11 +12,12 @@ using Instrument;
 
 namespace VirtialDevices
 {
-    public partial class AutoDispenDeviceForm : Form
+    public partial class AutoPlateDeviceForm : Form
     {
         public DeviceForm FatherForm;
         public bool IsSocket;
-        public AutoDispenDevice DispenDevice;
+        public AutoPlateDevice PlateDevice;
+        //public AutoDispenDevice DispenDevice;
         public AutoDispenTwincatDevice TwincatDevice;
 
         private String[] VolStr = { "每摞培养皿数量","堆栈孔板数"};
@@ -25,7 +26,7 @@ namespace VirtialDevices
 
         private String[] StateStr = { "正常","出错"};
 
-        public AutoDispenDeviceForm()
+        public AutoPlateDeviceForm()
         {
             InitializeComponent();
             foreach (String s in StateStr) 
@@ -56,6 +57,7 @@ namespace VirtialDevices
                 }
             }
             */
+            index = 1;
             totalNumberLabel.Text = VolStr[index];
             capLabel.Text = CapStr[index];
             leftNumberLabel.Text = LeftStr[index];
@@ -77,8 +79,9 @@ namespace VirtialDevices
         {
             if (IsSocket)
             {
-                if (true)
+                if (false)
                 {
+                    /*
                     DispenDevice.MDF_RunningError = stateComboBox.SelectedIndex;
                     DispenDevice.MDF_Current1 = double.Parse(currency1TextBox.Text);
                     DispenDevice.MDF_Current2 = double.Parse(currency2TextBox.Text);
@@ -86,20 +89,21 @@ namespace VirtialDevices
                     DispenDevice.MDF_Current4 = double.Parse(currency3TextBox.Text);
                     DispenDevice.FenZhuangShiJian = int.Parse(dispenTimeTextBox.Text);
                     DispenDevice.MDF_CurSamTime = int.Parse(sampleTimeTextBox.Text);
+                     * */
                 }
                 else
                 {
-                    /*
-                    DispenDevice.MPF_RunningError = stateComboBox.SelectedIndex;
-                    DispenDevice.MPF_Current1 = double.Parse(currency1TextBox.Text);
-                    DispenDevice.MPF_Current2 = double.Parse(currency2TextBox.Text);
-                    DispenDevice.MPF_Current3 = double.Parse(currency3TextBox.Text);
-                    DispenDevice.MPF_Current4 = double.Parse(currency3TextBox.Text);
-                    DispenDevice.FenZhuangShiJian = int.Parse(dispenTimeTextBox.Text);
-                    DispenDevice.MPF_CurSamTime = int.Parse(sampleTimeTextBox.Text);
-                     * */
+                    //*
+                    PlateDevice.MPF_RunningError = stateComboBox.SelectedIndex;
+                    PlateDevice.MPF_Current1 = double.Parse(currency1TextBox.Text);
+                    PlateDevice.MPF_Current2 = double.Parse(currency2TextBox.Text);
+                    PlateDevice.MPF_Current3 = double.Parse(currency3TextBox.Text);
+                    PlateDevice.MPF_Current4 = double.Parse(currency3TextBox.Text);
+                    PlateDevice.FenZhuangShiJian = int.Parse(dispenTimeTextBox.Text);
+                    PlateDevice.MPF_CurSamTime = int.Parse(sampleTimeTextBox.Text);
+                    // * */
                 }
-                DispenDevice.startTimers();
+                PlateDevice.startTimers();
             }
             else 
             {
@@ -117,19 +121,21 @@ namespace VirtialDevices
         {
             if (IsSocket) 
             {
-                if (true)
+                if (false)
                 {
+                    /*
                     totalNumberTextBox.Text = DispenDevice.MDF_NumsperStack.ToString();
                     capTextBox.Text = DispenDevice.MDF_VolsperDish.ToString();
                     leftNumberTextBox.Text = DispenDevice.getLeft().ToString();
+                     * */
                 }
                 else
                 {
-                    /*
-                    totalNumberTextBox.Text = DispenDevice.MPF_PlateNum.ToString();
-                    capTextBox.Text = DispenDevice.MPF_Volsperwell.ToString();
-                    leftNumberTextBox.Text = DispenDevice.getLeft().ToString();
-                     * */
+                    //*
+                    totalNumberTextBox.Text = PlateDevice.MPF_PlateNum.ToString();
+                    capTextBox.Text = PlateDevice.MPF_Volsperwell.ToString();
+                    leftNumberTextBox.Text = PlateDevice.getLeft().ToString();
+                    // * */
                 }
             }
             else

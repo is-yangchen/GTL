@@ -29,24 +29,24 @@ namespace CentralControl
             private ControlForm FatherForm;
             public Socket MySocket
             {
-                get 
+                get
                 {
                     return this.mySocket;
                 }
-                set 
+                set
                 {
                     this.mySocket = value;
                 }
             }
             private Thread myThread;
-            public TmpSocketReceiver(Socket socket, DeviceManager dm,ControlForm form) 
+            public TmpSocketReceiver(Socket socket, DeviceManager dm, ControlForm form)
             {
                 mySocket = socket;
                 deviceManager = dm;
                 FatherForm = form;
             }
 
-            public void init() 
+            public void init()
             {
                 if (mySocket != null)
                 {
@@ -75,7 +75,7 @@ namespace CentralControl
                     {
                         n = mySocket.Receive(buffer);
                         s = StringByteHelper.BytesToString(buffer, 0, n);
-                        if (ReceiveBasicMsg(s)) 
+                        if (ReceiveBasicMsg(s))
                         {
                             decodeBasicMsg(s);
                             break;
@@ -89,11 +89,11 @@ namespace CentralControl
                 FatherForm.removeTmpList(this);
             }
 
-            private void decodeBasicMsg(String s) 
+            private void decodeBasicMsg(String s)
             {
                 ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
                 DeviceType type = EnumHelper.deviceStringToDeviceType((String)message.Data["DeviceType"]);
-                BaseVirtualDevice device = (BaseVirtualDevice)VirtualDeviceFactory.createVirtualDevice(type,true);
+                BaseVirtualDevice device = (BaseVirtualDevice)VirtualDeviceFactory.createVirtualDevice(type, true);
                 device.IsVirt = true;
                 device.CurrentDeviceType = type;
                 /*
@@ -104,7 +104,7 @@ namespace CentralControl
                     {
                         ((AutoDispenVirtualDevice)device).SubType = AutoDispenVirtualDevice.AutoDispenType.PeiYangMin;
                     }
-                    else 
+                    else
                     {
                         ((AutoDispenVirtualDevice)device).SubType = AutoDispenVirtualDevice.AutoDispenType.ShenKongBan;
                     }
@@ -124,7 +124,7 @@ namespace CentralControl
             private bool ReceiveBasicMsg(String s)
             {
                 ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
-                if (message.MsgType == ModbusMessage.MessageType.SET) 
+                if (message.MsgType == ModbusMessage.MessageType.SET)
                 {
                     String setType = (String)message.Data["SetType"];
                     if ("BasicInfo".Equals(setType)) return true;
@@ -139,7 +139,7 @@ namespace CentralControl
 
         private void addTmpList(TmpSocketReceiver rec)
         {
-            lock (tmpList) 
+            lock (tmpList)
             {
                 tmpList.Add(rec);
             }
@@ -147,7 +147,7 @@ namespace CentralControl
 
         public void removeTmpList(TmpSocketReceiver rec)
         {
-            lock (tmpList) 
+            lock (tmpList)
             {
                 tmpList.Remove(rec);
             }
@@ -162,45 +162,6 @@ namespace CentralControl
             myThread = null;
         }
 
-        private void searchButton_Click(object sender, EventArgs e)
-        {
-            DataQueryForm form = new DataQueryForm();
-            form.FatherForm = this;
-            form.Show();
-        }
-        
-        /*
-        private TcAdsClient adsClient;
-        private Dictionary<String, Type> nameDict = new Dictionary<String, Type>();
-        private Dictionary<String, int> handleMap = new Dictionary<String, int>();
-
-        private Dictionary<String, BaseDevice> twincatDict = new Dictionary<string, BaseDevice>();
-        private void handleNotification(object sender, AdsNotificationExEventArgs e) 
-        {            
-            String s = (String)e.UserData;
-            int handle = handleMap[s];
-            if (s.Equals("MAIN.MDF_online_state")) 
-            {
-                int value = (int)adsClient.ReadAny(handle,nameDict[s]);
-                if (value > 0)
-                {
-                    if (twincatDict.ContainsKey(s)) return;
-                    BaseTwincatDevice device = (BaseTwincatDevice)VirtualDeviceFactory.createVirtualDevice(DeviceType.Dispen,false);
-                    device.init();
-                    twincatDict[s] = device;
-                    deviceManager.addDevice(device);
-                }
-                else 
-                {
-                    if (!twincatDict.ContainsKey(s)) return;
-                    BaseDevice device = twincatDict[s];
-                    device.deinit();
-                    deviceManager.deleteDevice(device.Code);
-                    twincatDict.Remove(s);
-                }
-            }
-        }
-         */
         private void ControlForm_Load(object sender, EventArgs e)
         {
             Control.CheckForIllegalCrossThreadCalls = false;
@@ -212,7 +173,7 @@ namespace CentralControl
             adsClient = new TcAdsClient();
             nameDict["MAIN.MDF_online_state"] = typeof(int);
              */
-            try 
+            try
             {
                 mySocket.Bind(point);
                 mySocket.Listen(10);
@@ -227,11 +188,11 @@ namespace CentralControl
                     handleMap[s] = adsClient.CreateVariableHandle(s);
                     adsClient.AddDeviceNotificationEx(s, AdsTransMode.OnChange, 100, 0, s, nameDict[s]);
                 }
-                 */ 
+                 */
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-            
+
             }
             deviceTimer.Start();
             logTimer.Start();
@@ -239,18 +200,18 @@ namespace CentralControl
 
         private void AcceptInfo()
         {
-            while (true) 
+            while (true)
             {
-                try 
+                try
                 {
                     Socket tSocket = mySocket.Accept();
-                    TmpSocketReceiver rec = new TmpSocketReceiver(tSocket,deviceManager,this);
+                    TmpSocketReceiver rec = new TmpSocketReceiver(tSocket, deviceManager, this);
                     addTmpList(rec);
                     rec.init();
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
-                
+
                 }
             }
         }
@@ -258,7 +219,7 @@ namespace CentralControl
         private void ControlForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //if (myThread != null) myThread.Abort();
-            if (mySocket != null) mySocket.Close(); 
+            if (mySocket != null) mySocket.Close();
             //adsClient.Dispose();
         }
 
@@ -316,7 +277,7 @@ namespace CentralControl
         {
             logTimer.Stop();
 
-           
+
             List<DeviceMessage> messages = deviceManager.getAllMessages();
             ListViewItem item = null;
             logAllListView.BeginUpdate();
@@ -334,10 +295,7 @@ namespace CentralControl
             //    logAllListView.Items.Add(item);
             //}
 
-            //Database insert
-            Database mydb = new Database();
-
-            for (int i = 0; i < messages.Count; i++ )
+            for (int i = 0; i < messages.Count; i++)
             {
                 DeviceMessage message = messages[i];
                 item = new ListViewItem();
@@ -349,8 +307,6 @@ namespace CentralControl
                 item.SubItems.Add(message.Msg);
                 logAllListView.Items.Add(item);
 
-                //Database insert
-                mydb.insertlog(message.Msg, 1, type);
             }
 
             if (messages.Count > 0)
@@ -381,43 +337,21 @@ namespace CentralControl
         private void onlineAllListView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ListViewHitTestInfo info = onlineAllListView.HitTest(e.X, e.Y);
-            if (info.Item != null) 
+            if (info.Item != null)
             {
                 int index = info.Item.Index;
                 BaseDevice device = deviceManager.getDevice(index);
-              
+
                 switch (device.CurrentDeviceType)
                 {
-                    case DeviceType.Dispen:
-                        AutoDispenDeviceForm form = new AutoDispenDeviceForm();
-                        form.FatherForm = this;
-                        form.IsSocket = true;
-                        if (device is AutoDispenVirtualDevice)
-                            form.DispenDevice = (AutoDispenVirtualDevice)device;
-                        else
-                        {
-                            form.DispenTwincatDevice = (AutoDispenTwincatDevice)device;
-                            form.IsSocket = false;
-                        }
-                        form.Show();
-                        break;
-
-
-                    case DeviceType.Liquid:
-                        LiquidProcessForm forml = new LiquidProcessForm();
-                        forml.FatherForm = this;
-                        forml.DeviceInfo = device;
-                        forml.Show();
-                        break;
-                    
                     default:
-                        DeviceInfoForm form2 = new DeviceInfoForm();
+                        DemoDeviceForm form2 = new DemoDeviceForm();
                         form2.FatherForm = this;
-                        form2.DeviceInfo = device;
+                        form2.DemoDevice = (DemoVirtualDevice)device;
                         form2.Show();
                         break;
-
                 }
+
             }
         }
     }
