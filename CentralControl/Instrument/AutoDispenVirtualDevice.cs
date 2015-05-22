@@ -81,6 +81,7 @@ namespace Instrument
         public void sendMDFCurrencyReport(String[] currency)
         {
             Hashtable ht = new Hashtable();
+            ht.Add("ReportType", "MDF_Current");
             String[] s = { "MDF_Current1", "MDF_Current2", "MDF_Current3", "MDF_Current4" };
             for (int i = 0; i < s.Length; i++)
             {

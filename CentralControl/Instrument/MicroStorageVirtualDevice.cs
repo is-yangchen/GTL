@@ -93,8 +93,8 @@ namespace Instrument
                         doR8 = curdoR;
                         break;
                 }
-                Database mydb = new Database();
-                mydb.insertmmrinfo(1, mnum, curtpR, curphR, curdoR);
+                //Database mydb = new Database();
+                //mydb.insertmmrinfo(1, mnum, curtpR, curphR, curdoR);
             }
         }
 
