@@ -7,39 +7,44 @@ namespace DeviceUtils
 {
 
     public enum DeviceStates { Running, Stop, Fault, Created };
-    public enum DeviceType { Dispen, Clone, Matrix, Liquid, Analysis, Storage };
+    public enum DeviceType { Dispen, Plate, Clone, Matrix, Liquid, Analysis, Storage, Unknown };
 
-    public class EnumHelper 
+    public class EnumHelper
     {
-        public static DeviceType[] TypeEnums = { DeviceType.Dispen, DeviceType.Clone, DeviceType.Matrix, DeviceType.Liquid, DeviceType.Analysis, DeviceType.Storage };
+        public static DeviceType[] TypeEnums = { DeviceType.Dispen, DeviceType.Plate, DeviceType.Clone, DeviceType.Matrix, DeviceType.Liquid, DeviceType.Analysis, DeviceType.Storage };
 
         public static DeviceType deviceStringToDeviceType(String s)
         {
             if ("多通道高速代谢性能分析仪".Equals(s)) return DeviceType.Analysis;
             if ("单克隆挑选仪".Equals(s)) return DeviceType.Clone;
-            if ("全自动培养基分装仪".Equals(s)) return DeviceType.Dispen;
+            if ("全自动培养皿分装仪".Equals(s)) return DeviceType.Dispen;
+            if ("全自动深孔板分装仪".Equals(s)) return DeviceType.Plate;
             if ("全自动液体处理工作站".Equals(s)) return DeviceType.Liquid;
             if ("阵列式高通量培养仪".Equals(s)) return DeviceType.Matrix;
             if ("微孔板储存器".Equals(s)) return DeviceType.Storage;
-            return DeviceType.Dispen;
+            return DeviceType.Unknown;
         }
 
-        public static String getDeviceTypeString(DeviceType type) 
+        public static String getDeviceTypeString(DeviceType type)
         {
-            switch (type) 
+            switch (type)
             {
                 case DeviceType.Analysis:
                     return "多通道高速代谢性能分析仪";
                 case DeviceType.Clone:
                     return "单克隆挑选仪";
                 case DeviceType.Dispen:
-                    return "全自动培养基分装仪";
+                    return "全自动培养皿分装仪";
+                case DeviceType.Plate:
+                    return "全自动深孔板分装仪";
                 case DeviceType.Liquid:
                     return "全自动液体处理工作站";
                 case DeviceType.Matrix:
                     return "阵列式高通量培养仪";
                 case DeviceType.Storage:
                     return "微孔板储存器";
+                case DeviceType.Unknown:
+                    return "未知";
             }
             return null;
         }
@@ -65,9 +70,9 @@ namespace DeviceUtils
     public class BaseDevice
     {
 
-        protected VirtualDeviceManager virtualDeviceManager;
+        protected DeviceManager virtualDeviceManager;
 
-        public VirtualDeviceManager VirtualDeviceManager
+        public DeviceManager VirtualDeviceManager
         {
             get
             {

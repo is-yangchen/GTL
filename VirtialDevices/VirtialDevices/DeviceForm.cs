@@ -16,18 +16,18 @@ namespace VirtialDevices
         public bool IsCreating;
         public VirtualDevicesForm FatherForm;
         public Boolean IsSocket;
-        public AutoDispenDevice.AutoDispenType DispenType;
+        //public AutoDispenDevice.AutoDispenType DispenType;
         public AutoDispenTwincatDevice.AutoDispenType DispenTwincatType;
         public DeviceType Type;
         public BaseDevice DeviceInfo;
         public List<DeviceMessage> DeviceMessages;
-        private VirtualDeviceManager virtualDeviceManager;
+        private DeviceManager virtualDeviceManager;
 
 
         public DeviceForm()
         {
             InitializeComponent();
-            virtualDeviceManager = VirtualDeviceManager.getInstance();
+            virtualDeviceManager = DeviceManager.getInstance();
         }
 
         private void DeviceForm_Load(object sender, EventArgs e)
@@ -159,6 +159,7 @@ namespace VirtialDevices
             }
 
             //在为分装仪时需要设定是面向培养皿还是深孔板
+            /*
             if (Type == DeviceType.Dispen)
             {
                 if (IsSocket)
@@ -168,7 +169,7 @@ namespace VirtialDevices
                     ((AutoDispenTwincatDevice)result).SubType = DispenTwincatType;
                 }
             }
-
+            */
             return result;
         }
 
@@ -180,13 +181,22 @@ namespace VirtialDevices
                     AutoDispenDeviceForm aForm = new AutoDispenDeviceForm();
                     aForm.FatherForm = this;
                     aForm.IsSocket = true;
+                    /*
                     if (DeviceInfo is AutoDispenDevice) aForm.DispenDevice = (AutoDispenDevice)DeviceInfo;
                     else 
                     {
                         aForm.TwincatDevice = (AutoDispenTwincatDevice)DeviceInfo;
                         aForm.IsSocket = false;
-                    }
+                    }*/
+                    aForm.DispenDevice = (AutoDispenDevice)DeviceInfo;
                     aForm.Show();
+                    break;
+                case DeviceType.Plate:
+                    AutoPlateDeviceForm pForm = new AutoPlateDeviceForm();
+                    pForm.FatherForm = this;
+                    pForm.IsSocket = true;
+                    pForm.PlateDevice = (AutoPlateDevice)DeviceInfo;
+                    pForm.Show();
                     break;
                 case DeviceType.Analysis:
                     MultiTunnelDeviceForm mForm = new MultiTunnelDeviceForm();

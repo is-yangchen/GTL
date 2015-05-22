@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,110 +7,90 @@ using GTLutils;
 
 namespace Instrument
 {
-    public class AutoDispenDeviceMessageCreator
+    public class MDFDispenMessage
     {
+        public String Barcode;//条码号
+        public String Stackcode;//堆码号
+        public String Petricode;//培养皿号
 
-        public static String createCmd(String cmd) 
+        public MDFDispenMessage()
         {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("Cmd", cmd);
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.CMD), creator.getDataBytes());
+            Barcode = Stackcode = Petricode = "";
         }
-
-        public static String createMDFSetNumAndVol(String Num, String Vol) 
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("SetType", "MDF_NumAndVol");
-            creator.addKeyPair("MDF_NumsperStack", Num);
-            creator.addKeyPair("MDF_VolsperDish", Vol);
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.SET), creator.getDataBytes());
-        }
-
-        public static String createMPFSetNumAndVol(String Num, String Vol)
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("SetType", "MPF_NumAndVol");
-            creator.addKeyPair("MPF_PlateNum", Num);
-            creator.addKeyPair("MPF_Volsperwell", Vol);
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.SET), creator.getDataBytes());
-        }
-
-        public static String createOKResponse()
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("Result", "OK");
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.RESPONSE), creator.getDataBytes());
-        }
-    }
-
-    public class FenZhuangXinXi
-    {
-        public String TiaoMaHao;
-        public String DuiMaHao;
-        public String PeiYangMinHao;
-
-        public FenZhuangXinXi()
-        {
-            TiaoMaHao = DuiMaHao = PeiYangMinHao = "";
-        }
-    
     }
 
     public class AutoDispenVirtualDevice : BaseVirtualDevice
     {
-        public enum AutoDispenType { PeiYangMin, ShenKongBan };
-        public enum AutoDispenCmdType { RESET, START, STOP, SET };
-
-
-        private AutoDispenType subType;
-        public AutoDispenType SubType
-        {
-            get
-            {
-                return this.subType;
-            }
-            set
-            {
-                this.subType = value;
-            }
-        }
-
         /// <summary>
         /// MDF parameters
         /// </summary>
-        private int MDF_NumsperStack = 0;
-        public int getNum() { return this.MDF_NumsperStack; }
-        private double MDF_VolsperDish = 0;
-        public double getVol() { return this.MDF_VolsperDish; }
-        public int MDF_RunningError;
+        public int MDF_NumsperStack = 0;
+        public double MDF_VolsperDish = 0;
         public double MDF_Current1;
         public double MDF_Current2;
         public double MDF_Current3;
         public double MDF_Current4;
+        public int MDF_RunningError;
+        public int DispenTime;
+        public int MDF_CurSamTime;
+        public int MDF_WhichStack = 1;
+        public int MDF_WhichDish = 1;
+        public string MDF_BarCode;
         public string MDF_Cmd;
-
-        /// <summary>
-        /// MPF parameters
-        /// </summary>
-        public int MPF_PlateNum;
-        public double MPF_Volsperwell;
-        public int MPF_CurSamTime;
-        public string MPF_Cmd;
-        public int MPF_RunningError;
-        public double MPF_Current1;
-        public double MPF_Current2;
-        public double MPF_Current3;
-        public double MPF_Current4;
 
         /// <summary>
         /// Others
         /// </summary>
-        private List<FenZhuangXinXi> FenZhuangMessages = new List<FenZhuangXinXi>();
+        private List<MDFDispenMessage> DispenMessages = new List<MDFDispenMessage>();
 
         private bool needRefreshMessages = false;
         private Object RefreshObject = new Object();
 
-        public bool NeedRefreshMessages 
+        //private System.Timers.Timer samTimer = null;
+        //private System.Timers.Timer dispenTimer = null;
+
+        public void sendCmd(String cmd)
+        {
+            SendModBusMsg(ModbusMessage.MessageType.CMD, "Cmd", cmd);
+        }
+
+        public void sendMDFSetNumAndVol(String Num, String Vol)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("SetType", "MDF_NumAndVol");
+            ht.Add("MDF_NumsperStack", Num);
+            ht.Add("MDF_VolsperDish", Vol);
+            SendModBusMsg(ModbusMessage.MessageType.SET, ht);
+        }
+
+        public void sendOKResponse()
+        {
+            SendModBusMsg(ModbusMessage.MessageType.RESPONSE, "Result", "OK");
+        }
+
+        public void sendMDFCodesReport(String WhichStack, String WhichDish, String BarCode)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("ReportType", "MDF");
+            ht.Add("MDF_WhichStack", WhichStack);
+            ht.Add("MDF_WhichDish", WhichDish);
+            ht.Add("MDF_BarCode", BarCode);
+            SendModBusMsg(ModbusMessage.MessageType.REPORT, ht);
+        }
+
+        public void sendMDFCurrencyReport(String[] currency)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("ReportType", "MDF_Current");
+            String[] s = { "MDF_Current1", "MDF_Current2", "MDF_Current3", "MDF_Current4" };
+            for (int i = 0; i < s.Length; i++)
+            {
+                ht.Add(s[i], currency[i]);
+            }
+            SendModBusMsg(ModbusMessage.MessageType.REPORT, ht);
+        }
+
+        public bool NeedRefreshMessages
         {
             get
             {
@@ -121,12 +102,12 @@ namespace Instrument
                 }
             }
         }
-        public List<FenZhuangXinXi> getFenZhuangMessages()
+        public List<MDFDispenMessage> getDispenMessages()
         {
-            List<FenZhuangXinXi> res = new List<FenZhuangXinXi>();
-            lock (FenZhuangMessages)
+            List<MDFDispenMessage> res = new List<MDFDispenMessage>();
+            lock (DispenMessages)
             {
-                foreach (FenZhuangXinXi xinXin in FenZhuangMessages) 
+                foreach (MDFDispenMessage xinXin in DispenMessages)
                 {
                     res.Add(xinXin);
                 }
@@ -136,101 +117,73 @@ namespace Instrument
 
         public override void decodeResponseMessage(ModbusMessage msg)
         {
-            String s = AutoDispenDeviceMessageCreator.createOKResponse();
-            this.SendMsg(s);
+            this.sendOKResponse();
         }
 
         public override void decodeReportMessage(ModbusMessage msg)//解码报告消息
         {
             String reportType = (String)msg.Data["ReportType"];
-            if ("MDF_Current".Equals(reportType)) 
+            if ("MDF_Current".Equals(reportType))
             {
 
                 MDF_Current1 = double.Parse((String)msg.Data["MDF_Current1"]);
                 MDF_Current2 = double.Parse((String)msg.Data["MDF_Current2"]);
                 MDF_Current3 = double.Parse((String)msg.Data["MDF_Current3"]);
-                MPF_Current4 = double.Parse((String)msg.Data["MDF_Current4"]);
-                //插入数据库
-                Database mydb = new Database();
-                mydb.insertop((int)MDF_Current1, (int)MDF_Current2, (int)MDF_Current3, (int)MDF_Current4, "", 1, 1);
+                MDF_Current4 = double.Parse((String)msg.Data["MDF_Current4"]);
             }
-            if ("MPF_Current".Equals(reportType))
+            if ("MDF".Equals(reportType))
             {
-
-                MPF_Current1 = double.Parse((String)msg.Data["MPF_Current1"]);
-                MPF_Current2 = double.Parse((String)msg.Data["MPF_Current2"]);
-                MPF_Current3 = double.Parse((String)msg.Data["MPF_Current3"]);
-                MPF_Current4 = double.Parse((String)msg.Data["MPF_Current4"]);
-                //插入数据库
-                Database mydb = new Database();
-                mydb.insertmb((int)MPF_Current1, (int)MPF_Current2, (int)MPF_Current3, (int)MPF_Current4, "", 1, 1);
-            }
-            if ("MPF".Equals(reportType))
-            {
-                String KongBanHao = (String)msg.Data["MPF_Whichplate"];
-                String TiaoMaHao = (String)msg.Data["MPF_BarCode"];
-                FenZhuangXinXi xinXi = new FenZhuangXinXi();
-                xinXi.DuiMaHao = KongBanHao;
-                xinXi.TiaoMaHao = TiaoMaHao;
-                lock (FenZhuangMessages) 
+                String Stackcode = (String)msg.Data["MDF_WhichStack"];
+                String Petricode = (String)msg.Data["MDF_WhichDish"];
+                String Barcode = (String)msg.Data["MDF_BarCode"];
+                MDFDispenMessage xinXi = new MDFDispenMessage();
+                xinXi.Stackcode = Stackcode;
+                xinXi.Petricode = Petricode;
+                xinXi.Barcode = Barcode;
+                lock (DispenMessages)
                 {
-                    FenZhuangMessages.Add(xinXi);
-                }
-                lock (RefreshObject) 
-                {
-                    needRefreshMessages = true;
-                }
-
-                Database mydb = new Database();
-                mydb.insertmb((int)MPF_Current1, (int)MPF_Current2, (int)MPF_Current3, (int)MPF_Current4, TiaoMaHao, 1, 1);
-            }
-            if ("MDF".Equals(reportType)) 
-            {
-                String DuiMaHao = (String)msg.Data["MDF_WhichStack"];
-                String PeiYangMinHao = (String)msg.Data["MDF_WhichDish"];
-                String TiaoMaHao = (String)msg.Data["MDF_BarCode"];
-                FenZhuangXinXi xinXi = new FenZhuangXinXi();
-                xinXi.DuiMaHao = DuiMaHao;
-                xinXi.PeiYangMinHao = PeiYangMinHao;
-                xinXi.TiaoMaHao = TiaoMaHao;
-                lock (FenZhuangMessages)
-                {
-                    FenZhuangMessages.Add(xinXi);
+                    DispenMessages.Add(xinXi);
                 }
                 lock (RefreshObject)
                 {
                     needRefreshMessages = true;
                 }
-
-                Database mydb = new Database();
-                mydb.insertop((int)MDF_Current1, (int)MDF_Current2, (int)MDF_Current3, (int)MDF_Current4, TiaoMaHao, 1, 1);
             }
+        }
+
+        public override void decodeCmdMessage(ModbusMessage msg)
+        {
+            String cmd = (String)msg.Data["Cmd"];
+            if ("Start".Equals(cmd))
+            {
+                //dispenTimer.Start();
+            }
+            if ("Reset".Equals(cmd))
+            {
+                MDF_WhichDish = 1;
+                MDF_WhichStack = 1;
+            }
+            if ("Stop".Equals(cmd))
+            {
+                //dispenTimer.Stop();
+            }
+            if ("Auto".Equals(cmd))
+            {
+
+            }
+
+            this.sendOKResponse();
         }
 
         public override void decodeSetMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
-            if ("BasicInfo".Equals(setType))
+            if ("MDF_NumAndVol".Equals(setType))
             {
-
+                this.MDF_NumsperStack = Int32.Parse((String)msg.Data["MDF_NumsperStack"]);
+                this.MDF_VolsperDish = double.Parse((String)msg.Data["MDF_VolsperDish"]);
             }
         }
 
-        public override void ReceiveMsg(String s)
-        {
-            ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
-            switch (message.MsgType)
-            {
-                case ModbusMessage.MessageType.RESPONSE:
-                    decodeResponseMessage(message);
-                    break;
-                case ModbusMessage.MessageType.REPORT:
-                    decodeReportMessage(message);
-                    break;
-                case ModbusMessage.MessageType.SET:
-                    decodeSetMessage(message);
-                    break;
-            }
-        }
     }
 }

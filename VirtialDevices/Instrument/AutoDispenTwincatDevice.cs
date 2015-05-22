@@ -93,8 +93,8 @@ namespace Instrument
                 {
 
                 }
-                String msg = AutoDispenDeviceMessageCreator.createOKResponse();
-                adsClient.WriteAny(handleMap["MAIN.MDF_Command_response"],msg,new int[]{ConstSettings.StringLength});
+                //String msg = AutoDispenDeviceMessageCreator.createOKResponse();
+                //adsClient.WriteAny(handleMap["MAIN.MDF_Command_response"],msg,new int[]{ConstSettings.StringLength});
             }
         }
 
@@ -210,11 +210,11 @@ namespace Instrument
                     kongbanhao = KongBanHao.ToString();
                 }
             }
-            tiaomahao = TiaoMaHaoGenerator.generateTiaoMaHao();
+            tiaomahao = BarCodeGenerator.generateBarCode();
             increaseFenZhuangZhuangTai();
-            String msg;
-            if (subType == AutoDispenType.PeiYangMin) msg = AutoDispenDeviceMessageCreator.createMDFCodesReport(duimahao, peiyangminhao, tiaomahao);
-            else msg = AutoDispenDeviceMessageCreator.createMPFCodesReport(kongbanhao, tiaomahao);
+            String msg = "";
+            //if (true) msg = AutoDispenDeviceMessageCreator.createMDFCodesReport(duimahao, peiyangminhao, tiaomahao);
+            //else msg = AutoDispenDeviceMessageCreator.createMPFCodesReport(kongbanhao, tiaomahao);
             return msg;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,318 +9,265 @@ using DeviceUtils;
 
 namespace Instrument
 {
-    public class AutoDispenDeviceMessageInterpreter 
+    public class MDFDispenMessage
     {
-        
-        
-    }
+        public String Barcode;
+        public String Stackcode;
+        public String Petricode;
 
-    public class AutoDispenDeviceMessageCreator 
-    {
-
-        public static String createOKResponse() 
+        public MDFDispenMessage()
         {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("Result", "OK");
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.RESPONSE),creator.getDataBytes());
+            Barcode = Stackcode = Petricode = "";
         }
-
-        public static String createMDFCodesReport(String WhichStack, String WhichDish, String BarCode) 
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("ReportType","MDF");
-            creator.addKeyPair("MDF_WhichStack", WhichStack);
-            creator.addKeyPair("MDF_WhichDish", WhichDish);
-            creator.addKeyPair("MDF_BarCode", BarCode);
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT),creator.getDataBytes());
-        }
-
-        public static String createMPFCodesReport(String Whichplate, String BarCode) 
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("ReportType", "MPF");
-            creator.addKeyPair("MPF_Whichplate", Whichplate);
-            creator.addKeyPair("MPF_BarCode", BarCode);
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
-
-        }
-
-
-        public static String createMDFCurrencyReport(String[] currency)   
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("ReportType", "MDF_Current");
-            String[] s = { "MDF_Current1", "MDF_Current2", "MDF_Current3", "MDF_Current4" };
-            for (int i = 0; i < s.Length; i++) 
-            {
-                creator.addKeyPair(s[i],currency[i]);
-            }
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
-
-        }
-
-        public static String createMPFCurrencyReport(String[] currency)
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("ReportType", "MPF_Current");
-            String[] s = { "MPF_Current1", "MPF_Current2", "MPF_Current3", "MPF_Current4" };
-            for (int i = 0; i < s.Length; i++)
-            {
-                creator.addKeyPair(s[i], currency[i]);
-            }
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
-
-        }
-
     }
 
     public class AutoDispenDevice : BaseVirtualDevice
     {
-        public enum AutoDispenType { PeiYangMin, ShenKongBan};
-        public enum AutoDispenCmdType {RESET, START, STOP, SET};
-
-
-        private AutoDispenType subType;
-        public AutoDispenType SubType 
-        {
-            get 
-            {
-                return this.subType;
-            }
-            set 
-            {
-                this.subType = value;
-            }
-        }
-
         /// <summary>
         /// MDF parameters
         /// </summary>
-        public int MDF_NumsperStack;
-        public double MDF_VolsperDish;
-        public int MDF_RunningError;
-        public int FenZhuangShiJian;
-        public int MDF_CurSamTime;
-        public string MDF_Cmd;
+        public int MDF_NumsperStack = 0;
+        public double MDF_VolsperDish = 0;
         public double MDF_Current1;
         public double MDF_Current2;
         public double MDF_Current3;
         public double MDF_Current4;
-        private int MDF_WhichStack = 1;
-        private int MDF_WhichDish = 1;
+        public int MDF_RunningError;
+        public int DispenTime;
+        public int MDF_CurSamTime;
+        public int MDF_WhichStack = 1;
+        public int MDF_WhichDish = 1;
         public string MDF_BarCode;
+        public string MDF_Cmd;
+
         /// <summary>
-        /// MPF parameters
+        /// Others
         /// </summary>
-        public int MPF_PlateNum;
-        public double MPF_Volsperwell;
-        public int MPF_CurSamTime;
-        public string MPF_Cmd;
-        private int MPF_Whichplate = 1;
-        public int MPF_RunningError;
-        public double MPF_Current1;
-        public double MPF_Current2;
-        public double MPF_Current3;
-        public double MPF_Current4;
-        public string MPF_BarCode;
+        private List<MDFDispenMessage> DispenMessages = new List<MDFDispenMessage>();
 
-
-        private System.Timers.Timer caiYangTimer = null;
-        private System.Timers.Timer fenZhuangTimer = null;
-
+        private bool needRefreshMessages = false;
+        private Object RefreshObject = new Object();
         private object KeyObject = new object();
 
-        public int getLeft() 
+        private System.Timers.Timer samTimer = null;
+        private System.Timers.Timer dispenTimer = null;
+
+        public void sendCmd(String cmd)
         {
-            lock (KeyObject) 
+            SendModBusMsg(ModbusMessage.MessageType.CMD, "Cmd", cmd);
+        }
+
+        public void sendMDFSetNumAndVol(String Num, String Vol)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("SetType", "MDF_NumAndVol");
+            ht.Add("MDF_NumsperStack", Num);
+            ht.Add("MDF_VolsperDish", Vol);
+            SendModBusMsg(ModbusMessage.MessageType.SET, ht);
+        }
+
+        public void sendOKResponse()
+        {
+            SendModBusMsg(ModbusMessage.MessageType.RESPONSE, "Result", "OK");
+        }
+
+        public void sendMDFCodesReport(String WhichStack, String WhichDish, String BarCode)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("ReportType", "MDF");
+            ht.Add("MDF_WhichStack", WhichStack);
+            ht.Add("MDF_WhichDish", WhichDish);
+            ht.Add("MDF_BarCode", BarCode);
+            SendModBusMsg(ModbusMessage.MessageType.REPORT, ht);
+        }
+
+        public void sendMDFCurrencyReport(String[] currency)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("ReportType", "MDF_Current");
+            String[] s = { "MDF_Current1", "MDF_Current2", "MDF_Current3", "MDF_Current4" };
+            for (int i = 0; i < s.Length; i++)
             {
-                if (SubType == AutoDispenType.PeiYangMin)
+                ht.Add(s[i], currency[i]);
+            }
+            SendModBusMsg(ModbusMessage.MessageType.REPORT, ht);
+        }
+
+        public bool NeedRefreshMessages
+        {
+            get
+            {
+                lock (RefreshObject)
                 {
-                    return (MDF_NumsperStack - MDF_WhichStack) * 36 + 36 - MDF_WhichDish;
-                }
-                else
-                {
-                    return 97 - MPF_Whichplate;
+                    bool res = needRefreshMessages;
+                    needRefreshMessages = false;
+                    return res;
                 }
             }
         }
-
-        private void resetFenZhuangZhuangTai()
+        public List<MDFDispenMessage> getDispenMessages()
         {
-            lock (KeyObject) 
+            List<MDFDispenMessage> res = new List<MDFDispenMessage>();
+            lock (DispenMessages)
             {
-                MDF_WhichStack = 1;
-                MDF_WhichDish = 1;
-                MPF_Whichplate = 1;
+                foreach (MDFDispenMessage xinXin in DispenMessages)
+                {
+                    res.Add(xinXin);
+                }
             }
+            return res;
         }
 
-        private void increaseFenZhuangZhuangTai()
+        public int getLeft()
         {
             lock (KeyObject)
             {
-                if (SubType == AutoDispenType.PeiYangMin)
-                {
-                    MDF_WhichDish++;
-                    if (MDF_WhichDish > 36) 
-                    {
-                        MDF_WhichStack++;
-                        MDF_WhichDish = 1;
-                    }
-                    if (MDF_WhichStack > MDF_NumsperStack) 
-                    {
-                        MDF_WhichStack = 1;
-                        fenZhuangTimer.Stop();
-                    }
-                }
-                else
-                {
-                    MPF_Whichplate++;
-                    if (MPF_Whichplate > 96) 
-                    {
-                        MPF_Whichplate = 1;
-                        fenZhuangTimer.Stop();
-                    }
-                }
+                return (MDF_NumsperStack - MDF_WhichStack) * 36 + 36 - MDF_WhichDish;    
             }
         }
 
-        private String createFenZhuangMessage() 
+        private void resetDispenStatus()
         {
-            String duimahao = "";
-            String peiyangminhao = "";
-            String tiaomahao = "";
-            String kongbanhao = "";
-
-            lock (KeyObject) 
+            lock (KeyObject)
             {
-                if (SubType == AutoDispenType.PeiYangMin)
-                {
-                    peiyangminhao = MDF_WhichDish.ToString();
-                    duimahao = MDF_WhichStack.ToString();
-                }
-                else
-                {
-                    kongbanhao = MPF_Whichplate.ToString();
-                }
+                MDF_WhichStack = 1;
+                MDF_WhichDish = 1;
             }
-            tiaomahao = TiaoMaHaoGenerator.generateTiaoMaHao();
-            increaseFenZhuangZhuangTai();
-            String msg;
-            if (subType == AutoDispenType.PeiYangMin)
-            {
-                MDF_BarCode = tiaomahao;
-                msg = AutoDispenDeviceMessageCreator.createMDFCodesReport(duimahao, peiyangminhao, tiaomahao);
-            }
-            else
-            {
-                MPF_BarCode = tiaomahao;
-                msg = AutoDispenDeviceMessageCreator.createMPFCodesReport(kongbanhao, tiaomahao);
-            }
-
-            return msg;
         }
 
-        private void fenZhuangTimer_Elapsed(object sender, ElapsedEventArgs e) 
+        private void increaseDispenStatus()
+        {
+            lock (KeyObject)
+            {
+                MDF_WhichDish++;
+                if (MDF_WhichDish > 36)
+                {
+                    MDF_WhichStack++;
+                    MDF_WhichDish = 1;
+                }
+                if (MDF_WhichStack > MDF_NumsperStack)
+                {
+                    MDF_WhichStack = 1;
+                    dispenTimer.Stop();
+                }
+            }
+        }
+
+        private void sendDispenMessage()
+        {
+            String Stackcode = "";
+            String Petricode = "";
+            String Barcode = "";
+
+            lock (KeyObject)
+            {
+                Petricode = MDF_WhichDish.ToString();
+                Stackcode = MDF_WhichStack.ToString();
+            }
+
+            Barcode = BarCodeGenerator.generateBarCode();
+            increaseDispenStatus();
+            String msg;
+            MDF_BarCode = Barcode;
+            this.sendMDFCodesReport(Stackcode, Petricode, Barcode);
+        }
+
+        private void DispenTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             String msg = "";
-            msg = createFenZhuangMessage();
-            SendMsg(msg);
+            sendDispenMessage();
         }
 
-        private void caiYangTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void samTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (subType == AutoDispenType.PeiYangMin)
-            {
-                String[] currencies = new String[] { MDF_Current1.ToString(), MDF_Current2.ToString(), MDF_Current3.ToString(), MDF_Current4.ToString() };
-                String msg = AutoDispenDeviceMessageCreator.createMDFCurrencyReport(currencies);
-                SendMsg(msg);
-            }
-            else
-            {
-                String[] currencies = new String[] { MPF_Current1.ToString(), MPF_Current2.ToString(), MPF_Current3.ToString(), MPF_Current4.ToString() };
-                String msg = AutoDispenDeviceMessageCreator.createMPFCurrencyReport(currencies);
-                SendMsg(msg);
-            }
+            String[] currencies = new String[] { MDF_Current1.ToString(), MDF_Current2.ToString(), MDF_Current3.ToString(), MDF_Current4.ToString() };
+            this.sendMDFCurrencyReport(currencies);
         }
-        public void startTimers() 
+        public void startTimers()
         {
 
-            if (fenZhuangTimer != null) fenZhuangTimer.Stop();
-            if (caiYangTimer != null) caiYangTimer.Stop();
-            fenZhuangTimer = new System.Timers.Timer();
-            fenZhuangTimer.Interval = FenZhuangShiJian * 1000;
-            fenZhuangTimer.Elapsed += new System.Timers.ElapsedEventHandler(fenZhuangTimer_Elapsed);
+            if (dispenTimer != null) dispenTimer.Stop();
+            if (samTimer != null) samTimer.Stop();
+            dispenTimer = new System.Timers.Timer();
+            dispenTimer.Interval = DispenTime * 1000;
+            dispenTimer.Elapsed += new System.Timers.ElapsedEventHandler(DispenTimer_Elapsed);
 
-            caiYangTimer = new System.Timers.Timer();
-
-            if (subType == AutoDispenType.PeiYangMin)
-            {
-                caiYangTimer.Interval = MDF_CurSamTime * 1000;
-            }
-            else
-            {
-                caiYangTimer.Interval = MPF_CurSamTime * 1000;
-            }
-
-            caiYangTimer.Elapsed += new System.Timers.ElapsedEventHandler(caiYangTimer_Elapsed);
-            caiYangTimer.Start();
+            samTimer = new System.Timers.Timer();
+            samTimer.Interval = MDF_CurSamTime * 1000;
+            samTimer.Elapsed += new System.Timers.ElapsedEventHandler(samTimer_Elapsed);
+            samTimer.Start();
         }
 
-        private void decodeCmdMessage(ModbusMessage msg)
+        public override void decodeResponseMessage(ModbusMessage msg)
+        {
+            //this.sendOKResponse();
+        }
+
+        public override void decodeReportMessage(ModbusMessage msg)//解码报告消息
+        {
+            String reportType = (String)msg.Data["ReportType"];
+            if ("MDF_Current".Equals(reportType))
+            {
+
+                MDF_Current1 = double.Parse((String)msg.Data["MDF_Current1"]);
+                MDF_Current2 = double.Parse((String)msg.Data["MDF_Current2"]);
+                MDF_Current3 = double.Parse((String)msg.Data["MDF_Current3"]);
+                MDF_Current4 = double.Parse((String)msg.Data["MDF_Current4"]);
+            }
+            if ("MDF".Equals(reportType))
+            {
+                String Stackcode = (String)msg.Data["MDF_WhichStack"];
+                String Petricode = (String)msg.Data["MDF_WhichDish"];
+                String Barcode = (String)msg.Data["MDF_BarCode"];
+                MDFDispenMessage xinXi = new MDFDispenMessage();
+                xinXi.Stackcode = Stackcode;
+                xinXi.Petricode = Petricode;
+                xinXi.Barcode = Barcode;
+                lock (DispenMessages)
+                {
+                    DispenMessages.Add(xinXi);
+                }
+                lock (RefreshObject)
+                {
+                    needRefreshMessages = true;
+                }
+            }
+        }
+
+        public override void decodeCmdMessage(ModbusMessage msg)
         {
             String cmd = (String)msg.Data["Cmd"];
             if ("Start".Equals(cmd))
             {
-                fenZhuangTimer.Start();
+                dispenTimer.Start();
             }
-            if ("Reset".Equals(cmd)) 
+            if ("Reset".Equals(cmd))
             {
-                MPF_Whichplate = 1;
                 MDF_WhichDish = 1;
                 MDF_WhichStack = 1;
             }
             if ("Stop".Equals(cmd))
             {
-                fenZhuangTimer.Stop();
+                dispenTimer.Stop();
             }
-            if ("Auto".Equals(cmd)) 
+            if ("Auto".Equals(cmd))
             {
-                
+
             }
-            String s = AutoDispenDeviceMessageCreator.createOKResponse();
-            this.SendMsg(s);
+
+            this.sendOKResponse();
         }
 
-        private void decodeSetMessage(ModbusMessage msg)
+        public override void decodeSetMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
-            if ("MDF_NumAndVol".Equals(setType)) 
+            if ("MDF_NumAndVol".Equals(setType))
             {
                 this.MDF_NumsperStack = Int32.Parse((String)msg.Data["MDF_NumsperStack"]);
                 this.MDF_VolsperDish = double.Parse((String)msg.Data["MDF_VolsperDish"]);
             }
-            if ("MPF_NumAndVol".Equals(setType))
-            {
-                this.MPF_PlateNum = Int32.Parse((String)msg.Data["MPF_PlateNum"]);
-                this.MPF_Volsperwell = double.Parse((String)msg.Data["MPF_Volsperwell"]);
-            }
         }
 
-        public override void ReceiveMsg(String s)
-        {
-            ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
-            switch (message.MsgType) 
-            {
-                case ModbusMessage.MessageType.CMD:
-                    decodeCmdMessage(message);
-                    break;
-                case ModbusMessage.MessageType.SET:
-                    decodeSetMessage(message);
-                    break;
-                case ModbusMessage.MessageType.GET:
-                    break;
-            }
-        }
     }
 }
+

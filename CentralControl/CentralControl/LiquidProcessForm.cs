@@ -350,8 +350,8 @@ namespace CentralControl
             {
                 String msg = ALCDeviceMessageCreator.createDeployStatus(alcDevice.msgStatus);
                 alcDevice.SendMsg(msg);
-                Database mydb = new Database();
-                mydb.insertlpssetting(1, alcDevice.msgStatus);
+                //Database mydb = new Database();
+                //mydb.insertlpssetting(1, alcDevice.msgStatus);
             }
         }
 
@@ -472,8 +472,8 @@ namespace CentralControl
                 alcDevice.SendMsg(msg2);
                 String msg3 = ALCDeviceMessageCreator.createWeiZhiConfirmMsg(alcDevice.xiYeWeiZhi.ToString(), alcDevice.paiYeWeiZhi.ToString());
                 alcDevice.SendMsg(msg3);
-                Database mydb = new Database();
-                mydb.insertlpsplace(1, alcDevice.quYePan, alcDevice.muBiaoPan, alcDevice.xiYeLiang, alcDevice.xiYeSuDu, alcDevice.paiYeSuDu, alcDevice.xiYeWeiZhi, alcDevice.paiYeWeiZhi);
+                //Database mydb = new Database();
+                //mydb.insertlpsplace(1, alcDevice.quYePan, alcDevice.muBiaoPan, alcDevice.xiYeLiang, alcDevice.xiYeSuDu, alcDevice.paiYeSuDu, alcDevice.xiYeWeiZhi, alcDevice.paiYeWeiZhi);
             }
         }
 
