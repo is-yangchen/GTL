@@ -7,44 +7,44 @@ using GTLutils;
 
 namespace Instrument
 {
-    public class MDFDispenMessage
+    public class MPFDispenMessage
     {
         public String Barcode;
-        public String Stackcode;
-        public String Petricode;
+        public String PlateNum;
 
-        public MDFDispenMessage()
+        public MPFDispenMessage()
         {
-            Barcode = Stackcode = Petricode = "";
+            Barcode = PlateNum = "";
         }
+
     }
 
-    public class AutoDispenVirtualDevice : BaseVirtualDevice
+    public class AutoPlateVirtualDevice : BaseVirtualDevice
     {
         /// <summary>
-        /// MDF parameters
+        /// MPF parameters
         /// </summary>
-        public int MDF_NumsperStack = 0;
-        public double MDF_VolsperDish = 0;
-        public double MDF_Current1;
-        public double MDF_Current2;
-        public double MDF_Current3;
-        public double MDF_Current4;
-        public int MDF_RunningError;
+        public int MPF_PlateNum;
+        public double MPF_Volsperwell;
+        public int MPF_CurSamTime;
+        public string MPF_Cmd;
+        public int MPF_Whichplate = 1;
+        public int MPF_RunningError;
         public int DispenTime;
-        public int MDF_CurSamTime;
-        public int MDF_WhichStack = 1;
-        public int MDF_WhichDish = 1;
-        public string MDF_BarCode;
-        public string MDF_Cmd;
+        public double MPF_Current1;
+        public double MPF_Current2;
+        public double MPF_Current3;
+        public double MPF_Current4;
+        public string MPF_BarCode;
 
         /// <summary>
         /// Others
         /// </summary>
-        private List<MDFDispenMessage> DispenMessages = new List<MDFDispenMessage>();
+        private List<MPFDispenMessage> DispenMessages = new List<MPFDispenMessage>();
 
         private bool needRefreshMessages = false;
         private Object RefreshObject = new Object();
+        //private object KeyObject = new object();
 
         //private System.Timers.Timer samTimer = null;
         //private System.Timers.Timer dispenTimer = null;
@@ -54,12 +54,12 @@ namespace Instrument
             SendModBusMsg(ModbusMessage.MessageType.CMD, "Cmd", cmd);
         }
 
-        public void sendMDFSetNumAndVol(String Num, String Vol)
+        public void sendMPFSetNumAndVol(String Num, String Vol)
         {
             Hashtable ht = new Hashtable();
-            ht.Add("SetType", "MDF_NumAndVol");
-            ht.Add("MDF_NumsperStack", Num);
-            ht.Add("MDF_VolsperDish", Vol);
+            ht.Add("SetType", "MPF_NumAndVol");
+            ht.Add("MPF_PlateNum", Num);
+            ht.Add("MPF_Volsperwell", Vol);
             SendModBusMsg(ModbusMessage.MessageType.SET, ht);
         }
 
@@ -68,20 +68,19 @@ namespace Instrument
             SendModBusMsg(ModbusMessage.MessageType.RESPONSE, "Result", "OK");
         }
 
-        public void sendMDFCodesReport(String WhichStack, String WhichDish, String BarCode)
+        public void sendMPFCodesReport(String Whichplate, String BarCode)
         {
             Hashtable ht = new Hashtable();
-            ht.Add("ReportType", "MDF");
-            ht.Add("MDF_WhichStack", WhichStack);
-            ht.Add("MDF_WhichDish", WhichDish);
-            ht.Add("MDF_BarCode", BarCode);
+            ht.Add("ReportType", "MPF");
+            ht.Add("MPF_Whichplate", Whichplate);
+            ht.Add("MPF_BarCode", BarCode);
             SendModBusMsg(ModbusMessage.MessageType.REPORT, ht);
         }
 
-        public void sendMDFCurrencyReport(String[] currency)
+        public void sendMPFCurrencyReport(String[] currency)
         {
             Hashtable ht = new Hashtable();
-            String[] s = { "MDF_Current1", "MDF_Current2", "MDF_Current3", "MDF_Current4" };
+            String[] s = { "MPF_Current1", "MPF_Current2", "MPF_Current3", "MPF_Current4" };
             for (int i = 0; i < s.Length; i++)
             {
                 ht.Add(s[i], currency[i]);
@@ -101,14 +100,14 @@ namespace Instrument
                 }
             }
         }
-        public List<MDFDispenMessage> getDispenMessages()
+        public List<MPFDispenMessage> getDispenMessages()
         {
-            List<MDFDispenMessage> res = new List<MDFDispenMessage>();
+            List<MPFDispenMessage> res = new List<MPFDispenMessage>();
             lock (DispenMessages)
             {
-                foreach (MDFDispenMessage xinXin in DispenMessages)
+                foreach (MPFDispenMessage msg in DispenMessages)
                 {
-                    res.Add(xinXin);
+                    res.Add(msg);
                 }
             }
             return res;
@@ -122,26 +121,25 @@ namespace Instrument
         public override void decodeReportMessage(ModbusMessage msg)//解码报告消息
         {
             String reportType = (String)msg.Data["ReportType"];
-            if ("MDF_Current".Equals(reportType))
+
+            if ("MPF_Current".Equals(reportType))
             {
 
-                MDF_Current1 = double.Parse((String)msg.Data["MDF_Current1"]);
-                MDF_Current2 = double.Parse((String)msg.Data["MDF_Current2"]);
-                MDF_Current3 = double.Parse((String)msg.Data["MDF_Current3"]);
-                MDF_Current4 = double.Parse((String)msg.Data["MDF_Current4"]);
+                MPF_Current1 = double.Parse((String)msg.Data["MPF_Current1"]);
+                MPF_Current2 = double.Parse((String)msg.Data["MPF_Current2"]);
+                MPF_Current3 = double.Parse((String)msg.Data["MPF_Current3"]);
+                MPF_Current4 = double.Parse((String)msg.Data["MPF_Current4"]);
             }
-            if ("MDF".Equals(reportType))
+            if ("MPF".Equals(reportType))
             {
-                String Stackcode = (String)msg.Data["MDF_WhichStack"];
-                String Petricode = (String)msg.Data["MDF_WhichDish"];
-                String Barcode = (String)msg.Data["MDF_BarCode"];
-                MDFDispenMessage xinXi = new MDFDispenMessage();
-                xinXi.Stackcode = Stackcode;
-                xinXi.Petricode = Petricode;
-                xinXi.Barcode = Barcode;
+                String PlateNum = (String)msg.Data["MPF_Whichplate"];
+                String Barcode = (String)msg.Data["MPF_BarCode"];
+                MPFDispenMessage disMsg = new MPFDispenMessage();
+                disMsg.PlateNum = PlateNum;
+                disMsg.Barcode = Barcode;
                 lock (DispenMessages)
                 {
-                    DispenMessages.Add(xinXi);
+                    DispenMessages.Add(disMsg);
                 }
                 lock (RefreshObject)
                 {
@@ -159,8 +157,7 @@ namespace Instrument
             }
             if ("Reset".Equals(cmd))
             {
-                MDF_WhichDish = 1;
-                MDF_WhichStack = 1;
+                MPF_Whichplate = 1;
             }
             if ("Stop".Equals(cmd))
             {
@@ -177,10 +174,10 @@ namespace Instrument
         public override void decodeSetMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
-            if ("MDF_NumAndVol".Equals(setType))
+            if ("MPF_NumAndVol".Equals(setType))
             {
-                this.MDF_NumsperStack = Int32.Parse((String)msg.Data["MDF_NumsperStack"]);
-                this.MDF_VolsperDish = double.Parse((String)msg.Data["MDF_VolsperDish"]);
+                this.MPF_PlateNum = Int32.Parse((String)msg.Data["MPF_PlateNum"]);
+                this.MPF_Volsperwell = double.Parse((String)msg.Data["MPF_Volsperwell"]);
             }
         }
 
