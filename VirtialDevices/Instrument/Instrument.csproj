@@ -54,7 +54,7 @@
     <Compile Include="MicroStorageDevice.cs" />
     <Compile Include="MultiTunnelDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TiaoMaHaoGenerator.cs" />
+    <Compile Include="BarCodeGenerator.cs" />
     <Compile Include="VirtualDeviceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
