@@ -9,8 +9,8 @@ namespace Instrument
 {
     public class MPFDispenMessage
     {
-        public String Barcode;
-        public String PlateNum;
+        public String Barcode;//条码号
+        public String PlateNum;//孔板数
 
         public MPFDispenMessage()
         {

@@ -7,6 +7,18 @@ using GTLutils;
 
 namespace Instrument
 {
+    public class FenZhuangXinXi
+    {
+        public String TiaoMaHao;
+        public String DuiMaHao;
+        public String PeiYangMinHao;
+
+        public FenZhuangXinXi()
+        {
+            TiaoMaHao = DuiMaHao = PeiYangMinHao = "";
+        }
+
+    }
     public class AutoDispenTwincatDevice : BaseTwincatDevice
     {
         public enum AutoDispenType { PeiYangMin, ShenKongBan };
@@ -35,7 +47,7 @@ namespace Instrument
         public double MDF_Current1;
         public double MDF_Current2;
         public double MDF_Current3;
-
+        
         private List<FenZhuangXinXi> FenZhuangMessages = new List<FenZhuangXinXi>();
 
         private bool needRefreshMessages = false;
@@ -123,12 +135,13 @@ namespace Instrument
         {
             adsClient.Dispose();
         }
+        //*
         private void decodeResponseMessage(ModbusMessage msg)
         {
-            String s = AutoDispenDeviceMessageCreator.createOKResponse();
-            this.SendMsg(s);
+            //String s = AutoDispenDeviceMessageCreator.createOKResponse();
+            //this.SendMsg(s);
         }
-
+        //*/
         private void decodeReportMessage(ModbusMessage msg)//解码报告消息
         {
             String reportType = (String)msg.Data["ReportType"];

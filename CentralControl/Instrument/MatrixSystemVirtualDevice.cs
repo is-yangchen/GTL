@@ -185,8 +185,8 @@ namespace Instrument
                             OD_rowl[i][j] = Convert.ToInt32(((String)msg.Data["OD"])[12 * i + j]);
                         }
 
-                    Database mydb = new Database();
-                    mydb.inserthacod(1, OD_rowl, 1);
+                    //Database mydb = new Database();
+                    //mydb.inserthacod(1, OD_rowl, 1);
                 }
 
             }
@@ -199,8 +199,8 @@ namespace Instrument
                 this.TH_humidity1 = Convert.ToInt32((String)msg.Data["TH_humidity1"]);
                 this.TH_humidity2 = Convert.ToInt32((String)msg.Data["TH_humidity2"]);
                 
-                Database mydb = new Database();
-                mydb.inserthactmpmod(1, 1, this.TH_temperature1, TH_temperature2, TH_temperature3, TH_humidity1, TH_humidity2); 
+                //Database mydb = new Database();
+                //mydb.inserthactmpmod(1, 1, this.TH_temperature1, TH_temperature2, TH_temperature3, TH_humidity1, TH_humidity2); 
                  
             }
 
@@ -210,8 +210,8 @@ namespace Instrument
                 this.Sys_Status = Convert.ToInt32((String)msg.Data["Sys_Status"]);
                 this.Sys_Batch_Info = Convert.ToInt32((String)msg.Data["Sys_Batch_Info"]);
 
-                Database mydb = new Database();
-                mydb.inserthacstate(1, this.Sys_Status);
+                //Database mydb = new Database();
+                //mydb.inserthacstate(1, this.Sys_Status);
             }
 
             if ("Code".Equals(reportType))
@@ -219,8 +219,8 @@ namespace Instrument
                 this.Add_Num = (String)msg.Data["Add_Num"];
                 this.Add_Num = (String)msg.Data["Rem_Num"];
 
-                Database mydb = new Database();
-                mydb.inserthacbarcode(Add_Num, Rem_Num, 1);
+                //Database mydb = new Database();
+                //mydb.inserthacbarcode(Add_Num, Rem_Num, 1);
             }
 
             if ("Motor".Equals(reportType))
@@ -230,8 +230,8 @@ namespace Instrument
                 this.Motor_Status = Convert.ToInt32((String)msg.Data["Motor_Status"]);
                 this.Motor_Power = Convert.ToInt32((String)msg.Data["Motor_Power"]);
 
-                Database mydb = new Database();
-                mydb.inserthacengine(1, Motor_elecspeed, Motor_Power, Motor_text_speed, Motor_Status); 
+                //Database mydb = new Database();
+                //mydb.inserthacengine(1, Motor_elecspeed, Motor_Power, Motor_text_speed, Motor_Status); 
             }
 
 

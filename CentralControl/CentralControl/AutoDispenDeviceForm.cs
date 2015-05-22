@@ -33,15 +33,19 @@ namespace CentralControl
             Vol = textBox2.Text;
             if (IsSocket)
             {
-                if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                /*
+                if (true)
                 {
                     msg = AutoDispenDeviceMessageCreator.createMDFSetNumAndVol(Num, Vol);
                 }
                 else
                 {
-                    msg = AutoDispenDeviceMessageCreator.createMPFSetNumAndVol(Num, Vol);
+                    //msg = AutoDispenDeviceMessageCreator.createMPFSetNumAndVol(Num, Vol);
                 }
                 DispenDevice.SendMsg(msg);
+                 * */
+                DispenDevice.sendMDFSetNumAndVol(Num,Vol);
             }
             else 
             {
@@ -49,12 +53,12 @@ namespace CentralControl
             }
         }
 
-        private void send_cmd(String s) 
+        private void send_cmd(String cmd) 
         {
-            String msg = AutoDispenDeviceMessageCreator.createCmd(s);
             if (IsSocket)
-                DispenDevice.SendMsg(msg);
-            else DispenTwincatDevice.SendMsg(s);
+                DispenDevice.SendModBusMsg(ModbusMessage.MessageType.CMD, "Cmd", cmd);
+            else 
+                DispenTwincatDevice.SendMsg(cmd);
         }
 
         private void resetButton_Click(object sender, EventArgs e)
@@ -82,7 +86,8 @@ namespace CentralControl
             refreshTimer.Stop();
             if (IsSocket)
             {
-                if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                if (true)
                 {
                     dianJi1TextBox.Text = DispenDevice.MDF_Current1.ToString();
                     dianJi2TextBox.Text = DispenDevice.MDF_Current2.ToString();
@@ -92,32 +97,37 @@ namespace CentralControl
                 }
                 else
                 {
+                    /*
                     dianJi1TextBox.Text = DispenDevice.MPF_Current1.ToString();
                     dianJi2TextBox.Text = DispenDevice.MPF_Current2.ToString();
                     dianJi3TextBox.Text = DispenDevice.MPF_Current3.ToString();
                     dianJi4TextBox.Text = DispenDevice.MPF_Current4.ToString();
                     stateComboBox.SelectedIndex = DispenDevice.MPF_RunningError;
+                     * */
                 }
 
                 if (DispenDevice.NeedRefreshMessages)
                 {
                     yiJiaZhuListView.Items.Clear();
-                    foreach (FenZhuangXinXi xinXi in DispenDevice.getFenZhuangMessages())
+                    foreach (MDFDispenMessage xinXi in DispenDevice.getDispenMessages())
                     {
-                        if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                        //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                        if (true)
                         {
                             ListViewItem item = new ListViewItem();
-                            item.Text = xinXi.DuiMaHao;
-                            item.SubItems.Add(xinXi.PeiYangMinHao);
-                            item.SubItems.Add(xinXi.TiaoMaHao);
+                            item.Text = xinXi.Stackcode;
+                            item.SubItems.Add(xinXi.Petricode);
+                            item.SubItems.Add(xinXi.Barcode);
                             yiJiaZhuListView.Items.Add(item);
                         }
                         else
                         {
+                            /*
                             ListViewItem item = new ListViewItem();
                             item.Text = xinXi.DuiMaHao;
                             item.SubItems.Add(xinXi.TiaoMaHao);
                             yiJiaZhuListView.Items.Add(item);
+                             */ 
                         }
 
                     }
@@ -172,7 +182,8 @@ namespace CentralControl
                 codeTextBox.Text = DispenDevice.Code;
                 serialIDTextBox.Text = DispenDevice.SerialID;
 
-                if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                if (true)
                 {
                     dianJi1TextBox.Text = DispenDevice.MDF_Current1.ToString();
                     dianJi2TextBox.Text = DispenDevice.MDF_Current2.ToString();
@@ -182,29 +193,34 @@ namespace CentralControl
                 }
                 else
                 {
+                    /*
                     dianJi1TextBox.Text = DispenDevice.MPF_Current1.ToString();
                     dianJi2TextBox.Text = DispenDevice.MPF_Current2.ToString();
                     dianJi3TextBox.Text = DispenDevice.MPF_Current3.ToString();
                     dianJi4TextBox.Text = DispenDevice.MPF_Current4.ToString();
                     stateComboBox.SelectedIndex = DispenDevice.MPF_RunningError;
+                     * */
                 }
-                
-                foreach (FenZhuangXinXi xinXi in DispenDevice.getFenZhuangMessages())
+
+                foreach (MDFDispenMessage xinXi in DispenDevice.getDispenMessages())
                 {
-                    if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                    //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                    if (true)
                     {
                         ListViewItem item = new ListViewItem();
-                        item.Text = xinXi.DuiMaHao;
-                        item.SubItems.Add(xinXi.PeiYangMinHao);
-                        item.SubItems.Add(xinXi.TiaoMaHao);
+                        item.Text = xinXi.Stackcode;
+                        item.SubItems.Add(xinXi.Petricode);
+                        item.SubItems.Add(xinXi.Barcode);
                         yiJiaZhuListView.Items.Add(item);
                     }
                     else
                     {
+                        /*
                         ListViewItem item = new ListViewItem();
                         item.Text = xinXi.DuiMaHao;
                         item.SubItems.Add(xinXi.TiaoMaHao);
                         yiJiaZhuListView.Items.Add(item);
+                         */ 
                     }
 
                 }
@@ -241,7 +257,8 @@ namespace CentralControl
         {
             if (IsSocket)
             {
-                if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                //if (DispenDevice.SubType == AutoDispenVirtualDevice.AutoDispenType.PeiYangMin)
+                if (true)
                 {
                     yiJiaZhuLabel.Text = "已加注培养皿";
                     ColumnHeader header1 = new ColumnHeader();

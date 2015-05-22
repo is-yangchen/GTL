@@ -21,7 +21,8 @@ namespace Instrument
         }
     }
 
-    public class AutoDispenVirtualDevice : BaseVirtualDevice
+
+    public class AutoDispenDevice : BaseVirtualDevice
     {
         /// <summary>
         /// MDF parameters
@@ -84,6 +85,8 @@ namespace Instrument
         public void sendMDFCurrencyReport(String[] currency)
         {
             Hashtable ht = new Hashtable();
+
+            ht.Add("ReportType", "MDF_Current");
             String[] s = { "MDF_Current1", "MDF_Current2", "MDF_Current3", "MDF_Current4" };
             for (int i = 0; i < s.Length; i++)
             {
@@ -164,7 +167,8 @@ namespace Instrument
                 Stackcode = MDF_WhichStack.ToString();
             }
 
-            Barcode = TiaoMaHaoGenerator.generateTiaoMaHao();
+
+            Barcode = BarCodeGenerator.generateBarCode();
             increaseDispenStatus();
             String msg;
             MDF_BarCode = Barcode;
@@ -199,7 +203,7 @@ namespace Instrument
 
         public override void decodeResponseMessage(ModbusMessage msg)
         {
-            this.sendOKResponse();
+            //this.sendOKResponse();
         }
 
         public override void decodeReportMessage(ModbusMessage msg)//解码报告消息

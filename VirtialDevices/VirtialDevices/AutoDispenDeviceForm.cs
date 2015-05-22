@@ -40,6 +40,7 @@ namespace VirtialDevices
             FatherForm.Enabled = false;
 
             int index = 0;
+            /*
             if (IsSocket)
             {
                 if (DispenDevice.SubType == AutoDispenDevice.AutoDispenType.ShenKongBan)
@@ -54,7 +55,7 @@ namespace VirtialDevices
                     index = 1;
                 }
             }
-
+            */
             totalNumberLabel.Text = VolStr[index];
             capLabel.Text = CapStr[index];
             leftNumberLabel.Text = LeftStr[index];
@@ -76,18 +77,19 @@ namespace VirtialDevices
         {
             if (IsSocket)
             {
-                if (DispenDevice.SubType == AutoDispenDevice.AutoDispenType.PeiYangMin)
+                if (true)
                 {
                     DispenDevice.MDF_RunningError = stateComboBox.SelectedIndex;
                     DispenDevice.MDF_Current1 = double.Parse(currency1TextBox.Text);
                     DispenDevice.MDF_Current2 = double.Parse(currency2TextBox.Text);
                     DispenDevice.MDF_Current3 = double.Parse(currency3TextBox.Text);
                     DispenDevice.MDF_Current4 = double.Parse(currency3TextBox.Text);
-                    DispenDevice.FenZhuangShiJian = int.Parse(dispenTimeTextBox.Text);
+                    DispenDevice.DispenTime = int.Parse(dispenTimeTextBox.Text);
                     DispenDevice.MDF_CurSamTime = int.Parse(sampleTimeTextBox.Text);
                 }
                 else
                 {
+                    /*
                     DispenDevice.MPF_RunningError = stateComboBox.SelectedIndex;
                     DispenDevice.MPF_Current1 = double.Parse(currency1TextBox.Text);
                     DispenDevice.MPF_Current2 = double.Parse(currency2TextBox.Text);
@@ -95,6 +97,7 @@ namespace VirtialDevices
                     DispenDevice.MPF_Current4 = double.Parse(currency3TextBox.Text);
                     DispenDevice.FenZhuangShiJian = int.Parse(dispenTimeTextBox.Text);
                     DispenDevice.MPF_CurSamTime = int.Parse(sampleTimeTextBox.Text);
+                     * */
                 }
                 DispenDevice.startTimers();
             }
@@ -114,7 +117,7 @@ namespace VirtialDevices
         {
             if (IsSocket) 
             {
-                if (DispenDevice.SubType == AutoDispenDevice.AutoDispenType.PeiYangMin)
+                if (true)
                 {
                     totalNumberTextBox.Text = DispenDevice.MDF_NumsperStack.ToString();
                     capTextBox.Text = DispenDevice.MDF_VolsperDish.ToString();
@@ -122,9 +125,11 @@ namespace VirtialDevices
                 }
                 else
                 {
+                    /*
                     totalNumberTextBox.Text = DispenDevice.MPF_PlateNum.ToString();
                     capTextBox.Text = DispenDevice.MPF_Volsperwell.ToString();
                     leftNumberTextBox.Text = DispenDevice.getLeft().ToString();
+                     * */
                 }
             }
             else

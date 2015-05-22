@@ -142,7 +142,7 @@ namespace Instrument
 
         private void startTimer() 
         {
-            if (youKongBan) currentTiaoMaHao = TiaoMaHaoGenerator.generateTiaoMaHao();
+            if (youKongBan) currentTiaoMaHao = BarCodeGenerator.generateBarCode();
             String s = MultiTunnelDeviceMessageCreator.createKongBanReport(youKongBan,currentTiaoMaHao);
             SendMsg(s);
             if (youKongBan)
