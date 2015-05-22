@@ -41,7 +41,7 @@ namespace Instrument
                     case DeviceType.Clone:
                         return new CloneSelectionDevice();
                     case DeviceType.Dispen:
-                        return new AutoDispenTwincatDevice();
+                        return new AutoDispenDevice();
                     case DeviceType.Plate:
                         return new AutoPlateDevice();
                     case DeviceType.Liquid:

@@ -21,7 +21,7 @@ namespace Instrument
         }
     }
 
-    public class AutoDispenVirtualDevice : BaseVirtualDevice
+    public class AutoDispenDevice : BaseVirtualDevice
     {
         /// <summary>
         /// MDF parameters
@@ -164,7 +164,7 @@ namespace Instrument
                 Stackcode = MDF_WhichStack.ToString();
             }
 
-            Barcode = TiaoMaHaoGenerator.generateTiaoMaHao();
+            Barcode = BarCodeGenerator.generateBarCode();
             increaseDispenStatus();
             String msg;
             MDF_BarCode = Barcode;

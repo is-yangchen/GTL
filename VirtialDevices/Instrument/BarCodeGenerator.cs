@@ -6,9 +6,9 @@ using DeviceUtils;
 
 namespace Instrument
 {
-    public class TiaoMaHaoGenerator
+    public class BarCodeGenerator
     {
-        private static HashSet<String> TiaoMaHaoSet = new HashSet<String>();
+        private static HashSet<String> BarCodeSet = new HashSet<String>();
 
         private static String randomString()
         {
@@ -21,14 +21,14 @@ namespace Instrument
             return res;
         }
 
-        public static String generateTiaoMaHao() 
+        public static String generateBarCode() //随机模拟产生条码号
         {
             String res = "";
             do
             {
                 res = randomString();
-            }while(TiaoMaHaoSet.Contains(res));
-            TiaoMaHaoSet.Add(res);
+            } while (BarCodeSet.Contains(res));
+            BarCodeSet.Add(res);
             return res;
         }
     }

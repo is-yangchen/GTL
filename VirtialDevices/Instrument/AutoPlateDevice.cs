@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,55 +9,6 @@ using DeviceUtils;
 
 namespace Instrument
 {
-    public class AutoPlateDeviceMessageCreator
-    {
-
-        public static String createCmd(String cmd)
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("Cmd", cmd);
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.CMD), creator.getDataBytes());
-        }
-
-        public static String createMPFSetNumAndVol(String Num, String Vol)
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("SetType", "MPF_NumAndVol");
-            creator.addKeyPair("MPF_PlateNum", Num);
-            creator.addKeyPair("MPF_Volsperwell", Vol);
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.SET), creator.getDataBytes());
-        }
-
-        public static String createOKResponse()
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("Result", "OK");
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.RESPONSE), creator.getDataBytes());
-        }
-
-        public static String createMPFCodesReport(String Whichplate, String BarCode)
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("ReportType", "MPF");
-            creator.addKeyPair("MPF_Whichplate", Whichplate);
-            creator.addKeyPair("MPF_BarCode", BarCode);
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
-
-        }
-
-        public static String createMPFCurrencyReport(String[] currency)
-        {
-            ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("ReportType", "MPF_Current");
-            String[] s = { "MPF_Current1", "MPF_Current2", "MPF_Current3", "MPF_Current4" };
-            for (int i = 0; i < s.Length; i++)
-            {
-                creator.addKeyPair(s[i], currency[i]);
-            }
-            return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
-        }
-    }
-
     public class MPFDispenMessage
     {
         public String Barcode;
@@ -80,7 +32,7 @@ namespace Instrument
         public string MPF_Cmd;
         public int MPF_Whichplate = 1;
         public int MPF_RunningError;
-        public int FenZhuangShiJian;
+        public int DispenTime;
         public double MPF_Current1;
         public double MPF_Current2;
         public double MPF_Current3;
@@ -90,14 +42,53 @@ namespace Instrument
         /// <summary>
         /// Others
         /// </summary>
-        private List<MPFDispenMessage> FenZhuangMessages = new List<MPFDispenMessage>();
+        private List<MPFDispenMessage> DispenMessages = new List<MPFDispenMessage>();
 
         private bool needRefreshMessages = false;
         private Object RefreshObject = new Object();
         private object KeyObject = new object();
 
-        private System.Timers.Timer caiYangTimer = null;
-        private System.Timers.Timer fenZhuangTimer = null;
+        private System.Timers.Timer samTimer = null;
+        private System.Timers.Timer dispenTimer = null;
+
+        public void sendCmd(String cmd)
+        {
+            SendModBusMsg(ModbusMessage.MessageType.CMD, "Cmd", cmd);
+        }
+
+        public void sendMPFSetNumAndVol(String Num, String Vol)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("SetType", "MPF_NumAndVol");
+            ht.Add("MPF_PlateNum", Num);
+            ht.Add("MPF_Volsperwell", Vol);
+            SendModBusMsg(ModbusMessage.MessageType.SET, ht);
+        }
+
+        public void sendOKResponse()
+        {
+            SendModBusMsg(ModbusMessage.MessageType.RESPONSE, "Result", "OK");
+        }
+
+        public void sendMPFCodesReport(String Whichplate, String BarCode)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("ReportType", "MPF");
+            ht.Add("MPF_Whichplate", Whichplate);
+            ht.Add("MPF_BarCode", BarCode);
+            SendModBusMsg(ModbusMessage.MessageType.REPORT, ht);
+        }
+
+        public void sendMPFCurrencyReport(String[] currency)
+        {
+            Hashtable ht = new Hashtable();
+            String[] s = { "MPF_Current1", "MPF_Current2", "MPF_Current3", "MPF_Current4" };
+            for (int i = 0; i < s.Length; i++)
+            {
+                ht.Add(s[i], currency[i]);
+            }
+            SendModBusMsg(ModbusMessage.MessageType.REPORT, ht);
+        }
 
         public bool NeedRefreshMessages
         {
@@ -111,14 +102,14 @@ namespace Instrument
                 }
             }
         }
-        public List<MPFDispenMessage> getFenZhuangMessages()
+        public List<MPFDispenMessage> getDispenMessages()
         {
             List<MPFDispenMessage> res = new List<MPFDispenMessage>();
-            lock (FenZhuangMessages)
+            lock (DispenMessages)
             {
-                foreach (MPFDispenMessage xinXin in FenZhuangMessages)
+                foreach (MPFDispenMessage msg in DispenMessages)
                 {
-                    res.Add(xinXin);
+                    res.Add(msg);
                 }
             }
             return res;
@@ -132,7 +123,7 @@ namespace Instrument
             }
         }
 
-        private void resetFenZhuangZhuangTai()
+        private void resetDispenStatus()
         {
             lock (KeyObject)
             {
@@ -140,7 +131,7 @@ namespace Instrument
             }
         }
 
-        private void increaseFenZhuangZhuangTai()
+        private void increaseDispenStatus()
         {
             lock (KeyObject)
             {
@@ -148,60 +139,55 @@ namespace Instrument
                 if (MPF_Whichplate > 96)
                 {
                     MPF_Whichplate = 1;
-                    fenZhuangTimer.Stop();
+                    dispenTimer.Stop();
                 }
             }
         }
 
-        private String createFenZhuangMessage()
+        private void sendDispenMessage()
         {
-            String tiaomahao = "";
-            String kongbanhao = "";
+            String barcode = "";
+            String platecode = "";
 
             lock (KeyObject)
             {
-                kongbanhao = MPF_Whichplate.ToString();
+                platecode = MPF_Whichplate.ToString();
             }
-            tiaomahao = TiaoMaHaoGenerator.generateTiaoMaHao();
-            increaseFenZhuangZhuangTai();
+            barcode = BarCodeGenerator.generateBarCode();
+            increaseDispenStatus();
             String msg;
-            MPF_BarCode = tiaomahao;
-            msg = AutoPlateDeviceMessageCreator.createMPFCodesReport(kongbanhao, tiaomahao);
-
-            return msg;
+            MPF_BarCode = barcode;
+            this.sendMPFCodesReport(platecode, barcode);
         }
 
-        private void fenZhuangTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void dispenTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             String msg = "";
-            msg = createFenZhuangMessage();
-            SendMsg(msg);
+            sendDispenMessage();
         }
 
-        private void caiYangTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void samTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             String[] currencies = new String[] { MPF_Current1.ToString(), MPF_Current2.ToString(), MPF_Current3.ToString(), MPF_Current4.ToString() };
-            String msg = AutoPlateDeviceMessageCreator.createMPFCurrencyReport(currencies);
-            SendMsg(msg);
+            this.sendMPFCurrencyReport(currencies);
         }
         public void startTimers()
         {
-            if (fenZhuangTimer != null) fenZhuangTimer.Stop();
-            if (caiYangTimer != null) caiYangTimer.Stop();
-            fenZhuangTimer = new System.Timers.Timer();
-            fenZhuangTimer.Interval = FenZhuangShiJian * 1000;
-            fenZhuangTimer.Elapsed += new System.Timers.ElapsedEventHandler(fenZhuangTimer_Elapsed);
+            if (dispenTimer != null) dispenTimer.Stop();
+            if (samTimer != null) samTimer.Stop();
+            dispenTimer = new System.Timers.Timer();
+            dispenTimer.Interval = DispenTime * 1000;
+            dispenTimer.Elapsed += new System.Timers.ElapsedEventHandler(dispenTimer_Elapsed);
 
-            caiYangTimer = new System.Timers.Timer();
-            caiYangTimer.Interval = MPF_CurSamTime * 1000;
-            caiYangTimer.Elapsed += new System.Timers.ElapsedEventHandler(caiYangTimer_Elapsed);
-            caiYangTimer.Start();
+            samTimer = new System.Timers.Timer();
+            samTimer.Interval = MPF_CurSamTime * 1000;
+            samTimer.Elapsed += new System.Timers.ElapsedEventHandler(samTimer_Elapsed);
+            samTimer.Start();
         }
 
         public override void decodeResponseMessage(ModbusMessage msg)
         {
-            String s = AutoDispenDeviceMessageCreator.createOKResponse();
-            this.SendMsg(s);
+            this.sendOKResponse();
         }
 
         public override void decodeReportMessage(ModbusMessage msg)//解码报告消息
@@ -220,12 +206,12 @@ namespace Instrument
             {
                 String PlateNum = (String)msg.Data["MPF_Whichplate"];
                 String Barcode = (String)msg.Data["MPF_BarCode"];
-                MPFDispenMessage xinXi = new MPFDispenMessage();
-                xinXi.PlateNum = PlateNum;
-                xinXi.Barcode = Barcode;
-                lock (FenZhuangMessages)
+                MPFDispenMessage disMsg = new MPFDispenMessage();
+                disMsg.PlateNum = PlateNum;
+                disMsg.Barcode = Barcode;
+                lock (DispenMessages)
                 {
-                    FenZhuangMessages.Add(xinXi);
+                    DispenMessages.Add(disMsg);
                 }
                 lock (RefreshObject)
                 {
@@ -234,14 +220,12 @@ namespace Instrument
             }
         }
 
-
-
         public override void decodeCmdMessage(ModbusMessage msg)
         {
             String cmd = (String)msg.Data["Cmd"];
             if ("Start".Equals(cmd))
             {
-                fenZhuangTimer.Start();
+                dispenTimer.Start();
             }
             if ("Reset".Equals(cmd))
             {
@@ -249,14 +233,14 @@ namespace Instrument
             }
             if ("Stop".Equals(cmd))
             {
-                fenZhuangTimer.Stop();
+                dispenTimer.Stop();
             }
             if ("Auto".Equals(cmd))
             {
 
             }
-            String s = AutoDispenDeviceMessageCreator.createOKResponse();
-            this.SendMsg(s);
+
+            this.sendOKResponse();
         }
 
         public override void decodeSetMessage(ModbusMessage msg)
@@ -268,6 +252,7 @@ namespace Instrument
                 this.MPF_Volsperwell = double.Parse((String)msg.Data["MPF_Volsperwell"]);
             }
         }
+
     }
 }
 
