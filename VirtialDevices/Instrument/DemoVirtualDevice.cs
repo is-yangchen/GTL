@@ -28,8 +28,8 @@ namespace Instrument
 
         public void SendMPFSetNumAndVol(String Num, String Vol)
         {
-            this.SendModBusMsg(ModbusMessage.MessageType.SET, "MPF_NumsperStack", Num);
-            this.SendModBusMsg(ModbusMessage.MessageType.SET, "MPF_VolsperDish", Vol);
+            this.SendModBusMsg(ModbusMessage.MessageType.SET, "MPF_PlateNum", Num);
+            this.SendModBusMsg(ModbusMessage.MessageType.SET, "MPF_Volsperwell", Vol);
         }
 
         public void SendMPFCurrentReport()

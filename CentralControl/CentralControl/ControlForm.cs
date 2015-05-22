@@ -335,7 +335,7 @@ namespace CentralControl
             //}
 
             //Database insert
-            Database mydb = new Database();
+            //Database mydb = new Database();
 
             for (int i = 0; i < messages.Count; i++ )
             {
@@ -350,7 +350,7 @@ namespace CentralControl
                 logAllListView.Items.Add(item);
 
                 //Database insert
-                mydb.insertlog(message.Msg, 1, type);
+                //mydb.insertlog(message.Msg, 1, type);
             }
 
             if (messages.Count > 0)
@@ -401,8 +401,25 @@ namespace CentralControl
                         }
                         form.Show();
                         break;
-
-
+                    case DeviceType.Plate:
+                        AutoPlateDeviceForm pform = new AutoPlateDeviceForm();
+                        pform.FatherForm = this;
+                        pform.IsSocket = true;
+                        pform.PlateDevice = (AutoPlateVirtualDevice)device;
+                        pform.Show();
+                        break;
+                    /*
+                    case DeviceType.Matrix:
+                        break;
+                    
+                    case DeviceType.Analysis:
+                        //MultiTunnelDeviceForm mForm = new MultiTunnelDeviceForm();
+                        MultiTunnelDeviceForm mForm = new MultiTunnelDeviceForm();
+                        mForm.FatherForm = this;
+                        mForm.DeviceInfo = (MultiTunnelVirtualDevice)device;
+                        mForm.Show();
+                        break;
+                     */
                     case DeviceType.Liquid:
                         LiquidProcessForm forml = new LiquidProcessForm();
                         forml.FatherForm = this;
