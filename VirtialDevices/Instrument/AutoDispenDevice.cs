@@ -34,7 +34,7 @@ namespace Instrument
         public double MDF_Current3;
         public double MDF_Current4;
         public int MDF_RunningError;
-        public int DispenTime;
+        public int MDF_DispenTime;
         public int MDF_CurSamTime;
         public int MDF_WhichStack = 1;
         public int MDF_WhichDish = 1;
@@ -192,7 +192,7 @@ namespace Instrument
             if (dispenTimer != null) dispenTimer.Stop();
             if (samTimer != null) samTimer.Stop();
             dispenTimer = new System.Timers.Timer();
-            dispenTimer.Interval = DispenTime * 1000;
+            dispenTimer.Interval = MDF_DispenTime * 1000;
             dispenTimer.Elapsed += new System.Timers.ElapsedEventHandler(DispenTimer_Elapsed);
 
             samTimer = new System.Timers.Timer();
@@ -242,20 +242,23 @@ namespace Instrument
             String cmd = (String)msg.Data["Cmd"];
             if ("Start".Equals(cmd))
             {
-                dispenTimer.Start();
+                //dispenTimer.Start();
+                this.MDF_Cmd = "Start";
             }
             if ("Reset".Equals(cmd))
             {
                 MDF_WhichDish = 1;
                 MDF_WhichStack = 1;
+                this.MDF_Cmd = "Reset";
             }
             if ("Stop".Equals(cmd))
             {
-                dispenTimer.Stop();
+                //dispenTimer.Stop();
+                this.MDF_Cmd = "Stop";
             }
             if ("Auto".Equals(cmd))
             {
-
+                this.MDF_Cmd = "Auto";
             }
 
             this.sendOKResponse();

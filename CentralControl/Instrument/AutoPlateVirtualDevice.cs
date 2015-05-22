@@ -30,7 +30,7 @@ namespace Instrument
         public string MPF_Cmd;
         public int MPF_Whichplate = 1;
         public int MPF_RunningError;
-        public int DispenTime;
+        public int MPF_DispenTime;
         public double MPF_Current1;
         public double MPF_Current2;
         public double MPF_Current3;
@@ -154,19 +154,24 @@ namespace Instrument
             if ("Start".Equals(cmd))
             {
                 //dispenTimer.Start();
+                this.MPF_Cmd = "Start";
             }
             if ("Reset".Equals(cmd))
             {
                 MPF_Whichplate = 1;
+                this.MPF_Cmd = "Reset";
             }
             if ("Stop".Equals(cmd))
             {
                 //dispenTimer.Stop();
+                this.MPF_Cmd = "Stop";
             }
             if ("Auto".Equals(cmd))
             {
-
+                this.MPF_Cmd = "Auto";
             }
+
+            this.sendOKResponse();
 
             this.sendOKResponse();
         }

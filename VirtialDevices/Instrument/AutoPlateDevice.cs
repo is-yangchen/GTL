@@ -32,7 +32,7 @@ namespace Instrument
         public string MPF_Cmd;
         public int MPF_Whichplate = 1;
         public int MPF_RunningError;
-        public int DispenTime;
+        public int MPF_DispenTime;
         public double MPF_Current1;
         public double MPF_Current2;
         public double MPF_Current3;
@@ -176,7 +176,7 @@ namespace Instrument
             if (dispenTimer != null) dispenTimer.Stop();
             if (samTimer != null) samTimer.Stop();
             dispenTimer = new System.Timers.Timer();
-            dispenTimer.Interval = DispenTime * 1000;
+            dispenTimer.Interval = MPF_DispenTime * 1000;
             dispenTimer.Elapsed += new System.Timers.ElapsedEventHandler(dispenTimer_Elapsed);
 
             samTimer = new System.Timers.Timer();
@@ -225,19 +225,22 @@ namespace Instrument
             String cmd = (String)msg.Data["Cmd"];
             if ("Start".Equals(cmd))
             {
-                dispenTimer.Start();
+                //dispenTimer.Start();
+                this.MPF_Cmd = "Start";
             }
             if ("Reset".Equals(cmd))
             {
                 MPF_Whichplate = 1;
+                this.MPF_Cmd = "Reset";
             }
             if ("Stop".Equals(cmd))
             {
-                dispenTimer.Stop();
+                //dispenTimer.Stop();
+                this.MPF_Cmd = "Stop";
             }
             if ("Auto".Equals(cmd))
             {
-
+                this.MPF_Cmd = "Auto";
             }
 
             this.sendOKResponse();

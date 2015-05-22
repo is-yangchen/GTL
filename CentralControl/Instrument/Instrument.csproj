@@ -52,7 +52,6 @@
     <Compile Include="LiquidProcessVirtualDevice.cs" />
     <Compile Include="MatrixSystemVirtualDevice.cs" />
     <Compile Include="MicroStorageVirtualDevice.cs" />
-    <Compile Include="AutoPlateVirtualDevice.cs" />
     <Compile Include="MultiTunnelVirtualDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VirtualDeviceFactory.cs" />
