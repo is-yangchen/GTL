@@ -22,86 +22,132 @@ namespace Instrument
 
     public class CloneSelectionDevice : BaseVirtualDevice
     {
-        public static int JianCeHangShu = 12;
+        //平皿和孔板选择
+        public int SCP_PlateType = 0;
+        public int SCP_ProbeMethod = 0;
+        public static int SCP_TestRowNum = 12;
 
-        private UInt32 JiaReShiJian = 0;
-        private UInt32 QingXiShiJian = 0;
-        private UInt32 LengQueShiJian = 0;
-        private UInt32 QingXiCiShu = 0;
-        private UInt32 ChouQiShiJian = 0;
-        private double ZhouChangMianJiBi_Max = 0.0;
-        private double ZhouChangMianJiBi_Min = 0.0;
-        private double MianJi_Max = 3.0;
-        private double MianJi_Min = 2.0;
-        private double ChangJing_Max = 3.0;
-        private double ChangJing_Min = 2.5;
-        private double DuanJing_Max = 7.0;
-        private double DuanJing_Min = 6.0;
-        private double BiZhi_Max = 4.0;
-        private double BiZhi_Min = 3.0;
-        private Int16 R = 18;
-        private Int16 G = 21;
-        private Int16 B = 75;
+        //相机参数
+        //色彩处理
+        public int SCP_Gamma = 0;
+        public int SCP_Contrast = 0;
+        public int SCP_ColEnhance = 0;
+        public int SCP_Saturate= 0;
+        //亮度控制
+        public int SCP_Exposure= 0;
+        public int SCP_Target= 0;
+        public int SCP_ExpoTime= 0;
+        public int SCP_Gain= 0;
+        //白平衡
+        public int SCP_Red= 0;
+        public int SCP_Green= 0;
+        public int SCP_Blue = 0;
+        //大小
+        public int SCP_FrameRate= 0;
+        public int SCP_PowerFrequency = 0;
+        public int SCP_ParaSet= 0;
+        public int SCP_Flip= 0;
+        public int SCP_Horizontal= 0;
+        public int SCP_GreyLevel= 0;
+        public int SCP_Scale= 0;
 
-        public UInt32 getJiaReShiJian() { return this.JiaReShiJian; }
-        public UInt32 getQingXiShiJian() { return this.QingXiShiJian; }
-        public UInt32 getQingXiCiShu() { return this.QingXiCiShu; }
-        public UInt32 getChouQiShiJian() { return this.ChouQiShiJian; }
-        public UInt32 getLengQueShiJian() { return this.LengQueShiJian; }
-        public double getZhouChangMianJiBi_Max() { return this.ZhouChangMianJiBi_Max; }
-        public double getZhouChangMianJiBi_Min() { return this.ZhouChangMianJiBi_Min; }
-        public double getMianJi_Max() { return this.MianJi_Max; }
-        public double getMianJi_Min() { return this.MianJi_Min; }
-        public double getChangJing_Max() { return this.ChangJing_Max; }
-        public double getChangJing_Min() { return this.ChangJing_Min; }
-        public double getDuanJing_Max() { return this.DuanJing_Max; }
-        public double getDuanJing_Min() { return this.DuanJing_Min; }
-        public double getBiZhi_Max() { return this.BiZhi_Max; }
-        public double getBiZhi_Min() { return this.BiZhi_Min; }
-        public Int16  getR() { return this.R; }
-        public Int16  getG() { return this.G; }
-        public Int16  getB() { return this.B; }
 
+        //灭菌与清洗
+        public UInt32 SCP_HeatTime = 0;
+        public UInt32 SCP_FlushTime = 0;
+        public UInt32 SCP_CoolTime = 0;
+        public UInt32 SCP_FlushNo = 0;
+        public UInt32 SCP_ExhaustTime = 0;
+
+        //区域定位
+        public int SCP_X = 0;
+        public int SCP_Y = 0;
+        public int SCP_Radius = 0;
+        public int SCP_CenterX = 0;
+        public int SCP_CenterY = 0;
+        public int SCP_Length = 0;
+        public int SCP_Width = 0;
+        public int SCP_OriginPoint = 0;
+        public int SCP_ControlPoint = 0;
+
+        //筛选条件
+        public double SCP_MaxPARate = 0.0;
+        public double SCP_MinPARate = 0.0;
+        public double SCP_SizeMax = 3.0;
+        public double SCP_SizeMin = 2.0;
+        public double SCP_MaxLength = 3.0;
+        public double SCP_MinLength = 2.5;
+        public double SCP_MaxShort = 7.0;
+        public double SCP_MinShort = 6.0;
+        public double SCP_MaxRate = 4.0;
+        public double SCP_MinRate = 3.0;
+        public int SCP_AreaFilter = 0;
+        public int SCP_PARate = 0;
+        public int SCP_LengthFilter = 0;
+        public int SCP_ColorFlag = 0;
+        public Int16 SCP_R = 18;
+        public Int16 SCP_G = 21;
+        public Int16 SCP_B = 75;
+
+        //上层Form需要用到这些函数，所以暂时保留，但底层类操作中不需要这些函数
+        public UInt32 getJiaReShiJian() { return this.SCP_HeatTime; }
+        public UInt32 getQingXiShiJian() { return this.SCP_FlushTime; }
+        public UInt32 getQingXiCiShu() { return this.SCP_FlushNo; }
+        public UInt32 getChouQiShiJian() { return this.SCP_ExhaustTime; }
+        public UInt32 getLengQueShiJian() { return this.SCP_CoolTime; }
+        public double getZhouChangMianJiBi_Max() { return this.SCP_MaxPARate; }
+        public double getZhouChangMianJiBi_Min() { return this.SCP_MinPARate; }
+        public double getMianJi_Max() { return this.SCP_SizeMax; }
+        public double getMianJi_Min() { return this.SCP_SizeMin; }
+        public double getChangJing_Max() { return this.SCP_MaxLength; }
+        public double getChangJing_Min() { return this.SCP_MinLength; }
+        public double getDuanJing_Max() { return this.SCP_MaxShort; }
+        public double getDuanJing_Min() { return this.SCP_MinShort; }
+        public double getBiZhi_Max() { return this.SCP_MaxRate; }
+        public double getBiZhi_Min() { return this.SCP_MinRate; }
+        public Int16 getR() { return this.SCP_R; }
+        public Int16 getG() { return this.SCP_G; }
+        public Int16 getB() { return this.SCP_B; }
 
         private void decodeSetMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
             if ("ZhouChangMianJiBi".Equals(setType)) 
             {
-                this.ZhouChangMianJiBi_Max = double.Parse((String)msg.Data["ZhouChangMianJiBi_Max"]);
-                this.ZhouChangMianJiBi_Min = double.Parse((String)msg.Data["ZhouChangMianJiBi_Min"]);
+                this.SCP_MaxPARate = double.Parse((String)msg.Data["ZhouChangMianJiBi_Max"]);
+                this.SCP_MinPARate = double.Parse((String)msg.Data["ZhouChangMianJiBi_Min"]);
             }
 
             if ("MianJiShaiXuan".Equals(setType))
             {
-                this.MianJi_Max = double.Parse((String)msg.Data["MianJi_Max"]);
-                this.MianJi_Min = double.Parse((String)msg.Data["MianJi_Min"]);
+                this.SCP_SizeMax = double.Parse((String)msg.Data["MianJi_Max"]);
+                this.SCP_SizeMin = double.Parse((String)msg.Data["MianJi_Min"]);
             } 
 
             if ("ChangDuanJingShaiXuan".Equals(setType))
             {
-                this.ChangJing_Max = double.Parse((String)msg.Data["ChangJing_Max"]);
-                this.ChangJing_Min = double.Parse((String)msg.Data["ChangJing_Min"]);
-                this.DuanJing_Max = double.Parse((String)msg.Data["DuanJing_Max"]);
-                this.DuanJing_Min = double.Parse((String)msg.Data["DuanJing_Min"]);
-                this.BiZhi_Max = double.Parse((String)msg.Data["BiZhi_Max"]);
-                this.BiZhi_Min = double.Parse((String)msg.Data["BiZhi_Min"]);
+                this.SCP_MaxLength = double.Parse((String)msg.Data["ChangJing_Max"]);
+                this.SCP_MinLength = double.Parse((String)msg.Data["ChangJing_Min"]);
+                this.SCP_MaxShort = double.Parse((String)msg.Data["DuanJing_Max"]);
+                this.SCP_MinShort = double.Parse((String)msg.Data["DuanJing_Min"]);
+                this.SCP_MaxRate = double.Parse((String)msg.Data["BiZhi_Max"]);
+                this.SCP_MinRate = double.Parse((String)msg.Data["BiZhi_Min"]);
             } 
 
             if ("SeDuPingJunZhi".Equals(setType))
             {
-                this.R = Int16.Parse((String)msg.Data["R"]);
-                this.G = Int16.Parse((String)msg.Data["G"]);
-                this.B = Int16.Parse((String)msg.Data["B"]);
+                this.SCP_R = Int16.Parse((String)msg.Data["R"]);
+                this.SCP_G = Int16.Parse((String)msg.Data["G"]);
+                this.SCP_B = Int16.Parse((String)msg.Data["B"]);
             }
 
             if ("MieJunHeQingXi".Equals(setType))
             {
-                this.JiaReShiJian = UInt32.Parse((String)msg.Data["JiaReShiJian"]);
-                this.QingXiShiJian = UInt32.Parse((String)msg.Data["QingXiShiJian"]);
-                this.QingXiCiShu = UInt32.Parse((String)msg.Data["QingXiCiShu"]);
-                this.ChouQiShiJian = UInt32.Parse((String)msg.Data["ChouQiShiJian"]);
-                this.LengQueShiJian = UInt32.Parse((String)msg.Data["LengQueShiJian"]);
+                this.SCP_HeatTime = UInt32.Parse((String)msg.Data["JiaReShiJian"]);
+                this.SCP_FlushTime = UInt32.Parse((String)msg.Data["QingXiShiJian"]);
+                this.SCP_FlushNo = UInt32.Parse((String)msg.Data["QingXiCiShu"]);
+                this.SCP_ExhaustTime = UInt32.Parse((String)msg.Data["ChouQiShiJian"]);
+                this.SCP_CoolTime = UInt32.Parse((String)msg.Data["LengQueShiJian"]);
             }
 
         }

@@ -99,7 +99,7 @@ namespace VirtialDevices
                     PlateDevice.MPF_Current2 = double.Parse(currency2TextBox.Text);
                     PlateDevice.MPF_Current3 = double.Parse(currency3TextBox.Text);
                     PlateDevice.MPF_Current4 = double.Parse(currency3TextBox.Text);
-                    PlateDevice.DispenTime = int.Parse(dispenTimeTextBox.Text);
+                    PlateDevice.MPF_DispenTime = int.Parse(dispenTimeTextBox.Text);
                     PlateDevice.MPF_CurSamTime = int.Parse(sampleTimeTextBox.Text);
                     // * */
                 }

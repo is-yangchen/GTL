@@ -84,7 +84,7 @@ namespace VirtialDevices
                     DispenDevice.MDF_Current2 = double.Parse(currency2TextBox.Text);
                     DispenDevice.MDF_Current3 = double.Parse(currency3TextBox.Text);
                     DispenDevice.MDF_Current4 = double.Parse(currency3TextBox.Text);
-                    DispenDevice.DispenTime = int.Parse(dispenTimeTextBox.Text);
+                    DispenDevice.MDF_DispenTime = int.Parse(dispenTimeTextBox.Text);
                     DispenDevice.MDF_CurSamTime = int.Parse(sampleTimeTextBox.Text);
                 }
                 else

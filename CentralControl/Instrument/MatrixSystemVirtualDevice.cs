@@ -88,73 +88,89 @@ namespace Instrument
         //---------------------view---------------------
 
         //仪器系统
-        public int Sys_Mode = 0;
-        public int Sys_Command = 0;
+        public int HAC_Sys_Mode = 0;
+        public int HAC_Sys_Command = 0;
+        public int HAC_Run_Time = 0;
 
         //匀光
-        public int Light_pwm = 0;
-        public int Light_allighText = 0;
+        public int HAC_Light_pwm = 0;
+        public int HAC_Light_allighText = 0;
 
         //湿温度
-        public int TH_tempset = 0;
-        public int TH_htempchaval = 0;
-        public int TH_ltempchaval = 0;
-        public string TH_syso_change = "";
-        public int TH_htempalarmval = 0;
-        public int TH_ltempalarmval = 0;
-        public string TH_compressormode = "";
-        public string TH_compressorsituation = "";
-        public string TH_def_interval = "";
-        public int TH_def_span = 0;
-        public string TH_hottube = "";
-        public string TH_humi_con_mod = "";
-        public string TH_humi_con_sit = "";
-        public int TH_hum_set = 0;
-        public int TH_hum_alarm_val = 0;
-        public int TH_add_hum = 0;
-        public int TH_remo_hum = 0;
+        public int HAC_TH_tempset = 0;
+        public int HAC_TH_htempchaval = 0;
+        public int HAC_TH_ltempchaval = 0;
+        public string HAC_TH_syso_change = "";
+        public int HAC_TH_htempalarmval = 0;
+        public int HAC_TH_ltempalarmval = 0;
+        public string HAC_TH_compressormode = "";
+        public string HAC_TH_compressorsituation = "";
+        public string HAC_TH_def_interval = "";
+        public int HAC_TH_def_span = 0;
+        public string HAC_TH_hottube = "";
+        public string HAC_TH_humi_con_mod = "";
+        public string HAC_TH_humi_con_sit = "";
+        public int HAC_TH_hum_set = 0;
+        public int HAC_TH_hum_alarm_val = 0;
+        public int HAC_TH_add_hum = 0;
+        public int HAC_TH_remo_hum = 0;
 
         //电机
-        public int Motor_text_speed = 0;
-        public int Motor_elecspeed = 0;
-        public int Motor_slope = 0;
+        public int HAC_Motor_text_speed = 0;
+        public int HAC_Motor_elecspeed = 0;
+        public int HAC_Motor_slope = 0;
 
         //-----------------------data--------------------
 
         //仪器系统
-        public int Sys_DeviceInfo = 0;
-        public int Sys_Status = 0;
-        public int Sys_Batch_Info = 0;
+        public int HAC_Sys_DeviceInfo = 0;
+        public int HAC_Sys_Status = 0;
+        public int HAC_Sys_Batch_Info = 0;
 
         //匀光
-        public int Light_Status = 0;
-        public int Light_address = 0;
-        public int Light_light = 0;
-        public int Light_xzoom = 0;
-        public int Light_yzoom = 0;
-        public int Light_currentpwm = 0;
+        public int HAC_Light_Status = 0;
+        public int HAC_Light_address = 0;
+        public int HAC_Light_light = 0;
+        public int HAC_Light_xzoom = 0;
+        public int HAC_Light_yzoom = 0;
+        public int HAC_Light_currentpwm = 0;
+
+        //动平衡
+        public int HAC_Vib_Status = 0;
+        public double HAC_Vib_unbalanceAmp = 0;
+        public int HAC_Vib_unbalanceAngle = 0;
+        public int HAC_Vib_AccAxisX = 0;
+        public int HAC_Vib_AccAxisY = 0;
+        public int HAC_Vib_AccAxisZ = 0;
 
         //湿温度
-        public int TH_Status = 0;
-        public int TH_temperature1 = 0;
-        public int TH_temperature2 = 0;
-        public int TH_temperature3 = 0;
-        public int TH_humidity1 = 0;
-        public int TH_humidity2 = 0;
+        public int HAC_TH_Status = 0;
+        public int HAC_TH_temperature1 = 0;
+        public int HAC_TH_temperature2 = 0;
+        public int HAC_TH_temperature3 = 0;
+        public int HAC_TH_humidity1 = 0;
+        public int HAC_TH_humidity2 = 0;
 
         //电机
-        public int Motor_Status = 0;
-        public int Motor_Power = 0;
+        public int HAC_Motor_Status = 0;
+        public int HAC_Motor_Power = 0;
 
         //条码
-        public string Add_Num = "";
-        public string Rem_Num = "";
-        public int Rise_Time = 0;
+        public string HAC_InBarCode = "";
+        public string HAC_OutBarCode = "";
 
         //--------------OD-------------------
+        public int HAC_OD_Status = 0;
+        public int HAC_OD_InfoTime = 0;
+        public float[][] HAC_OD_checkBoxs = null;
+        public int[][] HAC_OD_rowl = null;
 
-        public float[][] OD_checkBoxs = null;
-        public int[][] OD_rowl = null;
+        //int interval = 4;
+        //private System.Timers.Timer getODTimer = null;
+        //private System.Timers.Timer getTHTimer = null;
+        //private System.Timers.Timer getMotorTimer = null;
+        //private System.Timers.Timer getSystemTimer = null;
+        //private System.Timers.Timer getCodeTimer = null;
 
         //Lock
         private object KeyObject = new object();
@@ -166,15 +182,15 @@ namespace Instrument
             {
                 lock (KeyObject)
                 {
-                    if (OD_rowl == null) //为OD_rowl开辟空间，更新OD表
+                    if (HAC_OD_rowl == null) //为OD_rowl开辟空间，更新OD表
                     {
-                        OD_rowl = new int[8][];
+                        HAC_OD_rowl = new int[8][];
                         for (int i = 0; i < 8; i++)
                         {
-                            OD_rowl[i] = new int[12];
+                            HAC_OD_rowl[i] = new int[12];
                             for (int j = 0; j < 12; j++)
                             {
-                                OD_rowl[i][j] = Convert.ToInt32(((String)msg.Data["OD"])[12*i + j]);
+                                HAC_OD_rowl[i][j] = Convert.ToInt32(((String)msg.Data["OD"])[12*i + j]);
                             }
                         }
                     }
@@ -182,7 +198,7 @@ namespace Instrument
                     for (int i = 0; i < 8; i++)  //更新OD表
                         for (int j = 0; j < 12; j++)
                         {
-                            OD_rowl[i][j] = Convert.ToInt32(((String)msg.Data["OD"])[12 * i + j]);
+                            HAC_OD_rowl[i][j] = Convert.ToInt32(((String)msg.Data["OD"])[12 * i + j]);
                         }
 
                     //Database mydb = new Database();
@@ -193,11 +209,11 @@ namespace Instrument
 
             if ("TH".Equals(reportType))
             {
-                this.TH_temperature1 = Convert.ToInt32((String)msg.Data["TH_temperature1"]);
-                this.TH_temperature2 = Convert.ToInt32((String)msg.Data["TH_temperature2"]);
-                this.TH_temperature3 = Convert.ToInt32((String)msg.Data["TH_temperature3"]);
-                this.TH_humidity1 = Convert.ToInt32((String)msg.Data["TH_humidity1"]);
-                this.TH_humidity2 = Convert.ToInt32((String)msg.Data["TH_humidity2"]);
+                this.HAC_TH_temperature1 = Convert.ToInt32((String)msg.Data["TH_temperature1"]);
+                this.HAC_TH_temperature2 = Convert.ToInt32((String)msg.Data["TH_temperature2"]);
+                this.HAC_TH_temperature3 = Convert.ToInt32((String)msg.Data["TH_temperature3"]);
+                this.HAC_TH_humidity1 = Convert.ToInt32((String)msg.Data["TH_humidity1"]);
+                this.HAC_TH_humidity2 = Convert.ToInt32((String)msg.Data["TH_humidity2"]);
                 
                 //Database mydb = new Database();
                 //mydb.inserthactmpmod(1, 1, this.TH_temperature1, TH_temperature2, TH_temperature3, TH_humidity1, TH_humidity2); 
@@ -206,9 +222,9 @@ namespace Instrument
 
             if ("System".Equals(reportType))
             {
-                this.Sys_DeviceInfo = Convert.ToInt32((String)msg.Data["Sys_DeviceInfo"]);
-                this.Sys_Status = Convert.ToInt32((String)msg.Data["Sys_Status"]);
-                this.Sys_Batch_Info = Convert.ToInt32((String)msg.Data["Sys_Batch_Info"]);
+                this.HAC_Sys_DeviceInfo = Convert.ToInt32((String)msg.Data["Sys_DeviceInfo"]);
+                this.HAC_Sys_Status = Convert.ToInt32((String)msg.Data["Sys_Status"]);
+                this.HAC_Sys_Batch_Info = Convert.ToInt32((String)msg.Data["Sys_Batch_Info"]);
 
                 //Database mydb = new Database();
                 //mydb.inserthacstate(1, this.Sys_Status);
@@ -216,8 +232,8 @@ namespace Instrument
 
             if ("Code".Equals(reportType))
             {
-                this.Add_Num = (String)msg.Data["Add_Num"];
-                this.Add_Num = (String)msg.Data["Rem_Num"];
+                this.HAC_InBarCode = (String)msg.Data["Add_Num"];
+                this.HAC_InBarCode = (String)msg.Data["Rem_Num"];
 
                 //Database mydb = new Database();
                 //mydb.inserthacbarcode(Add_Num, Rem_Num, 1);
@@ -225,10 +241,10 @@ namespace Instrument
 
             if ("Motor".Equals(reportType))
             {
-                this.Motor_text_speed = Convert.ToInt32((String)msg.Data["Motor_text_speed"]);
-                this.Motor_elecspeed = Convert.ToInt32((String)msg.Data["Motor_elecspeed"]);
-                this.Motor_Status = Convert.ToInt32((String)msg.Data["Motor_Status"]);
-                this.Motor_Power = Convert.ToInt32((String)msg.Data["Motor_Power"]);
+                this.HAC_Motor_text_speed = Convert.ToInt32((String)msg.Data["Motor_text_speed"]);
+                this.HAC_Motor_elecspeed = Convert.ToInt32((String)msg.Data["Motor_elecspeed"]);
+                this.HAC_Motor_Status = Convert.ToInt32((String)msg.Data["Motor_Status"]);
+                this.HAC_Motor_Power = Convert.ToInt32((String)msg.Data["Motor_Power"]);
 
                 //Database mydb = new Database();
                 //mydb.inserthacengine(1, Motor_elecspeed, Motor_Power, Motor_text_speed, Motor_Status); 
@@ -243,7 +259,7 @@ namespace Instrument
         {
             lock (KeyObject)
             {
-                return OD_rowl[i][j];
+                return HAC_OD_rowl[i][j];
             }
         }
 
