@@ -47,7 +47,6 @@ namespace DeviceDemo
         private void Sendbutton_Click(object sender, EventArgs e)
         {
             Hashtable ht = new Hashtable();
-            ht.Add("ReportType", "MPF_Current");
             ht.Add("MPF_Current1", this.Current1textBox.Text);
             ht.Add("MPF_Current2", this.Current2textBox.Text);
             ht.Add("MPF_Current3", this.Current3textBox.Text);
