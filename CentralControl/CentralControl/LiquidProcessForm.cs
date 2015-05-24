@@ -14,7 +14,7 @@ namespace CentralControl
     public partial class LiquidProcessForm : Form
     {
         public LiquidProcessVirtualDevice alcDevice;
-        int curSelectIndex;
+        int LHS_TipBoxIdx;
         private String initStatus = "00000000000000000000";
         // String initStatus = "54263414263512363251";
         public String curStatus;
@@ -29,7 +29,7 @@ namespace CentralControl
         public LiquidProcessForm()
         {
             alcDevice = new LiquidProcessVirtualDevice();
-            curSelectIndex = 0;
+            LHS_TipBoxIdx = 0;
             tempStatus = initStatus;
             curStatus = tempStatus;
             size = 20;
@@ -40,7 +40,7 @@ namespace CentralControl
         {
             Control.CheckForIllegalCrossThreadCalls = false;
             FatherForm.Enabled = false;
-            if(DeviceInfo.IsVirt)
+            if (DeviceInfo.IsVirt)
             {
                 isVirtualCheckBox.Checked = true;
             }
@@ -168,122 +168,122 @@ namespace CentralControl
         #region button_click
         private void button1_click(object sender, EventArgs e)
         {
-            curSelectIndex = 1;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 1;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button2_click(object sender, EventArgs e)
         {
-            curSelectIndex = 2;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 2;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button3_click(object sender, EventArgs e)
         {
-            curSelectIndex = 3;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 3;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button4_click(object sender, EventArgs e)
         {
-            curSelectIndex = 4;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 4;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button5_click(object sender, EventArgs e)
         {
-            curSelectIndex = 5;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 5;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button6_click(object sender, EventArgs e)
         {
-            curSelectIndex = 6;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 6;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button7_click(object sender, EventArgs e)
         {
-            curSelectIndex = 7;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 7;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button8_click(object sender, EventArgs e)
         {
-            curSelectIndex = 8;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 8;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button9_click(object sender, EventArgs e)
         {
-            curSelectIndex = 9;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 9;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button10_click(object sender, EventArgs e)
         {
-            curSelectIndex = 10;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 10;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button11_click(object sender, EventArgs e)
         {
-            curSelectIndex = 11;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 11;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button12_click(object sender, EventArgs e)
         {
-            curSelectIndex = 12;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 12;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button13_click(object sender, EventArgs e)
         {
-            curSelectIndex = 13;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 13;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button14_click(object sender, EventArgs e)
         {
-            curSelectIndex = 14;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 14;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button15_click(object sender, EventArgs e)
         {
-            curSelectIndex = 15;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 15;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button16_click(object sender, EventArgs e)
         {
-            curSelectIndex = 16;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 16;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button17_click(object sender, EventArgs e)
         {
-            curSelectIndex = 17;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 17;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button18_click(object sender, EventArgs e)
         {
-            curSelectIndex = 18;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 18;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button19_click(object sender, EventArgs e)
         {
-            curSelectIndex = 19;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 19;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
         private void button20_click(object sender, EventArgs e)
         {
-            curSelectIndex = 20;
-            showPlateInfo(curSelectIndex);
+            LHS_TipBoxIdx = 20;
+            showPlateInfo(LHS_TipBoxIdx);
             comboBox1.Text = "";
         }
 
@@ -323,12 +323,12 @@ namespace CentralControl
 
         private void comboBox1_textChanged(object sender, EventArgs e)
         {
-            if ((curSelectIndex != 0) && (comboBox1.Text != ""))
+            if ((LHS_TipBoxIdx != 0) && (comboBox1.Text != ""))
             {
                 String t = "";
                 for (int i = 0; i < size; i++)
                 {
-                    if (i == curSelectIndex - 1)
+                    if (i == LHS_TipBoxIdx - 1)
                         t += (char)((int)'0' + comboBox1.SelectedIndex);
                     else
                         t += tempStatus[i];
@@ -336,7 +336,7 @@ namespace CentralControl
                 tempStatus = t;
             }
             setPaltesByMsg(tempStatus);
-            showPlateInfo(curSelectIndex);
+            showPlateInfo(LHS_TipBoxIdx);
         }
 
         private void deployConfirm_click(object sender, EventArgs e)
@@ -345,10 +345,10 @@ namespace CentralControl
             setPaltesByMsgAll(curStatus);
             refreshQuYePan();
             refreshMuBiaoPan();
-            alcDevice.msgStatus = curStatus;
+            alcDevice.LHS_PlateStatus = curStatus;
             if (IsSocket)
             {
-                String msg = ALCDeviceMessageCreator.createDeployStatus(alcDevice.msgStatus);
+                String msg = ALCDeviceMessageCreator.createDeployStatus(alcDevice.LHS_PlateStatus);
                 alcDevice.SendMsg(msg);
                 //Database mydb = new Database();
                 //mydb.insertlpssetting(1, alcDevice.msgStatus);
@@ -457,20 +457,20 @@ namespace CentralControl
 
         private void confirm_Click(object sender, EventArgs e)
         {
-            alcDevice.quYePan = this.comboBox2.Text;
-            alcDevice.muBiaoPan = this.comboBox3.Text;
-            alcDevice.xiYeLiang = Int32.Parse(this.textBox4.Text);
-            alcDevice.xiYeSuDu = Decimal.ToInt32(this.numericUpDown1.Value);
-            alcDevice.paiYeSuDu = Decimal.ToInt32(this.numericUpDown2.Value);
-            alcDevice.xiYeWeiZhi = Int32.Parse(this.textBox5.Text);
-            alcDevice.paiYeWeiZhi = Int32.Parse(this.textBox6.Text);
+            alcDevice.LHS_SuctionPlate = this.comboBox2.Text;
+            alcDevice.LHS_TargetPlate = this.comboBox3.Text;
+            alcDevice.LHS_Imbitition = Int32.Parse(this.textBox4.Text);
+            alcDevice.LHS_LiquidRate = Decimal.ToInt32(this.numericUpDown1.Value);
+            alcDevice.LHS_DischargeRate = Decimal.ToInt32(this.numericUpDown2.Value);
+            alcDevice.LHS_LiquidPosition = Int32.Parse(this.textBox5.Text);
+            alcDevice.LHS_DischargePosition = Int32.Parse(this.textBox6.Text);
             if (IsSocket)
             {
-                String msg1 = ALCDeviceMessageCreator.createMuBiaoConfirmMsg(alcDevice.quYePan, alcDevice.muBiaoPan, alcDevice.xiYeLiang.ToString());
+                String msg1 = ALCDeviceMessageCreator.createMuBiaoConfirmMsg(alcDevice.LHS_SuctionPlate, alcDevice.LHS_TargetPlate, alcDevice.LHS_Imbitition.ToString());
                 alcDevice.SendMsg(msg1);
-                String msg2 = ALCDeviceMessageCreator.createSuDuConfirmMsg(alcDevice.xiYeSuDu.ToString(), alcDevice.paiYeSuDu.ToString());
+                String msg2 = ALCDeviceMessageCreator.createSuDuConfirmMsg(alcDevice.LHS_LiquidRate.ToString(), alcDevice.LHS_DischargeRate.ToString());
                 alcDevice.SendMsg(msg2);
-                String msg3 = ALCDeviceMessageCreator.createWeiZhiConfirmMsg(alcDevice.xiYeWeiZhi.ToString(), alcDevice.paiYeWeiZhi.ToString());
+                String msg3 = ALCDeviceMessageCreator.createWeiZhiConfirmMsg(alcDevice.LHS_LiquidPosition.ToString(), alcDevice.LHS_DischargePosition.ToString());
                 alcDevice.SendMsg(msg3);
                 //Database mydb = new Database();
                 //mydb.insertlpsplace(1, alcDevice.quYePan, alcDevice.muBiaoPan, alcDevice.xiYeLiang, alcDevice.xiYeSuDu, alcDevice.paiYeSuDu, alcDevice.xiYeWeiZhi, alcDevice.paiYeWeiZhi);

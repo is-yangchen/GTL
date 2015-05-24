@@ -31,9 +31,9 @@ namespace VirtialDevices
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (IsSocket)
+            //if (IsSocket)
             {
-                /*
+                //*
                 this.jiaReTextBox.Text = DeviceInfo.getJiaReShiJian().ToString();
                 this.qingXiShiJianTextBox.Text = DeviceInfo.getQingXiShiJian().ToString();
                 this.qingXiCiShuTextBox.Text = DeviceInfo.getQingXiCiShu().ToString();
@@ -52,9 +52,9 @@ namespace VirtialDevices
                 this.colorRTextBox.Text = DeviceInfo.getR().ToString();
                 this.colorGTextBox.Text = DeviceInfo.getG().ToString();
                 this.colorBTextBox.Text = DeviceInfo.getB().ToString();
-                 * */
+                 //* */
             }
-            else
+            //else
             {
                 /*
                 this.jiaReTextBox.Text = DeviceInfo.getJiaReShiJian().ToString();

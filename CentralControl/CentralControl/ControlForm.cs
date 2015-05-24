@@ -408,25 +408,38 @@ namespace CentralControl
                         pform.PlateDevice = (AutoPlateVirtualDevice)device;
                         pform.Show();
                         break;
-                    /*
-                    case DeviceType.Matrix:
-                        break;
-                    
                     case DeviceType.Analysis:
-                        //MultiTunnelDeviceForm mForm = new MultiTunnelDeviceForm();
                         MultiTunnelDeviceForm mForm = new MultiTunnelDeviceForm();
                         mForm.FatherForm = this;
                         mForm.DeviceInfo = (MultiTunnelVirtualDevice)device;
                         mForm.Show();
                         break;
-                     */
+                    case DeviceType.Clone:
+                        CloneSelectionDeviceForm cForm = new CloneSelectionDeviceForm();
+                        cForm.FatherForm = this;
+                        cForm.IsSocket = true;
+                        cForm.DeviceInfo = (CloneSelectionVirtualDevice)device;
+                        cForm.Show();
+                        break;
                     case DeviceType.Liquid:
                         LiquidProcessForm forml = new LiquidProcessForm();
                         forml.FatherForm = this;
                         forml.DeviceInfo = device;
                         forml.Show();
                         break;
-                    
+                    case DeviceType.Matrix:
+                        MatrixSystemDeviceForm maForm = new MatrixSystemDeviceForm();
+                        maForm.FatherForm = this;
+                        maForm.IsSocket = true;
+                        maForm.DeviceInfo = (MatrixSystemVirtualDevice)device;
+                        maForm.Show();
+                        break;
+                    case DeviceType.Storage:
+                        MicroReactorForm mmForm = new MicroReactorForm();
+                        mmForm.FatherForm = this;
+                        mmForm.mrDevice = (MicroStorageVirtualDevice)device;
+                        mmForm.Show();
+                        break;
                     default:
                         DeviceInfoForm form2 = new DeviceInfoForm();
                         form2.FatherForm = this;

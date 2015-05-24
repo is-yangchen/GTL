@@ -82,6 +82,7 @@ namespace Instrument
         public void sendMPFCurrencyReport(String[] currency)
         {
             Hashtable ht = new Hashtable();
+            ht.Add("ReportType", "MPF_Current");
             String[] s = { "MPF_Current1", "MPF_Current2", "MPF_Current3", "MPF_Current4" };
             for (int i = 0; i < s.Length; i++)
             {
@@ -187,7 +188,7 @@ namespace Instrument
 
         public override void decodeResponseMessage(ModbusMessage msg)
         {
-            this.sendOKResponse();
+            //this.sendOKResponse();
         }
 
         public override void decodeReportMessage(ModbusMessage msg)//解码报告消息

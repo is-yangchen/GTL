@@ -9,7 +9,7 @@ namespace Instrument
     public class MultiTunnelDeviceMessageCreator
     {
 
-        public static String createCmd(String cmd) 
+        public static String createCmd(String cmd)
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("Cmd", cmd);
@@ -62,76 +62,104 @@ namespace Instrument
 
     public class MultiTunnelVirtualDevice : BaseVirtualDevice
     {
-        public static int JianCeHangShu = 8;
-        public static int JianCeLieShu = 12;
+        public static int MMA_TestRowIndex = 8;
+        public static int MMA_TestColumnIndex = 12;
 
-        public enum JianCeMoShi { OD, YingGuang, HuaXueFaGuang };
-        public static JianCeMoShi stringToJianCeMoShi(String mode)
+        public enum MMA_TestMethod { OD, Flu, Che };
+        private String MMA_currentBarCode = null;
+        private String MMA_preBarCode = null;
+        private MMA_TestMethod MMA_TestMode = MMA_TestMethod.OD;
+        private float[][] MMA_CurrentValues = null;
+        private float[][] MMA_PreValues = null;
+        private bool MMA_PlateDetect = false;
+        private int MMA_MeasureTime;
+        private float MMA_Temp;
+        private float MMA_WaveLengthUp;
+        private float MMA_WaveLengthDown;
+
+
+        private int MMA_TipIdx;
+        private string MMA_TargetIdx;
+        private int MMA_ContainerType;
+        private int MMA_Volume;
+        private string MMA_SampleIdx;
+        private int MMA_SampleType;
+        private int MMA_HeatFlag;
+        private int MMA_VibrateFlag;
+        private int MMA_TestType;
+        private int MMA_LightType;
+        private int MMA_WaveLength;
+        private int MMA_OrificeType;
+        private int MMA_MeasureArea;
+        private int MMA_Time;
+        private int MMA_IntegralTime;
+
+
+
+        public static MMA_TestMethod stringToJianCeMoShi(String mode)
         {
-            if ("OD".Equals(mode)) return JianCeMoShi.OD;
-            if ("YG".Equals(mode)) return JianCeMoShi.YingGuang;
-            if ("HXFG".Equals(mode)) return JianCeMoShi.HuaXueFaGuang;
-            return JianCeMoShi.OD;
+            if ("OD".Equals(mode)) return MMA_TestMethod.OD;
+            if ("YG".Equals(mode)) return MMA_TestMethod.Flu;
+            if ("HXFG".Equals(mode)) return MMA_TestMethod.Che;
+            return MMA_TestMethod.OD;
         }
 
-        public static String jianCeMoShiToString(JianCeMoShi m)
+        public static String jianCeMoShiToString(MMA_TestMethod m)
         {
             switch (m)
             {
-                case JianCeMoShi.OD:
+                case MMA_TestMethod.OD:
                     return "OD";
-                case JianCeMoShi.YingGuang:
+                case MMA_TestMethod.Flu:
                     return "YG";
-                case JianCeMoShi.HuaXueFaGuang:
+                case MMA_TestMethod.Che:
                     return "HXFG";
             }
             return "OD";
         }
 
-        public void send_moshi() 
+        public void send_moshi()
         {
-            String msg = MultiTunnelDeviceMessageCreator.createSetMode(jianCeMoShiToString(moShi));
+            String msg = MultiTunnelDeviceMessageCreator.createSetMode(jianCeMoShiToString(MMA_TestMode));
             SendMsg(msg);
         }
 
 
-        private String currentTiaoMaHao = null;
-        private String preTiaoMaHao = null;
-        public String getTiaoMaHao() 
+
+        public String getTiaoMaHao()
         {
-            return preTiaoMaHao;
+            return MMA_preBarCode;
         }
 
-        private JianCeMoShi moShi = JianCeMoShi.OD;
-        public JianCeMoShi MoShi
+
+        public MMA_TestMethod MoShi
         {
             get
             {
-                return this.moShi;
+                return this.MMA_TestMode;
             }
             set
             {
-                this.moShi = value;
+                this.MMA_TestMode = value;
             }
         }
 
-        private float[][] detectValues = null;
-        private float[][] preDetectValues = null;
+
 
 
         public float[][] getDetectValues()
         {
             float[][] res = null;
-            if (preDetectValues == null) return res;
-            lock (preDetectValues)
+            if (MMA_PreValues == null) return res;
+            lock (MMA_PreValues)
             {
-                res = new float[MultiTunnelVirtualDevice.JianCeHangShu][];
-                for (int i = 0; i < MultiTunnelVirtualDevice.JianCeHangShu; i++)
+                res = new float[MultiTunnelVirtualDevice.MMA_TestRowIndex][];
+                for (int i = 0; i < MultiTunnelVirtualDevice.MMA_TestRowIndex; i++)
                 {
-                    res[i] = new float[MultiTunnelVirtualDevice.JianCeLieShu];
-                    for (int j = 0; j < MultiTunnelVirtualDevice.JianCeLieShu; j++) 
+                    res[i] = new float[MultiTunnelVirtualDevice.MMA_TestColumnIndex];
+                    for (int j = 0; j < MultiTunnelVirtualDevice.MMA_TestColumnIndex; j++)
                     {
-                        res[i][j] = preDetectValues[i][j];
+                        res[i][j] = MMA_PreValues[i][j];
                     }
                 }
             }
@@ -140,77 +168,77 @@ namespace Instrument
 
         public float getSingeDetectValue(int i, int j)
         {
-            if (i < 0 || i >= JianCeHangShu) return 0;
-            if (j < 0 || j >= JianCeLieShu) return 0;
-            if (preDetectValues == null) return 0;
-            lock (preDetectValues)
+            if (i < 0 || i >= MMA_TestRowIndex) return 0;
+            if (j < 0 || j >= MMA_TestColumnIndex) return 0;
+            if (MMA_PreValues == null) return 0;
+            lock (MMA_PreValues)
             {
-                return preDetectValues[i][j];
+                return MMA_PreValues[i][j];
             }
         }
 
-        private bool youKongBan = false;
+
         public bool YouKongBan
         {
             get
             {
-                return this.youKongBan;
+                return this.MMA_PlateDetect;
             }
             set
             {
-                this.youKongBan = value;
+                this.MMA_PlateDetect = value;
             }
         }
 
-        private int chuLiShiJian;
+
         public int ChuLiShiJian
         {
             get
             {
-                return this.chuLiShiJian;
+                return this.MMA_MeasureTime;
             }
             set
             {
-                this.chuLiShiJian = value;
+                this.MMA_MeasureTime = value;
             }
         }
 
-        private float dangQiangWenDu;
+
         public float DangQiangWenWu
         {
             get
             {
-                return this.dangQiangWenDu;
+                return this.MMA_Temp;
             }
             set
             {
-                this.dangQiangWenDu = value;
+                this.MMA_Temp = value;
             }
         }
 
-        private float boChangXiaXian;
+
         public float BoChangXiaXian
         {
             get
             {
-                return this.boChangXiaXian;
+                return this.MMA_WaveLengthUp;
             }
             set
             {
-                this.boChangXiaXian = value;
+                this.MMA_WaveLengthUp = value;
             }
         }
 
-        private float boChangShangXian;
+
         public float BoChangShangXian
         {
             get
             {
-                return this.boChangShangXian;
+                return this.MMA_WaveLengthDown;
             }
             set
             {
-                this.boChangShangXian = value;
+                this.MMA_WaveLengthDown = value;
             }
         }
 
@@ -223,10 +251,10 @@ namespace Instrument
         public override void decodeSetMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
-            
+
         }
 
-        public void send_cmd(String cmd) 
+        public void send_cmd(String cmd)
         {
             String msg = MultiTunnelDeviceMessageCreator.createCmd(cmd);
             SendMsg(msg);
@@ -235,16 +263,16 @@ namespace Instrument
         public override void decodeReportMessage(ModbusMessage msg)
         {
             String reportType = (String)msg.Data["ReportType"];
-            if ("YouKongBan".Equals(reportType)) 
+            if ("YouKongBan".Equals(reportType))
             {
                 int f = int.Parse((String)msg.Data["Flag"]);
-                if (f > 0) youKongBan = true;
-                else youKongBan = false;
-                if (youKongBan) 
+                if (f > 0) MMA_PlateDetect = true;
+                else MMA_PlateDetect = false;
+                if (MMA_PlateDetect)
                 {
-                    currentTiaoMaHao = (String)msg.Data["TiaoMaHao"];
+                    MMA_currentBarCode = (String)msg.Data["TiaoMaHao"];
                 }
-                else 
+                else
                 {
                     send_cmd("Next");
                 }
@@ -253,15 +281,15 @@ namespace Instrument
             {
                 String key;
                 bool hasFinish = false;
-                if (detectValues == null)
+                if (MMA_CurrentValues == null)
                 {
-                    detectValues = new float[MultiTunnelVirtualDevice.JianCeHangShu][];
-                    for (int i = 0; i < MultiTunnelVirtualDevice.JianCeHangShu; i++)
+                    MMA_CurrentValues = new float[MultiTunnelVirtualDevice.MMA_TestRowIndex][];
+                    for (int i = 0; i < MultiTunnelVirtualDevice.MMA_TestRowIndex; i++)
                     {
-                        detectValues[i] = new float[MultiTunnelVirtualDevice.JianCeLieShu];
+                        MMA_CurrentValues[i] = new float[MultiTunnelVirtualDevice.MMA_TestColumnIndex];
                     }
                 }
-                lock (detectValues)
+                lock (MMA_CurrentValues)
                 {
                     foreach (Object ob in msg.Data.Keys)
                     {
@@ -269,33 +297,33 @@ namespace Instrument
                         if (key.StartsWith("v"))
                         {
                             int index = int.Parse(key.Substring(1, key.Length - 1));
-                            int i = index / MultiTunnelVirtualDevice.JianCeLieShu;
-                            int j = index % MultiTunnelVirtualDevice.JianCeLieShu;
-                            if (index == MultiTunnelVirtualDevice.JianCeLieShu * MultiTunnelVirtualDevice.JianCeHangShu - 1) hasFinish = true;
+                            int i = index / MultiTunnelVirtualDevice.MMA_TestColumnIndex;
+                            int j = index % MultiTunnelVirtualDevice.MMA_TestColumnIndex;
+                            if (index == MultiTunnelVirtualDevice.MMA_TestColumnIndex * MultiTunnelVirtualDevice.MMA_TestRowIndex - 1) hasFinish = true;
                             float v = float.Parse((String)msg.Data[key]);
-                            detectValues[i][j] = v;
+                            MMA_CurrentValues[i][j] = v;
                         }
                     }
                 }
                 if (hasFinish)
                 {
-                    if (preDetectValues == null)
+                    if (MMA_PreValues == null)
                     {
-                        preDetectValues = detectValues;
-                        preTiaoMaHao = currentTiaoMaHao;
+                        MMA_PreValues = MMA_CurrentValues;
+                        MMA_preBarCode = MMA_currentBarCode;
                     }
                     else
                     {
-                        lock (preDetectValues)
+                        lock (MMA_PreValues)
                         {
-                            preDetectValues = detectValues;
-                            preTiaoMaHao = currentTiaoMaHao;
+                            MMA_PreValues = MMA_CurrentValues;
+                            MMA_preBarCode = MMA_currentBarCode;
                         }
                     }
-                    lock (detectValues) 
+                    lock (MMA_CurrentValues)
                     {
-                        detectValues = null;
-                        currentTiaoMaHao = null;
+                        MMA_CurrentValues = null;
+                        MMA_currentBarCode = null;
                     }
                 }
             }

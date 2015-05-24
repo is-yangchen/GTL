@@ -13,7 +13,7 @@ namespace CentralControl
 {
     public partial class MatrixSystemDeviceForm : Form
     {
-        public DeviceInfoForm FatherForm;
+        public ControlForm FatherForm;
         public bool IsSocket;
         public MatrixSystemVirtualDevice DeviceInfo;
 

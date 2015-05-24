@@ -27,17 +27,17 @@ namespace VirtialDevices
 
         private void daoRuButton_Click(object sender, EventArgs e)
         {
-            if (shuJuOpenFileDialog.ShowDialog() == DialogResult.OK) 
+            if (shuJuOpenFileDialog.ShowDialog() == DialogResult.OK)
             {
                 String fileName = shuJuOpenFileDialog.FileName;
                 float[][] v = DuoTongDaoFileHelper.getJianCeShuJu(fileName);
                 if (v != null)
                 {
                     DeviceInfo.setDetectValues(v);
-                    for (int i = 0; i < MultiTunnelDevice.JianCeHangShu; i++)
+                    for (int i = 0; i < MultiTunnelDevice.MMA_TestRowIndex; i++)
                     {
                         DataRow dr = dt.Rows[i];
-                        for (int j = 0; j < MultiTunnelDevice.JianCeLieShu; j++) 
+                        for (int j = 0; j < MultiTunnelDevice.MMA_TestColumnIndex; j++)
                         {
                             dr[j] = v[i][j];
                         }
@@ -57,23 +57,23 @@ namespace VirtialDevices
             dt = new DataTable();
             Updating = true;
             DataColumn dc;
-            for (int i = 1; i <= MultiTunnelDevice.JianCeLieShu; i++) 
+            for (int i = 1; i <= MultiTunnelDevice.MMA_TestColumnIndex; i++)
             {
                 dc = new DataColumn(i.ToString());
                 dt.Columns.Add(dc);
             }
             DataRow dr;
-            for (int i = 1; i <= MultiTunnelDevice.JianCeHangShu; i++)
+            for (int i = 1; i <= MultiTunnelDevice.MMA_TestRowIndex; i++)
             {
                 dr = dt.NewRow();
-                for (int j = 0; j < MultiTunnelDevice.JianCeLieShu; j++) 
+                for (int j = 0; j < MultiTunnelDevice.MMA_TestColumnIndex; j++)
                 {
                     dr[i] = "";
                 }
                 dt.Rows.Add(dr);
             }
             dataGridView.DataSource = dt;
-            foreach (DataGridViewColumn dgc in dataGridView.Columns) 
+            foreach (DataGridViewColumn dgc in dataGridView.Columns)
             {
                 dgc.Width = 44;
                 dgc.Resizable = DataGridViewTriState.False;
@@ -137,7 +137,7 @@ namespace VirtialDevices
             }
             catch (System.Exception ex)
             {
-            	
+
             }
         }
 
@@ -147,6 +147,7 @@ namespace VirtialDevices
             form.FatherForm = this;
             form.Show();
         }
+
 
 
     }

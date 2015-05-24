@@ -43,6 +43,7 @@ namespace CentralControl
         {
             switch (DeviceInfo.CurrentDeviceType) 
             {
+                /*
                 case DeviceType.Analysis:
                     MultiTunnelDeviceForm mForm = new MultiTunnelDeviceForm();
                     mForm.FatherForm = this;
@@ -64,7 +65,13 @@ namespace CentralControl
                     maForm.DeviceInfo = (MatrixSystemVirtualDevice)DeviceInfo;
                     maForm.Show();
                     break;
-
+                case DeviceType.Storage:
+                    MicroReactorForm mmForm = new MicroReactorForm();
+                    mmForm.FatherForm = this;
+                    mmForm.mrDevice = (MicroStorageVirtualDevice)DeviceInfo;
+                    mmForm.Show();
+                    break;
+                 */
                 default:
                     break;
 

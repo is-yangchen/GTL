@@ -24,6 +24,7 @@ namespace VirtialDevices
             typeComboBox.SelectedIndex = 0;
             communicateComboBox.Items.Add("Socket");
             communicateComboBox.Items.Add("TwinCat");
+            communicateComboBox.SelectedIndex = 0;
         }
 
         public VirtualDevicesForm FatherForm;

@@ -8,53 +8,53 @@ namespace Instrument
 {
     public class ALCDeviceMessageCreator
     {
-        public static String createDeployStatus(String status)
+        public static String createDeployStatus(String LHS_PlateStatus)
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
-            creator.addKeyPair("SetType", "taiMianPeiZhi");
-            creator.addKeyPair("taiMianPeiZhi", status);
+            creator.addKeyPair("SetType", "LHS_PlateStatus");
+            creator.addKeyPair("LHS_PlateStatus", LHS_PlateStatus);
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.SET), creator.getDataBytes());
         }
 
-        public static String createWeiZhiConfirmMsg(String xiYeWeiZhi, String paiYeWeiZhi)
+        public static String createWeiZhiConfirmMsg(String LHS_LiquidPosition, String LHS_DischargePosition)
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("SetType", "weiZhiSheZhi");
-            creator.addKeyPair("xiYeWeiZhi", xiYeWeiZhi);
-            creator.addKeyPair("paiYeWeiZhi", paiYeWeiZhi);
+            creator.addKeyPair("LHS_LiquidPosition", LHS_LiquidPosition);
+            creator.addKeyPair("LHS_DischargePosition", LHS_DischargePosition);
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.SET), creator.getDataBytes());
         }
 
-        public static String createMuBiaoConfirmMsg(String quYePan, String muBiaoPan,String xiYeLiang)
+        public static String createMuBiaoConfirmMsg(String LHS_SuctionPlate, String LHS_TargetPlate, String LHS_Imbitition)
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("SetType", "yiYeWeiZhi");
-            creator.addKeyPair("quYePan", quYePan);
-            creator.addKeyPair("muBiaoPan", muBiaoPan);
-            creator.addKeyPair("xiYeLiang", xiYeLiang);
+            creator.addKeyPair("LHS_SuctionPlate", LHS_SuctionPlate);
+            creator.addKeyPair("LHS_TargetPlate", LHS_TargetPlate);
+            creator.addKeyPair("LHS_Imbitition", LHS_Imbitition);
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.SET), creator.getDataBytes());
         }
 
-        public static String createSuDuConfirmMsg(String xiYeSuDu, String paiYeSuDu)
+        public static String createSuDuConfirmMsg(String LHS_LiquidRate, String LHS_DischargeRate)
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("SetType", "suDuSheZhi");
-            creator.addKeyPair("xiYeSuDu", xiYeSuDu);
-            creator.addKeyPair("paiYeSuDu", paiYeSuDu);
+            creator.addKeyPair("LHS_LiquidRate", LHS_LiquidRate);
+            creator.addKeyPair("LHS_DischargeRate", LHS_DischargeRate);
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.SET), creator.getDataBytes());
         }
     }
 
     public class LiquidProcessVirtualDevice : BaseVirtualDevice
     {
-        public String msgStatus = "";
-        public String quYePan = "";
-        public String muBiaoPan = "";
-        public int xiYeLiang = 0;
-        public int xiYeSuDu = 0;
-        public int paiYeSuDu = 0;
-        public int xiYeWeiZhi = 0;
-        public int paiYeWeiZhi = 0;
+        public String LHS_PlateStatus = "";
+        public String LHS_SuctionPlate = "";
+        public String LHS_TargetPlate = "";
+        public int LHS_Imbitition = 0;
+        public int LHS_LiquidRate = 0;
+        public int LHS_DischargeRate = 0;
+        public int LHS_LiquidPosition = 0;
+        public int LHS_DischargePosition = 0;
     }
 
 }
