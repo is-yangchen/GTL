@@ -13,7 +13,7 @@ namespace CentralControl
 {
     public partial class MultiTunnelDeviceForm : Form
     {
-        public DeviceInfoForm FatherForm;
+        public ControlForm FatherForm;
         public MultiTunnelVirtualDevice DeviceInfo;
 
         private DataTable dt;
@@ -29,16 +29,16 @@ namespace CentralControl
             jianCeMoShiComboBox.SelectedIndex = 0;
             dt = new DataTable();
             DataColumn dc;
-            for (int i = 1; i <= MultiTunnelVirtualDevice.JianCeLieShu; i++)
+            for (int i = 1; i <= MultiTunnelVirtualDevice.MMA_TestColumnIndex; i++)
             {
                 dc = new DataColumn(i.ToString());
                 dt.Columns.Add(dc);
             }
             DataRow dr;
-            for (int i = 1; i <= MultiTunnelVirtualDevice.JianCeHangShu; i++)
+            for (int i = 1; i <= MultiTunnelVirtualDevice.MMA_TestRowIndex; i++)
             {
                 dr = dt.NewRow();
-                for (int j = 0; j < MultiTunnelVirtualDevice.JianCeLieShu; j++)
+                for (int j = 0; j < MultiTunnelVirtualDevice.MMA_TestColumnIndex; j++)
                 {
                     dr[i] = "";
                 }
@@ -61,9 +61,9 @@ namespace CentralControl
         private void runButton_Click(object sender, EventArgs e)
         {
             int index = jianCeMoShiComboBox.SelectedIndex;
-            if (index == 0) DeviceInfo.MoShi = MultiTunnelVirtualDevice.JianCeMoShi.OD;
-            if (index == 1) DeviceInfo.MoShi = MultiTunnelVirtualDevice.JianCeMoShi.YingGuang;
-            if (index == 2) DeviceInfo.MoShi = MultiTunnelVirtualDevice.JianCeMoShi.HuaXueFaGuang;
+            if (index == 0) DeviceInfo.MoShi = MultiTunnelVirtualDevice.MMA_TestMethod.OD;
+            if (index == 1) DeviceInfo.MoShi = MultiTunnelVirtualDevice.MMA_TestMethod.Flu;
+            if (index == 2) DeviceInfo.MoShi = MultiTunnelVirtualDevice.MMA_TestMethod.Che;
             DeviceInfo.send_moshi();
             DeviceInfo.send_cmd("Start");
         }
@@ -73,16 +73,16 @@ namespace CentralControl
             timer1.Stop();
             float[][] v = DeviceInfo.getDetectValues();
             String TiaoMaHao = DeviceInfo.getTiaoMaHao();
-            if (v == null || TiaoMaHao == null) 
+            if (v == null || TiaoMaHao == null)
             {
                 timer1.Start();
                 return;
             }
             DataRow dr;
-            for (int i = 0; i < MultiTunnelVirtualDevice.JianCeHangShu; i++)
+            for (int i = 0; i < MultiTunnelVirtualDevice.MMA_TestRowIndex; i++)
             {
                 dr = dt.Rows[i];
-                for (int j = 0; j < MultiTunnelVirtualDevice.JianCeLieShu; j++) 
+                for (int j = 0; j < MultiTunnelVirtualDevice.MMA_TestColumnIndex; j++)
                 {
                     dr[j] = v[i][j];
                 }
@@ -90,6 +90,11 @@ namespace CentralControl
             dataGridView.DataSource = dt;
             dataGridView.Update();
             timer1.Start();
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

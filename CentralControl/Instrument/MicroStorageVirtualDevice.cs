@@ -41,6 +41,122 @@ namespace Instrument
     public class MicroStorageVirtualDevice : BaseVirtualDevice
     {
 
+        public int MMR_CurentSelectIndex;
+        public bool MMR_Module1 = false;
+        public bool MMR_Module2 = false;
+        public bool MMR_Module3 = false;
+        public bool MMR_Module4 = false;
+        public bool MMR_Module5 = false;
+        public bool MMR_Module6 = false;
+        public bool MMR_Module7 = false;
+        public bool MMR_Module8 = false;
+
+        public int MMR_CurSpeed;
+        public int MMR_CurTemp;
+        public int MMR_CurAir;
+        public int MMR_CurPressure;
+        public int MMR_CurTime;
+        public int MMR_CurtpR;
+        public int MMR_CurphR;
+        public int MMR_CurdoR;
+
+        public int MMR_ModuleSpeed1;
+        public int MMR_ModuleTemp1;
+        public int MMR_ModuleAir1;
+        public int MMR_ModulemPa1;
+        public int MMR_ModuleSampleTime1;
+        public int MMR_ModTemp1;
+        public int MMR_ModPh1;
+        public int MMR_ModDO1;
+        public int MMR_ModFlow1;
+        public int MMR_Mod1O2;
+        public int MMR_Mod1CO2;
+
+
+        public int MMR_ModuleSpeed2;
+        public int MMR_ModuleTemp2;
+        public int MMR_ModuleAir2;
+        public int MMR_ModulemPa2;
+        public int MMR_ModuleSampleTime2;
+        public int MMR_ModTemp2;
+        public int MMR_ModPh2;
+        public int MMR_ModDO2;
+        public int MMR_ModFlow2;
+        public int MMR_Mod2O2;
+        public int MMR_Mod2CO2;
+
+        public int MMR_ModuleSpeed3;
+        public int MMR_ModuleTemp3;
+        public int MMR_ModuleAir3;
+        public int MMR_ModulemPa3;
+        public int MMR_ModuleSampleTime3;
+        public int MMR_ModTemp3;
+        public int MMR_ModPh3;
+        public int MMR_ModDO3;
+        public int MMR_ModFlow3;
+        public int MMR_Mod3O2;
+        public int MMR_Mod3CO2;
+
+        public int MMR_ModuleSpeed4;
+        public int MMR_ModuleTemp4;
+        public int MMR_ModuleAir4;
+        public int MMR_ModulemPa4;
+        public int MMR_ModuleSampleTime4;
+        public int MMR_ModTemp4;
+        public int MMR_ModPh4;
+        public int MMR_ModDO4;
+        public int MMR_ModFlow4;
+        public int MMR_Mod4O2;
+        public int MMR_Mod4CO2;
+
+        public int MMR_ModuleSpeed5;
+        public int MMR_ModuleTemp5;
+        public int MMR_ModuleAir5;
+        public int MMR_ModulemPa5;
+        public int MMR_ModuleSampleTime5;
+        public int MMR_ModTemp5;
+        public int MMR_ModPh5;
+        public int MMR_ModDO5;
+        public int MMR_ModFlow5;
+        public int MMR_Mod5O2;
+        public int MMR_Mod5CO2;
+
+        public int MMR_ModuleSpeed6;
+        public int MMR_ModuleTemp6;
+        public int MMR_ModuleAir6;
+        public int MMR_ModulemPa6;
+        public int MMR_ModuleSampleTime6;
+        public int MMR_ModTemp6;
+        public int MMR_ModPh6;
+        public int MMR_ModDO6;
+        public int MMR_ModFlow6;
+        public int MMR_Mod6O2;
+        public int MMR_Mod6CO2;
+
+        public int MMR_ModuleSpeed7;
+        public int MMR_ModuleTemp7;
+        public int MMR_ModuleAir7;
+        public int MMR_ModulemPa7;
+        public int MMR_ModuleSampleTime7;
+        public int MMR_ModTemp7;
+        public int MMR_ModPh7;
+        public int MMR_ModDO7;
+        public int MMR_ModFlow7;
+        public int MMR_Mod7O2;
+        public int MMR_Mod7CO2;
+
+        public int MMR_ModuleSpeed8;
+        public int MMR_ModuleTemp8;
+        public int MMR_ModuleAir8;
+        public int MMR_ModulemPa8;
+        public int MMR_ModuleSampleTime8;
+        public int MMR_ModTemp8;
+        public int MMR_ModPh8;
+        public int MMR_ModDO8;
+        public int MMR_ModFlow8;
+        public int MMR_Mod8O2;
+        public int MMR_Mod8CO2;
+
         public override void decodeResponseMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
@@ -53,142 +169,48 @@ namespace Instrument
                 switch (mnum)
                 {
                     case 1:
-                        tpR1 = curtpR;
-                        phR1 = curphR;
-                        doR1 = curdoR;
+                        MMR_ModTemp1 = curtpR;
+                        MMR_ModPh1 = curphR;
+                        MMR_ModDO1 = curdoR;
                         break;
                     case 2:
-                        tpR2 = curtpR;
-                        phR2 = curphR;
-                        doR2 = curdoR;
+                        MMR_ModTemp2 = curtpR;
+                        MMR_ModPh2 = curphR;
+                        MMR_ModDO2 = curdoR;
                         break;
                     case 3:
-                        tpR3 = curtpR;
-                        phR3 = curphR;
-                        doR3 = curdoR;
+                        MMR_ModTemp3 = curtpR;
+                        MMR_ModPh3 = curphR;
+                        MMR_ModDO3 = curdoR;
                         break;
                     case 4:
-                        tpR4 = curtpR;
-                        phR4 = curphR;
-                        doR4 = curdoR;
+                        MMR_ModTemp4 = curtpR;
+                        MMR_ModPh4 = curphR;
+                        MMR_ModDO4 = curdoR;
                         break;
                     case 5:
-                        tpR5 = curtpR;
-                        phR5 = curphR;
-                        doR5 = curdoR;
+                        MMR_ModTemp5 = curtpR;
+                        MMR_ModPh5 = curphR;
+                        MMR_ModDO5 = curdoR;
                         break;
                     case 6:
-                        tpR6 = curtpR;
-                        phR6 = curphR;
-                        doR6 = curdoR;
+                        MMR_ModTemp6 = curtpR;
+                        MMR_ModPh6 = curphR;
+                        MMR_ModDO6 = curdoR;
                         break;
                     case 7:
-                        tpR7 = curtpR;
-                        phR7 = curphR;
-                        doR7 = curdoR;
+                        MMR_ModTemp7 = curtpR;
+                        MMR_ModPh7 = curphR;
+                        MMR_ModDO7 = curdoR;
                         break;
                     case 8:
-                        tpR8 = curtpR;
-                        phR8 = curphR;
-                        doR8 = curdoR;
+                        MMR_ModTemp8 = curtpR;
+                        MMR_ModPh8 = curphR;
+                        MMR_ModDO8 = curdoR;
                         break;
                 }
-                //Database mydb = new Database();
-                //mydb.insertmmrinfo(1, mnum, curtpR, curphR, curdoR);
             }
         }
-
-
-        public int curSelectModule;
-        public bool run1 = false;
-        public bool run2 = false;
-        public bool run3 = false;
-        public bool run4 = false;
-        public bool run5 = false;
-        public bool run6 = false;
-        public bool run7 = false;
-        public bool run8 = false;
-
-        public int curSpeed;
-        public int curTemp;
-        public int curAir;
-        public int curPressure;
-        public int curTime;
-        public int curtpR;
-        public int curphR;
-        public int curdoR;
-
-        public int Speed1;
-        public int Temp1;
-        public int Air1;
-        public int Pressure1;
-        public int Time1;
-        public int tpR1;
-        public int phR1;
-        public int doR1;
-
-        public int Speed2;
-        public int Temp2;
-        public int Air2;
-        public int Pressure2;
-        public int Time2;
-        public int tpR2;
-        public int phR2;
-        public int doR2;
-
-        public int Speed3;
-        public int Temp3;
-        public int Air3;
-        public int Pressure3;
-        public int Time3;
-        public int tpR3;
-        public int phR3;
-        public int doR3;
-
-        public int Speed4;
-        public int Temp4;
-        public int Air4;
-        public int Pressure4;
-        public int Time4;
-        public int tpR4;
-        public int phR4;
-        public int doR4;
-
-        public int Speed5;
-        public int Temp5;
-        public int Air5;
-        public int Pressure5;
-        public int Time5;
-        public int tpR5;
-        public int phR5;
-        public int doR5;
-
-        public int Speed6;
-        public int Temp6;
-        public int Air6;
-        public int Pressure6;
-        public int Time6;
-        public int tpR6;
-        public int phR6;
-        public int doR6;
-
-        public int Speed7;
-        public int Temp7;
-        public int Air7;
-        public int Pressure7;
-        public int Time7;
-        public int tpR7;
-        public int phR7;
-        public int doR7;
-
-        public int Speed8;
-        public int Temp8;
-        public int Air8;
-        public int Pressure8;
-        public int Time8;
-        public int tpR8;
-        public int phR8;
-        public int doR8;
 
         public override void ReceiveMsg(String s)
         {

@@ -81,76 +81,89 @@ namespace Instrument
 
     public class MatrixSystemDevice : BaseVirtualDevice
     {
-        //---------------------view---------------------
+        //---------------------上位机发---------------------
 
         //仪器系统
-        public int Sys_Mode = 0;
-        public int Sys_Command = 0;
+        public int HAC_Sys_Mode = 0;
+        public int HAC_Sys_Command = 0;
+        public int HAC_Run_Time = 0;
 
         //匀光
-        public int Light_pwm = 0;
-        public int Light_allighText = 0;
+        public int HAC_Light_pwm = 0;
+        public int HAC_Light_allighText = 0;
 
         //湿温度
-        public int TH_tempset = 0;
-        public int TH_htempchaval = 0;
-        public int TH_ltempchaval = 0;
-        public string TH_syso_change = "";
-        public int TH_htempalarmval = 0;
-        public int TH_ltempalarmval = 0;
-        public string TH_compressormode = "";
-        public string TH_compressorsituation = "";
-        public string TH_def_interval = "";
-        public int TH_def_span = 0;
-        public string TH_hottube = "";
-        public string TH_humi_con_mod = "";
-        public string TH_humi_con_sit = "";
-        public int TH_hum_set = 0;
-        public int TH_hum_alarm_val = 0;
-        public int TH_add_hum = 0;
-        public int TH_remo_hum = 0;
+        public int HAC_TH_tempset = 0;
+        public int HAC_TH_htempchaval = 0;
+        public int HAC_TH_ltempchaval = 0;
+        public string HAC_TH_syso_change = "";
+        public int HAC_TH_htempalarmval = 0;
+        public int HAC_TH_ltempalarmval = 0;
+        public string HAC_TH_compressormode = "";
+        public string HAC_TH_compressorsituation = "";
+        public string HAC_TH_def_interval = "";
+        public int HAC_TH_def_span = 0;
+        public string HAC_TH_hottube = "";
+        public string HAC_TH_humi_con_mod = "";
+        public string HAC_TH_humi_con_sit = "";
+        public int HAC_TH_hum_set = 0;
+        public int HAC_TH_hum_alarm_val = 0;
+        public int HAC_TH_add_hum = 0;
+        public int HAC_TH_remo_hum = 0;
 
         //电机
-        public int Motor_text_speed = 0;
-        public int Motor_elecspeed = 0;
-        public int Motor_slope = 0;
+        public int HAC_Motor_text_speed = 0;
+        public int HAC_Motor_elecspeed = 0;
+        public int HAC_Motor_slope = 0;
 
-        //-----------------------data--------------------
+        //-----------------------仪器发--------------------
 
         //仪器系统
-        public int Sys_DeviceInfo = 0;
-        public int Sys_Status = 0;
-        public int Sys_Batch_Info = 0;
+        public int HAC_Sys_DeviceInfo = 0;
+        public int HAC_Sys_Status = 0;
+        public int HAC_Sys_Batch_Info = 0;
 
         //匀光
-        public int Light_Status = 0;
-        public int Light_address = 0;
-        public int Light_light = 0;
-        public int Light_xzoom = 0;
-        public int Light_yzoom = 0;
-        public int Light_currentpwm = 0;
+        public int HAC_Light_Status = 0;
+        public int HAC_Light_address = 0;
+        public int HAC_Light_light = 0;
+        public int HAC_Light_xzoom = 0;
+        public int HAC_Light_yzoom = 0;
+        public int HAC_Light_currentpwm = 0;
 
         //湿温度
-        public int TH_Status = 0;
-        public int TH_temperature1 = 0;
-        public int TH_temperature2 = 0;
-        public int TH_temperature3 = 0;
-        public int TH_humidity1 = 0;
-        public int TH_humidity2 = 0;
+        public int HAC_TH_Status = 0;
+        public int HAC_TH_temperature1 = 0;
+        public int HAC_TH_temperature2 = 0;
+        public int HAC_TH_temperature3 = 0;
+        public int HAC_TH_humidity1 = 0;
+        public int HAC_TH_humidity2 = 0;
 
         //电机
-        public int Motor_Status = 0;
-        public int Motor_Power = 0;
+        public int HAC_Motor_Status = 0;
+        public int HAC_Motor_Power = 0;
 
         //条码
-        public string Add_Num = "";
-        public string Rem_Num = "";
-        public int Rise_Time = 0;
+        public string HAC_InBarCode = "";
+        public int HAC_PlateLocation = 0;
+        public string HAC_OutBarCode = "";
+
+        //动平衡
+        public int HAC_Vib_Status = 0;
+        public double HAC_Vib_unbalanceAmp = 0;
+        public int HAC_Vib_unbalanceAngle= 0;
+        public int HAC_Vib_AccAxisX= 0;
+        public int HAC_Vib_AccAxisY= 0;
+        public int HAC_Vib_AccAxisZ= 0;
+
 
         //--------------OD-------------------
 
-        public float[][] OD_checkBoxs = null;
-        public int[][] OD_rowl = null;
+        public float[][] HAC_OD_checkBoxs = null;
+
+        public int HAC_OD_Status = 0;
+        public int HAC_OD_InfoTime = 0;
+        public int[][] HAC_OD_rowl = null;
 
         int interval = 4; 
         private System.Timers.Timer getODTimer = null;
@@ -165,7 +178,7 @@ namespace Instrument
         {
             lock(KeyObject)
             {
-                return OD_rowl[i][j];
+                return HAC_OD_rowl[i][j];
             }
         }
 
@@ -181,8 +194,8 @@ namespace Instrument
                 {
                     for (int j = 0; j < 12; j++)
                     {
-                        this.OD_rowl[i][j] = ra.Next(0, 31);
-                        od = Convert.ToChar(OD_rowl[i][j]);
+                        this.HAC_OD_rowl[i][j] = ra.Next(0, 31);
+                        od = Convert.ToChar(HAC_OD_rowl[i][j]);
                         s += od;
                     }
                 }
@@ -194,58 +207,58 @@ namespace Instrument
 
         private void getSystemTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            String msg = MatrixSystemDeviceMessageCreator.createSystemReport(this.Sys_DeviceInfo.ToString(), 
-                                                                             this.Sys_Status.ToString(),
-                                                                             this.Sys_Batch_Info.ToString() );
+            String msg = MatrixSystemDeviceMessageCreator.createSystemReport(this.HAC_Sys_DeviceInfo.ToString(), 
+                                                                             this.HAC_Sys_Status.ToString(),
+                                                                             this.HAC_Sys_Batch_Info.ToString() );
             SendMsg(msg);
         }
 
         private void getTHTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             Random ra = new Random();
-            this.TH_temperature1 = ra.Next(300, 600);
-            this.TH_temperature2 = ra.Next(300, 600);
-            this.TH_temperature3 = ra.Next(300, 600);
-            this.TH_humidity1 = ra.Next(50, 100);
-            this.TH_humidity2 = ra.Next(50, 100);
+            this.HAC_TH_temperature1 = ra.Next(300, 600);
+            this.HAC_TH_temperature2 = ra.Next(300, 600);
+            this.HAC_TH_temperature3 = ra.Next(300, 600);
+            this.HAC_TH_humidity1 = ra.Next(50, 100);
+            this.HAC_TH_humidity2 = ra.Next(50, 100);
 
-            String msg = MatrixSystemDeviceMessageCreator.createTHReport(this.TH_temperature1.ToString(),
-                                                                         this.TH_temperature2.ToString(),
-                                                                         this.TH_temperature3.ToString(),
-                                                                         this.TH_humidity1.ToString(),
-                                                                         this.TH_humidity2.ToString() );
+            String msg = MatrixSystemDeviceMessageCreator.createTHReport(this.HAC_TH_temperature1.ToString(),
+                                                                         this.HAC_TH_temperature2.ToString(),
+                                                                         this.HAC_TH_temperature3.ToString(),
+                                                                         this.HAC_TH_humidity1.ToString(),
+                                                                         this.HAC_TH_humidity2.ToString() );
             SendMsg(msg);
         }
 
         private void getMotorTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             Random ra = new Random();
-            this.Motor_text_speed = ra.Next(7000, 10000);
-            this.Motor_elecspeed = ra.Next(30000, 50000);
-            this.Motor_Power = ra.Next(800, 1000);
+            this.HAC_Motor_text_speed = ra.Next(7000, 10000);
+            this.HAC_Motor_elecspeed = ra.Next(30000, 50000);
+            this.HAC_Motor_Power = ra.Next(800, 1000);
 
-            String msg = MatrixSystemDeviceMessageCreator.createMotorReport(this.Motor_Status.ToString(),
-                                                                            this.Motor_text_speed.ToString(),
-                                                                            this.Motor_elecspeed.ToString(),
-                                                                            this.Motor_Power.ToString() );
+            String msg = MatrixSystemDeviceMessageCreator.createMotorReport(this.HAC_Motor_Status.ToString(),
+                                                                            this.HAC_Motor_text_speed.ToString(),
+                                                                            this.HAC_Motor_elecspeed.ToString(),
+                                                                            this.HAC_Motor_Power.ToString() );
             SendMsg(msg);
         }
 
         private void getCodeTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            String msg = MatrixSystemDeviceMessageCreator.createCodeReport(this.Add_Num, this.Rem_Num);
+            String msg = MatrixSystemDeviceMessageCreator.createCodeReport(this.HAC_InBarCode, this.HAC_OutBarCode);
             SendMsg(msg);
         }
 
 
         public void startTimers()
         {
-            OD_rowl = new int[8][];
+            HAC_OD_rowl = new int[8][];
             for (int i = 0; i < 8; i++)
             {
-                OD_rowl[i] = new int[12];
+                HAC_OD_rowl[i] = new int[12];
                 for (int j = 0; j < 12; j++)
-                    OD_rowl[i][j] = 0;
+                    HAC_OD_rowl[i][j] = 0;
             }
 
             getODTimer = new System.Timers.Timer();
@@ -279,42 +292,42 @@ namespace Instrument
             String setType = (String)msg.Data["SetType"];
             if ("System".Equals(setType))
             {
-                this.Sys_Mode = int.Parse((String)msg.Data["Sys_Mode"]);
-                this.Sys_Command = int.Parse((String)msg.Data["Sys_Command"]);
+                this.HAC_Sys_Mode = int.Parse((String)msg.Data["Sys_Mode"]);
+                this.HAC_Sys_Command = int.Parse((String)msg.Data["Sys_Command"]);
             }
             if ("Light".Equals(setType))
             {
-                this.Light_pwm = int.Parse((String)msg.Data["Light_pwm"]);
-                this.Light_allighText = int.Parse((String)msg.Data["Light_allighText"]);
+                this.HAC_Light_pwm = int.Parse((String)msg.Data["Light_pwm"]);
+                this.HAC_Light_allighText = int.Parse((String)msg.Data["Light_allighText"]);
             }
             if ("TH_1".Equals(setType))
             {
-                this.TH_tempset = int.Parse((String)msg.Data["TH_tempset"]);
-                this.TH_htempchaval = int.Parse((String)msg.Data["TH_htempchaval"]);
-                this.TH_ltempchaval = int.Parse((String)msg.Data["TH_ltempchaval"]);
-                this.TH_syso_change = (String)msg.Data["TH_syso_change"];
-                this.TH_htempalarmval = int.Parse((String)msg.Data["TH_htempalarmval"]);
-                this.TH_ltempalarmval = int.Parse((String)msg.Data["TH_ltempalarmval"]);
-                this.TH_compressormode = (String)msg.Data["TH_compressormode"];
-                this.TH_compressorsituation = (String)msg.Data["TH_compressorsituation"];
+                this.HAC_TH_tempset = int.Parse((String)msg.Data["TH_tempset"]);
+                this.HAC_TH_htempchaval = int.Parse((String)msg.Data["TH_htempchaval"]);
+                this.HAC_TH_ltempchaval = int.Parse((String)msg.Data["TH_ltempchaval"]);
+                this.HAC_TH_syso_change = (String)msg.Data["TH_syso_change"];
+                this.HAC_TH_htempalarmval = int.Parse((String)msg.Data["TH_htempalarmval"]);
+                this.HAC_TH_ltempalarmval = int.Parse((String)msg.Data["TH_ltempalarmval"]);
+                this.HAC_TH_compressormode = (String)msg.Data["TH_compressormode"];
+                this.HAC_TH_compressorsituation = (String)msg.Data["TH_compressorsituation"];
             }
             if ("TH_2".Equals(setType))
             {
-                this.TH_def_interval = (String)msg.Data["TH_def_interval"];
-                this.TH_def_span = int.Parse((String)msg.Data["TH_def_span"]);
-                this.TH_hottube = (String)msg.Data["TH_hottube"];
-                this.TH_humi_con_mod = (String)msg.Data["TH_humi_con_mod"];
-                this.TH_humi_con_sit = (String)msg.Data["TH_humi_con_sit"];
-                this.TH_hum_set = int.Parse((String)msg.Data["TH_hum_set"]);
-                this.TH_hum_alarm_val = int.Parse((String)msg.Data["TH_hum_alarm_val"]);
-                this.TH_add_hum = int.Parse((String)msg.Data["TH_add_hum"]);
-                this.TH_remo_hum = int.Parse((String)msg.Data["TH_remo_hum"]);
+                this.HAC_TH_def_interval = (String)msg.Data["TH_def_interval"];
+                this.HAC_TH_def_span = int.Parse((String)msg.Data["TH_def_span"]);
+                this.HAC_TH_hottube = (String)msg.Data["TH_hottube"];
+                this.HAC_TH_humi_con_mod = (String)msg.Data["TH_humi_con_mod"];
+                this.HAC_TH_humi_con_sit = (String)msg.Data["TH_humi_con_sit"];
+                this.HAC_TH_hum_set = int.Parse((String)msg.Data["TH_hum_set"]);
+                this.HAC_TH_hum_alarm_val = int.Parse((String)msg.Data["TH_hum_alarm_val"]);
+                this.HAC_TH_add_hum = int.Parse((String)msg.Data["TH_add_hum"]);
+                this.HAC_TH_remo_hum = int.Parse((String)msg.Data["TH_remo_hum"]);
             }
             if ("Motor".Equals(setType))
             {
-                this.Motor_text_speed = int.Parse((String)msg.Data["Motor_text_speed"]);
-                this.Motor_elecspeed = int.Parse((String)msg.Data["Motor_elecspeed"]);
-                this.Motor_slope = int.Parse((String)msg.Data["Motor_slope"]);
+                this.HAC_Motor_text_speed = int.Parse((String)msg.Data["Motor_text_speed"]);
+                this.HAC_Motor_elecspeed = int.Parse((String)msg.Data["Motor_elecspeed"]);
+                this.HAC_Motor_slope = int.Parse((String)msg.Data["Motor_slope"]);
             }
         }
 

@@ -13,7 +13,7 @@ namespace CentralControl
 {
     public partial class MatrixSystemDeviceForm : Form
     {
-        public DeviceInfoForm FatherForm;
+        public ControlForm FatherForm;
         public bool IsSocket;
         public MatrixSystemVirtualDevice DeviceInfo;
 
@@ -107,27 +107,27 @@ namespace CentralControl
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            this.sheBeiXinXiTextBox.Text = DeviceInfo.Sys_DeviceInfo.ToString();
-            this.zuoYeZhuangTaiTextBox.Text = DeviceInfo.Sys_Status.ToString();
-            this.yiQiZhuangTaiTextBox.Text = DeviceInfo.Sys_Batch_Info.ToString();
+            this.sheBeiXinXiTextBox.Text = DeviceInfo.HAC_Sys_DeviceInfo.ToString();
+            this.zuoYeZhuangTaiTextBox.Text = DeviceInfo.HAC_Sys_Status.ToString();
+            this.yiQiZhuangTaiTextBox.Text = DeviceInfo.HAC_Sys_Batch_Info.ToString();
 
-            this.wenDu1TextBox.Text = DeviceInfo.TH_temperature1.ToString();
-            this.wenDu2TextBox.Text = DeviceInfo.TH_temperature2.ToString();
-            this.wenDu3TextBox.Text = DeviceInfo.TH_temperature3.ToString();
-            this.shiDu1TextBox.Text = DeviceInfo.TH_humidity1.ToString();
-            this.shiDu2TextBox.Text = DeviceInfo.TH_humidity2.ToString();
-            this.wenShiZhuangTaiTextBox.Text = DeviceInfo.TH_Status.ToString();
+            this.wenDu1TextBox.Text = DeviceInfo.HAC_TH_temperature1.ToString();
+            this.wenDu2TextBox.Text = DeviceInfo.HAC_TH_temperature2.ToString();
+            this.wenDu3TextBox.Text = DeviceInfo.HAC_TH_temperature3.ToString();
+            this.shiDu1TextBox.Text = DeviceInfo.HAC_TH_humidity1.ToString();
+            this.shiDu2TextBox.Text = DeviceInfo.HAC_TH_humidity2.ToString();
+            this.wenShiZhuangTaiTextBox.Text = DeviceInfo.HAC_TH_Status.ToString();
 
-            this.dianJiZhuangTaiTextBox.Text = DeviceInfo.Motor_Status.ToString();
-            this.dianJiZhuanSuTextBox.Text = DeviceInfo.Motor_elecspeed.ToString();
-            this.dianJiGongLvTextBox.Text = DeviceInfo.Motor_Power.ToString();
-            this.yaoChuangZhuanSuTextBox.Text = DeviceInfo.Motor_text_speed.ToString();
+            this.dianJiZhuangTaiTextBox.Text = DeviceInfo.HAC_Motor_Status.ToString();
+            this.dianJiZhuanSuTextBox.Text = DeviceInfo.HAC_Motor_elecspeed.ToString();
+            this.dianJiGongLvTextBox.Text = DeviceInfo.HAC_Motor_Power.ToString();
+            this.yaoChuangZhuanSuTextBox.Text = DeviceInfo.HAC_Motor_text_speed.ToString();
 
-            this.yiRuTiaoMaTextBox.Text = DeviceInfo.Add_Num.ToString();
-            this.yiChuTiaoMaTextBox.Text = DeviceInfo.Rem_Num.ToString();
+            this.yiRuTiaoMaTextBox.Text = DeviceInfo.HAC_InBarCode.ToString();
+            this.yiChuTiaoMaTextBox.Text = DeviceInfo.HAC_OutBarCode.ToString();
 
             dataListView.BeginUpdate();
-            if (DeviceInfo.OD_rowl != null)
+            if (DeviceInfo.HAC_OD_rowl != null)
             {
                 for (int i = 0; i < 8; i++)
                 {

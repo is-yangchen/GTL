@@ -22,8 +22,8 @@ namespace VirtialDevices
 
         public LiquidProcessForm()
         {
-          //  alcDevice = new LiquidProcessDevice();
-          //  alcDevice.taiMianPeiZhi = initStatus;
+            //  alcDevice = new LiquidProcessDevice();
+            //  alcDevice.taiMianPeiZhi = initStatus;
             InitializeComponent();
         }
 
@@ -97,19 +97,19 @@ namespace VirtialDevices
             FatherForm.Enabled = true;
         }
 
-        
+
         private void ALCDeviceForm_Load(object sender, EventArgs e)
         {
-           
-            
-           
-            setPaltesByMsg(alcDevice.taiMianPeiZhi);
+
+
+
+            setPaltesByMsg(alcDevice.LHS_PlateStatus);
 
 
             timer1.Start();
 
         }
-        
+
 
         private void groupBox4_Enter(object sender, EventArgs e)
         {
@@ -119,19 +119,19 @@ namespace VirtialDevices
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Stop();
-           // IsSocket = true; // warning!-----------------temp setting----------------------
-           // if (IsSocket)
-            
-                this.textBox4.Text = alcDevice.quYePan;
-                this.textBox5.Text = alcDevice.muBiaoPan;
-                this.textBox1.Text = alcDevice.xiYeLiang.ToString();
-                this.textBox6.Text = alcDevice.xiYeSuDu.ToString();
-                this.textBox7.Text = alcDevice.paiYeSuDu.ToString();
-                this.textBox2.Text = alcDevice.quYeWeiZhi.ToString();
-                this.textBox3.Text = alcDevice.paiYeWeiZhi.ToString();
-                setPaltesByMsg(alcDevice.taiMianPeiZhi);
+            // IsSocket = true; // warning!-----------------temp setting----------------------
+            // if (IsSocket)
 
-       
+            this.textBox4.Text = alcDevice.LHS_SuctionPlate;
+            this.textBox5.Text = alcDevice.LHS_TargetPlate;
+            this.textBox1.Text = alcDevice.LHS_Imbitition.ToString();
+            this.textBox6.Text = alcDevice.LHS_LiquidRate.ToString();
+            this.textBox7.Text = alcDevice.LHS_DischargeRate.ToString();
+            this.textBox2.Text = alcDevice.LHS_LiquidPosition.ToString();
+            this.textBox3.Text = alcDevice.LHS_DischargePosition.ToString();
+            setPaltesByMsg(alcDevice.LHS_PlateStatus);
+
+
 
             timer1.Start();
         }

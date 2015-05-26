@@ -31,8 +31,9 @@ namespace VirtialDevices
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (IsSocket)
+            //if (IsSocket)
             {
+                //*
                 this.jiaReTextBox.Text = DeviceInfo.getJiaReShiJian().ToString();
                 this.qingXiShiJianTextBox.Text = DeviceInfo.getQingXiShiJian().ToString();
                 this.qingXiCiShuTextBox.Text = DeviceInfo.getQingXiCiShu().ToString();
@@ -51,9 +52,11 @@ namespace VirtialDevices
                 this.colorRTextBox.Text = DeviceInfo.getR().ToString();
                 this.colorGTextBox.Text = DeviceInfo.getG().ToString();
                 this.colorBTextBox.Text = DeviceInfo.getB().ToString();
+                 //* */
             }
-            else
+            //else
             {
+                /*
                 this.jiaReTextBox.Text = DeviceInfo.getJiaReShiJian().ToString();
                 this.qingXiShiJianTextBox.Text = DeviceInfo.getQingXiShiJian().ToString();
                 this.qingXiCiShuTextBox.Text = DeviceInfo.getQingXiCiShu().ToString();
@@ -72,6 +75,7 @@ namespace VirtialDevices
                 this.colorRTextBox.Text = DeviceInfo.getR().ToString();
                 this.colorGTextBox.Text = DeviceInfo.getG().ToString();
                 this.colorBTextBox.Text = DeviceInfo.getB().ToString();
+                 * */
 
             }
         }
@@ -127,12 +131,12 @@ namespace VirtialDevices
                     float inc = 1;
                     float start = 1;
                     float[][] v;
-                    v = new float[CloneSelectionDevice.JianCeHangShu][];
-                    for (int i = 0; i < CloneSelectionDevice.JianCeHangShu; i++)
+                    v = new float[CloneSelectionDevice.SCP_TestRowNum][];
+                    for (int i = 0; i < CloneSelectionDevice.SCP_TestRowNum; i++)
                     {
                         v[i] = new float[JianCeLieShu];
                     }
-                    for (int i = 0; i < CloneSelectionDevice.JianCeHangShu; i++)
+                    for (int i = 0; i < CloneSelectionDevice.SCP_TestRowNum; i++)
                     {
                         for (int j = 0; j < JianCeLieShu; j++)
                         {
@@ -161,7 +165,7 @@ namespace VirtialDevices
                     for (int i = 0; i < int.Parse(textBox2.Text); i++)
                     {
                         ListViewItem lvi = new ListViewItem();
-                        for (int j = 0; j < CloneSelectionDevice.JianCeHangShu; j++)
+                        for (int j = 0; j < CloneSelectionDevice.SCP_TestRowNum; j++)
                         {
                             lvi.SubItems.Add(v[j][i].ToString()); 
                         }

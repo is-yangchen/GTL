@@ -24,6 +24,7 @@ namespace VirtialDevices
             typeComboBox.SelectedIndex = 0;
             communicateComboBox.Items.Add("Socket");
             communicateComboBox.Items.Add("TwinCat");
+            communicateComboBox.SelectedIndex = 0;
         }
 
         public VirtualDevicesForm FatherForm;
@@ -32,7 +33,9 @@ namespace VirtialDevices
         {
             DeviceType selectType = EnumHelper.TypeEnums[typeComboBox.SelectedIndex];
             bool isSocket = true;
-            if (communicateComboBox.SelectedIndex == 1) isSocket = false;
+            /*此处是为了都走Socket的方式,如需有TwinCAT支持请加上这句话
+                if (communicateComboBox.SelectedIndex == 1) isSocket = false;
+             */ 
             //if (selectType == DeviceType.Dispen)
             if (false)
             {

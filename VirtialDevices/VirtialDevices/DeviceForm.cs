@@ -201,12 +201,14 @@ namespace VirtialDevices
                 case DeviceType.Analysis:
                     MultiTunnelDeviceForm mForm = new MultiTunnelDeviceForm();
                     mForm.FatherForm = this;
+                    //mForm.IsSocket = true;
                     mForm.DeviceInfo = (MultiTunnelDevice)DeviceInfo;
                     mForm.Show();
                     break;
                 case DeviceType.Clone:
                     CloneSelectionDeviceForm cForm = new CloneSelectionDeviceForm();
                     cForm.FatherForm = this;
+                    cForm.IsSocket = true;
                     cForm.DeviceInfo = (CloneSelectionDevice)DeviceInfo;
                     cForm.Show();
                     break;
@@ -223,7 +225,12 @@ namespace VirtialDevices
                     maForm.DeviceInfo = (MatrixSystemDevice)DeviceInfo;
                     maForm.Show();
                     break;
-                   
+                case DeviceType.Storage:
+                    MicroReactorForm mmForm = new MicroReactorForm();
+                    mmForm.FatherForm = this;
+                    mmForm.mrDevice = (MicroStorageDevice)DeviceInfo;
+                    mmForm.Show();
+                    break;
                 default:
                     break;
             }

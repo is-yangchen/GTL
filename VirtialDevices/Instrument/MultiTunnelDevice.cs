@@ -19,17 +19,17 @@ namespace Instrument
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.RESPONSE), creator.getDataBytes());
         }
 
-        public static String createKongBanReport(bool YouKongBan,String TiaoMaHao) 
+        public static String createKongBanReport(bool YouKongBan, String TiaoMaHao)
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("ReportType", "YouKongBan");
             String f = "";
-            if(YouKongBan) f = "1";
+            if (YouKongBan) f = "1";
             else f = "0";
             creator.addKeyPair("Flag", f);
-            if (YouKongBan) 
+            if (YouKongBan)
             {
-                creator.addKeyPair("TiaoMaHao",TiaoMaHao);
+                creator.addKeyPair("TiaoMaHao", TiaoMaHao);
             }
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
         }
@@ -38,9 +38,9 @@ namespace Instrument
         {
             ModbusMessageDataCreator creator = new ModbusMessageDataCreator();
             creator.addKeyPair("ReportType", "Value");
-            for (int i = 0; i < v.Length; i++) 
+            for (int i = 0; i < v.Length; i++)
             {
-                creator.addKeyPair("v"+b, v[i].ToString());
+                creator.addKeyPair("v" + b, v[i].ToString());
                 b++;
             }
             return ModbusMessageHelper.createModbusMessage(ModbusMessage.messageTypeToByte(ModbusMessage.MessageType.REPORT), creator.getDataBytes());
@@ -51,206 +51,222 @@ namespace Instrument
     public class MultiTunnelDevice : BaseVirtualDevice
     {
 
-        public static int JianCeHangShu = 8;
-        public static int JianCeLieShu = 12;
+        public static int MMA_TestRowIndex = 8;
+        public static int MMA_TestColumnIndex = 12;
 
-        public enum JianCeMoShi { OD, YingGuang, HuaXueFaGuang };
-        public static JianCeMoShi stringToJianCeMoShi(String mode) 
+        public enum MMA_TestMethod { OD, Flu, Che };
+        private bool MMA_SendBarCodeFlag = true;
+        private String MMA_currentBarCode = null;
+        private String MMA_preBarCode = null;
+        private MMA_TestMethod MMA_TestMode = MMA_TestMethod.OD;
+        private float[][] MMA_DetectValues = null;
+        private System.Timers.Timer MMA_Timer = null;
+        private bool MMA_PlateDetect = false;
+        private int MMA_MeasureTime;
+        private float MMA_Temp;
+        private float MMA_WaveLengthUp;
+        private float MMA_WaveLengthDown;
+
+        private bool[] MMA_PlateFlag;
+        private float[] MMA_PlateTemp;
+        private float[] MMA_ODValue;
+        private float[] MMA_FluCount;
+        private float[] MMA_CheCount;
+        private float MMA_Wave;
+
+
+
+        public static MMA_TestMethod stringToJianCeMoShi(String mode)
         {
-            if ("OD".Equals(mode)) return JianCeMoShi.OD;
-            if ("YG".Equals(mode)) return JianCeMoShi.YingGuang;
-            if ("HXFG".Equals(mode)) return JianCeMoShi.HuaXueFaGuang;
-            return JianCeMoShi.OD;
+            if ("OD".Equals(mode)) return MMA_TestMethod.OD;
+            if ("YG".Equals(mode)) return MMA_TestMethod.Flu;
+            if ("HXFG".Equals(mode)) return MMA_TestMethod.Che;
+            return MMA_TestMethod.OD;
         }
 
-        public static String jianCeMoShiToString(JianCeMoShi m)
+        public static String jianCeMoShiToString(MMA_TestMethod m)
         {
-            switch (m) 
+            switch (m)
             {
-                case JianCeMoShi.OD:
+                case MMA_TestMethod.OD:
                     return "OD";
-                case JianCeMoShi.YingGuang:
+                case MMA_TestMethod.Flu:
                     return "YG";
-                case JianCeMoShi.HuaXueFaGuang:
+                case MMA_TestMethod.Che:
                     return "HXFG";
             }
             return "OD";
         }
 
-        private bool needSendKongBanReport = true;
-
-        private String currentTiaoMaHao = null;
-
-        private JianCeMoShi moShi = JianCeMoShi.OD;
-        public JianCeMoShi MoShi
+        public MMA_TestMethod MoShi
         {
             get
             {
-                return this.moShi;
+                return this.MMA_TestMode;
             }
             set
             {
-                this.moShi = value;
+                this.MMA_TestMode = value;
             }
         }
 
-        private float[][] detectValues = null;
+
 
         public void setDetectValues(float[][] v)
         {
-            if (v.Length != JianCeHangShu) return;
+            if (v.Length != MMA_TestRowIndex) return;
             for (int i = 0; i < v.Length; i++)
             {
-                if (v[i].Length != JianCeLieShu) return;
+                if (v[i].Length != MMA_TestColumnIndex) return;
             }
-            detectValues = new float[JianCeHangShu][];
-            for(int i=0;i<JianCeHangShu;i++)
+            MMA_DetectValues = new float[MMA_TestRowIndex][];
+            for (int i = 0; i < MMA_TestRowIndex; i++)
             {
-                detectValues[i] = new float[JianCeLieShu];
+                MMA_DetectValues[i] = new float[MMA_TestColumnIndex];
             }
-            for (int i = 0; i < JianCeHangShu; i++)
+            for (int i = 0; i < MMA_TestRowIndex; i++)
             {
-                for (int j = 0; j < JianCeLieShu; j++) 
+                for (int j = 0; j < MMA_TestColumnIndex; j++)
                 {
-                    detectValues[i][j] = v[i][j];
+                    MMA_DetectValues[i][j] = v[i][j];
                 }
             }
         }
 
-        private System.Timers.Timer chuLiTimer = null;
+
 
         private void chuLiTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            chuLiTimer.Stop();
-            if (youKongBan)
+            MMA_Timer.Stop();
+            if (MMA_PlateDetect)
             {
                 int b = 0;
                 String s;
-                for (int i = 0; i < JianCeHangShu; i++) 
+                for (int i = 0; i < MMA_TestRowIndex; i++)
                 {
-                    s = MultiTunnelDeviceMessageCreator.createJianCeZhiReport(b, detectValues[i]);
+                    s = MultiTunnelDeviceMessageCreator.createJianCeZhiReport(b, MMA_DetectValues[i]);
                     SendMsg(s);
-                    b += JianCeLieShu;
+                    b += MMA_TestColumnIndex;
                 }
                 //s = MultiTunnelDeviceMessageCreator.createKongBanReport(youKongBan,currentTiaoMaHao);
                 //SendMsg(s);
-                youKongBan = false;
-                currentTiaoMaHao = null;
+                MMA_PlateDetect = false;
+                MMA_currentBarCode = null;
             }
-            chuLiTimer = null;
+            MMA_Timer = null;
         }
 
-        private void startTimer() 
+        private void startTimer()
         {
-            if (youKongBan) currentTiaoMaHao = BarCodeGenerator.generateBarCode();
-            String s = MultiTunnelDeviceMessageCreator.createKongBanReport(youKongBan,currentTiaoMaHao);
+            if (MMA_PlateDetect) MMA_currentBarCode = BarCodeGenerator.generateBarCode();
+            String s = MultiTunnelDeviceMessageCreator.createKongBanReport(MMA_PlateDetect, MMA_currentBarCode);
             SendMsg(s);
-            if (youKongBan)
+            if (MMA_PlateDetect)
             {
-                if (chuLiTimer != null) chuLiTimer.Stop();
-                chuLiTimer = new System.Timers.Timer();
-                chuLiTimer.Interval = chuLiShiJian * 1000;
-                chuLiTimer.Elapsed += new System.Timers.ElapsedEventHandler(chuLiTimer_Elapsed);
-                chuLiTimer.Start();
+                if (MMA_Timer != null) MMA_Timer.Stop();
+                MMA_Timer = new System.Timers.Timer();
+                MMA_Timer.Interval = MMA_MeasureTime * 1000;
+                MMA_Timer.Elapsed += new System.Timers.ElapsedEventHandler(chuLiTimer_Elapsed);
+                MMA_Timer.Start();
             }
         }
 
-        public void setSingleDetectValue(int i,int j,float v) 
+        public void setSingleDetectValue(int i, int j, float v)
         {
-            if (i < 0 || i >= JianCeHangShu) return;
-            if (j < 0 || j >= JianCeLieShu) return;
-            if (detectValues == null) return;
-            detectValues[i][j] = v;
+            if (i < 0 || i >= MMA_TestRowIndex) return;
+            if (j < 0 || j >= MMA_TestColumnIndex) return;
+            if (MMA_DetectValues == null) return;
+            MMA_DetectValues[i][j] = v;
         }
 
-        public float[][] getDetectValues() 
+        public float[][] getDetectValues()
         {
-            return detectValues;
+            return MMA_DetectValues;
         }
 
-        public float getSingeDetectValue(int i, int j) 
+        public float getSingeDetectValue(int i, int j)
         {
-            if (i < 0 || i >= JianCeHangShu) return 0;
-            if (j < 0 || j >= JianCeLieShu) return 0;
-            if (detectValues == null) return 0;
-            return detectValues[i][j];
+            if (i < 0 || i >= MMA_TestRowIndex) return 0;
+            if (j < 0 || j >= MMA_TestColumnIndex) return 0;
+            if (MMA_DetectValues == null) return 0;
+            return MMA_DetectValues[i][j];
         }
 
-        private bool youKongBan = false;
+
         public bool YouKongBan
         {
             get
             {
-                return this.youKongBan;
+                return this.MMA_PlateDetect;
             }
             set
             {
-                this.youKongBan = value;
+                this.MMA_PlateDetect = value;
             }
         }
 
-        private int chuLiShiJian;
+
         public int ChuLiShiJian
         {
             get
             {
-                return this.chuLiShiJian;
+                return this.MMA_MeasureTime;
             }
             set
             {
-                this.chuLiShiJian = value;
+                this.MMA_MeasureTime = value;
             }
         }
 
-        private float dangQiangWenDu;
+
         public float DangQiangWenWu
         {
             get
             {
-                return this.dangQiangWenDu;
+                return this.MMA_Temp;
             }
             set
             {
-                this.dangQiangWenDu = value;
+                this.MMA_Temp = value;
             }
         }
 
-        private float boChangXiaXian;
+
         public float BoChangXiaXian
         {
             get
             {
-                return this.boChangXiaXian;
+                return this.MMA_WaveLengthUp;
             }
             set
             {
-                this.boChangXiaXian = value;
+                this.MMA_WaveLengthUp = value;
             }
         }
 
-        private float boChangShangXian;
+
         public float BoChangShangXian
         {
             get
             {
-                return this.boChangShangXian;
+                return this.MMA_WaveLengthDown;
             }
             set
             {
-                this.boChangShangXian = value;
+                this.MMA_WaveLengthDown = value;
             }
         }
 
         private void decodeCmdMessage(ModbusMessage msg)
         {
             String cmd = (String)msg.Data["Cmd"];
-            if ("Start".Equals(cmd)) 
+            if ("Start".Equals(cmd))
             {
                 startTimer();
             }
-            if ("Next".Equals(cmd)) 
+            if ("Next".Equals(cmd))
             {
-                youKongBan = true;
+                MMA_PlateDetect = true;
                 startTimer();
             }
         }
@@ -258,17 +274,17 @@ namespace Instrument
         private void decodeSetMessage(ModbusMessage msg)
         {
             String setType = (String)msg.Data["SetType"];
-            if ("Mode".Equals(setType)) 
+            if ("Mode".Equals(setType))
             {
                 String mode = (String)msg.Data["Mode"];
-                moShi = stringToJianCeMoShi(mode);
+                MMA_TestMode = stringToJianCeMoShi(mode);
             }
         }
 
         public override void ReceiveMsg(String s)
         {
             ModbusMessage message = ModbusMessageHelper.decodeModbusMessage(s);
-            switch (message.MsgType) 
+            switch (message.MsgType)
             {
                 case ModbusMessage.MessageType.CMD:
                     decodeCmdMessage(message);

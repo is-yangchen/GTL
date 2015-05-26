@@ -14,7 +14,7 @@ namespace CentralControl
 {
     public partial class CloneSelectionDeviceForm : Form
     {
-        public DeviceInfoForm FatherForm;
+        public ControlForm FatherForm;
         public bool IsSocket;
         public CloneSelectionVirtualDevice DeviceInfo;
 

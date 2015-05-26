@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GTLutils;
+using System.Xml;
+using System.Timers;
+using DeviceUtils;
 
 namespace Instrument
 {
     public class MPFDispenMessage
     {
-        public String Barcode;//条码号
-        public String PlateNum;//孔板数
+        public String Barcode;
+        public String PlateNum;
 
         public MPFDispenMessage()
         {
@@ -30,7 +32,7 @@ namespace Instrument
         public string MPF_Cmd;
         public int MPF_Whichplate = 1;
         public int MPF_RunningError;
-        public int MPF_DispenTime;
+        public int DispenTime;
         public double MPF_Current1;
         public double MPF_Current2;
         public double MPF_Current3;
@@ -44,10 +46,10 @@ namespace Instrument
 
         private bool needRefreshMessages = false;
         private Object RefreshObject = new Object();
-        //private object KeyObject = new object();
+        private object KeyObject = new object();
 
-        //private System.Timers.Timer samTimer = null;
-        //private System.Timers.Timer dispenTimer = null;
+        private System.Timers.Timer samTimer = null;
+        private System.Timers.Timer dispenTimer = null;
 
         public void sendCmd(String cmd)
         {
@@ -80,7 +82,6 @@ namespace Instrument
         public void sendMPFCurrencyReport(String[] currency)
         {
             Hashtable ht = new Hashtable();
-            ht.Add("ReportType", "MPF_Current");
             String[] s = { "MPF_Current1", "MPF_Current2", "MPF_Current3", "MPF_Current4" };
             for (int i = 0; i < s.Length; i++)
             {
@@ -114,9 +115,79 @@ namespace Instrument
             return res;
         }
 
+        public int getLeft()
+        {
+            lock (KeyObject)
+            {
+                return 97 - MPF_Whichplate;
+            }
+        }
+
+        private void resetDispenStatus()
+        {
+            lock (KeyObject)
+            {
+                MPF_Whichplate = 1;
+            }
+        }
+
+        private void increaseDispenStatus()
+        {
+            lock (KeyObject)
+            {
+                MPF_Whichplate++;
+                if (MPF_Whichplate > 96)
+                {
+                    MPF_Whichplate = 1;
+                    dispenTimer.Stop();
+                }
+            }
+        }
+
+        private void sendDispenMessage()
+        {
+            String barcode = "";
+            String platecode = "";
+
+            lock (KeyObject)
+            {
+                platecode = MPF_Whichplate.ToString();
+            }
+            barcode = TiaoMaHaoGenerator.generateTiaoMaHao();
+            increaseDispenStatus();
+            String msg;
+            MPF_BarCode = barcode;
+            this.sendMPFCodesReport(platecode, barcode);
+        }
+
+        private void dispenTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            String msg = "";
+            sendDispenMessage();
+        }
+
+        private void samTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            String[] currencies = new String[] { MPF_Current1.ToString(), MPF_Current2.ToString(), MPF_Current3.ToString(), MPF_Current4.ToString() };
+            this.sendMPFCurrencyReport(currencies);
+        }
+        public void startTimers()
+        {
+            if (dispenTimer != null) dispenTimer.Stop();
+            if (samTimer != null) samTimer.Stop();
+            dispenTimer = new System.Timers.Timer();
+            dispenTimer.Interval = DispenTime * 1000;
+            dispenTimer.Elapsed += new System.Timers.ElapsedEventHandler(dispenTimer_Elapsed);
+
+            samTimer = new System.Timers.Timer();
+            samTimer.Interval = MPF_CurSamTime * 1000;
+            samTimer.Elapsed += new System.Timers.ElapsedEventHandler(samTimer_Elapsed);
+            samTimer.Start();
+        }
+
         public override void decodeResponseMessage(ModbusMessage msg)
         {
-            //this.sendOKResponse();
+            this.sendOKResponse();
         }
 
         public override void decodeReportMessage(ModbusMessage msg)//解码报告消息
@@ -154,25 +225,20 @@ namespace Instrument
             String cmd = (String)msg.Data["Cmd"];
             if ("Start".Equals(cmd))
             {
-                //dispenTimer.Start();
-                this.MPF_Cmd = "Start";
+                dispenTimer.Start();
             }
             if ("Reset".Equals(cmd))
             {
                 MPF_Whichplate = 1;
-                this.MPF_Cmd = "Reset";
             }
             if ("Stop".Equals(cmd))
             {
-                //dispenTimer.Stop();
-                this.MPF_Cmd = "Stop";
+                dispenTimer.Stop();
             }
             if ("Auto".Equals(cmd))
             {
-                this.MPF_Cmd = "Auto";
-            }
 
-            this.sendOKResponse();
+            }
 
             this.sendOKResponse();
         }
@@ -189,3 +255,4 @@ namespace Instrument
 
     }
 }
+

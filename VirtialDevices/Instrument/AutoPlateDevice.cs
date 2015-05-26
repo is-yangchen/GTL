@@ -32,7 +32,7 @@ namespace Instrument
         public string MPF_Cmd;
         public int MPF_Whichplate = 1;
         public int MPF_RunningError;
-        public int DispenTime;
+        public int MPF_DispenTime;
         public double MPF_Current1;
         public double MPF_Current2;
         public double MPF_Current3;
@@ -82,6 +82,7 @@ namespace Instrument
         public void sendMPFCurrencyReport(String[] currency)
         {
             Hashtable ht = new Hashtable();
+            ht.Add("ReportType", "MPF_Current");
             String[] s = { "MPF_Current1", "MPF_Current2", "MPF_Current3", "MPF_Current4" };
             for (int i = 0; i < s.Length; i++)
             {
@@ -176,7 +177,7 @@ namespace Instrument
             if (dispenTimer != null) dispenTimer.Stop();
             if (samTimer != null) samTimer.Stop();
             dispenTimer = new System.Timers.Timer();
-            dispenTimer.Interval = DispenTime * 1000;
+            dispenTimer.Interval = MPF_DispenTime * 1000;
             dispenTimer.Elapsed += new System.Timers.ElapsedEventHandler(dispenTimer_Elapsed);
 
             samTimer = new System.Timers.Timer();
@@ -187,7 +188,7 @@ namespace Instrument
 
         public override void decodeResponseMessage(ModbusMessage msg)
         {
-            this.sendOKResponse();
+            //this.sendOKResponse();
         }
 
         public override void decodeReportMessage(ModbusMessage msg)//解码报告消息
@@ -225,19 +226,22 @@ namespace Instrument
             String cmd = (String)msg.Data["Cmd"];
             if ("Start".Equals(cmd))
             {
-                dispenTimer.Start();
+                //dispenTimer.Start();
+                this.MPF_Cmd = "Start";
             }
             if ("Reset".Equals(cmd))
             {
                 MPF_Whichplate = 1;
+                this.MPF_Cmd = "Reset";
             }
             if ("Stop".Equals(cmd))
             {
-                dispenTimer.Stop();
+                //dispenTimer.Stop();
+                this.MPF_Cmd = "Stop";
             }
             if ("Auto".Equals(cmd))
             {
-
+                this.MPF_Cmd = "Auto";
             }
 
             this.sendOKResponse();

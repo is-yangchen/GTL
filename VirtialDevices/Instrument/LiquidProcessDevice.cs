@@ -8,25 +8,25 @@ namespace Instrument
 {
     public class LiquidProcessDevice : BaseVirtualDevice
     {
-        public String quYePan;
-        public String muBiaoPan;
-        public int xiYeLiang;
-        public int xiYeSuDu;
-        public int paiYeSuDu;
-        public int quYeWeiZhi;
-        public int paiYeWeiZhi;
-        public String taiMianPeiZhi;
+        public String LHS_SuctionPlate;
+        public String LHS_TargetPlate;
+        public int LHS_Imbitition;
+        public int LHS_LiquidRate;
+        public int LHS_DischargeRate;
+        public int LHS_LiquidPosition;
+        public int LHS_DischargePosition;
+        public String LHS_PlateStatus;
 
-        public LiquidProcessDevice() 
+        public LiquidProcessDevice()
         {
-            quYePan = "";
-            muBiaoPan = "";
-            xiYeLiang = 0;
-            xiYeSuDu = 0;
-            paiYeSuDu = 0;
-            quYeWeiZhi = 0;
-            paiYeWeiZhi = 0;
-            taiMianPeiZhi = "00000000000000000000";
+            LHS_SuctionPlate = "";
+            LHS_TargetPlate = "";
+            LHS_Imbitition = 0;
+            LHS_LiquidRate = 0;
+            LHS_DischargeRate = 0;
+            LHS_LiquidPosition = 0;
+            LHS_DischargePosition = 0;
+            LHS_PlateStatus = "00000000000000000000";
         }
 
         private void decodeSetMessage(ModbusMessage msg)
@@ -34,23 +34,23 @@ namespace Instrument
             String setType = (String)msg.Data["SetType"];
             if ("yiYeWeiZhi".Equals(setType))
             {
-                quYePan = (String)msg.Data["quYePan"];
-                muBiaoPan = (String)msg.Data["muBiaoPan"];
-                xiYeLiang = Int32.Parse((String)msg.Data["xiYeLiang"]);
+                LHS_SuctionPlate = (String)msg.Data["LHS_SuctionPlate"];
+                LHS_TargetPlate = (String)msg.Data["LHS_TargetPlate"];
+                LHS_Imbitition = Int32.Parse((String)msg.Data["LHS_Imbitition"]);
             }
             if ("suDuSheZhi".Equals(setType))
             {
-                xiYeSuDu = Int32.Parse((String)msg.Data["xiYeSuDu"]);
-                paiYeSuDu = Int32.Parse((String)msg.Data["paiYeSuDu"]);
+                LHS_LiquidRate = Int32.Parse((String)msg.Data["LHS_LiquidRate"]);
+                LHS_DischargeRate = Int32.Parse((String)msg.Data["LHS_DischargeRate"]);
             }
             if ("weiZhiSheZhi".Equals(setType))
             {
-                quYeWeiZhi = Int32.Parse((String)msg.Data["xiYeWeiZhi"]);
-                paiYeWeiZhi = Int32.Parse((String)msg.Data["paiYeWeiZhi"]);
+                LHS_LiquidPosition = Int32.Parse((String)msg.Data["LHS_LiquidPosition"]);
+                LHS_DischargePosition = Int32.Parse((String)msg.Data["LHS_DischargePosition"]);
             }
-            if ("taiMianPeiZhi".Equals(setType))
+            if ("LHS_PlateStatus".Equals(setType))
             {
-                taiMianPeiZhi = (String)msg.Data["taiMianPeiZhi"];
+                LHS_PlateStatus = (String)msg.Data["LHS_PlateStatus"];
             }
         }
 
