@@ -74,6 +74,9 @@ namespace Instrument
         public UInt32 SCP_ExhaustTime = 0;
 
         //区域定位
+        public int SCP_CircleLoc = 0;
+        public int SCP_MatrixLoc = 0;
+        public int SCP_Calibrate = 0;
         public int SCP_X = 0;
         public int SCP_Y = 0;
         public int SCP_Radius = 0;
