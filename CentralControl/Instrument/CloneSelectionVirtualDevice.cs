@@ -43,9 +43,22 @@ namespace Instrument
     public class CloneSelectionVirtualDevice : BaseVirtualDevice
     {
         //平皿和孔板选择
+        public int SCP_LightType = 0;
+        public int SCP_DishType = 0;
+        public int SCP_NeedleFlag = 0;
+        public int SCP_NeedleNum = 0;
+        public int SCP_DishNeedleFlag = 0;
+        public int SCP_CloneNum = 0;
+        public int SCP_PlateFlag = 0;
         public int SCP_PlateType = 0;
+        public int SCP_SpaceFlag = 0;
         public int SCP_ProbeMethod = 0;
         public static int SCP_TestRowNum = 12;
+
+        //过程设置
+        public int SCP_PickStopTime = 0;
+        public int SCP_InoStopTime = 0;
+        public int SCP_ShockCount = 0;
 
         //相机参数
         //色彩处理
@@ -63,6 +76,7 @@ namespace Instrument
         public int SCP_Green = 0;
         public int SCP_Blue = 0;
         //大小
+        public string SCP_Pixel = "";
         public int SCP_FrameRate = 0;
         public int SCP_PowerFrequency = 0;
         public int SCP_ParaSet = 0;
